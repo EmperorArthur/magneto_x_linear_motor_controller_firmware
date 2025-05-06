@@ -1,6 +1,11 @@
+#include <Arduino.h>
 #include "ModeBusSender.h"
 
+void disableMotor(int number);
+void enableMotor(int number);
 void processPureData();
+void sendCmdByPort( String cmd_str);
+
 //test1: 01 03 f0 0a 00 01 97 08
 //test2: 01 06 f0 0a 00 03 da c9
 #define ERROR_CODE_1 0x00
