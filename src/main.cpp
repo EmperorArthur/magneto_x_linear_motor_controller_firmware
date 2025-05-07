@@ -3,6 +3,8 @@
  */
 #include <cstring>
 #include <Arduino.h>
+#include <ModbusADU.h>
+
 #include "ModbusSender.h"
 #include "LinearMotorCommands.hpp"
 auto & XMotor = Serial1;
@@ -496,21 +498,26 @@ void check_button()
 void setup()
 {
     Serial.begin(115200);
+
+    XMotor.setRxBufferSize(sizeof(ModbusADU));
+    XMotor.setTxBufferSize(sizeof(ModbusADU));
     XMotor.begin(115200, SERIAL_8N1, 22, 23);
+
+    YMotor.setRxBufferSize(sizeof(ModbusADU));
+    YMotor.setTxBufferSize(sizeof(ModbusADU));
     YMotor.begin(115200, SERIAL_8N1, 16, 17);
 
     pinMode(BUTTON_ENABLE_PIN, INPUT_PULLUP);
     pinMode(BUTTON_DISABLE_PIN, INPUT_PULLUP);
 
-    
-
     pinMode(LED1_A_PIN, OUTPUT);
     pinMode(LED1_B_PIN, OUTPUT);
     pinMode(LED2_A_PIN, OUTPUT);
     pinMode(LED2_B_PIN, OUTPUT);
+
     Serial.print("System inited, Version: magx-eslm-");
     Serial.println(VERSION);
-    
+
     delay(1000);
     pinMode(EMERGE_STOP_PIN, OUTPUT);
     digitalWrite(EMERGE_STOP_PIN, HIGH);
