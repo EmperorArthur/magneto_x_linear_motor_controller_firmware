@@ -5,6 +5,8 @@
 #include <Arduino.h>
 #include "ModbusSender.h"
 #include "LinearMotorCommands.hpp"
+auto & XMotor = Serial1;
+auto & YMotor = Serial2;
 
 void disableMotor(int number);
 void enableMotor(int number);
@@ -42,9 +44,6 @@ int8_t led2_state = 0;
 
 bool errorStateX = false;
 bool errorStateY = false;
-
-// HardwareSerial serialPortx(1);
-// #define Serial2 Serial2
 
 unsigned char getStringIndexChar(String cmd, int index)
 {
@@ -91,9 +90,9 @@ void readPortx()
 {
   byte pdata[9];
   int index = 0;
-  while (Serial1.available() >0)
+  while (XMotor.available() >0)
   {
-    char recieved = Serial1.read();
+    char recieved = XMotor.read();
     inPortx += recieved; 
     if(index<9)
     {
@@ -137,9 +136,9 @@ void readPorty()
 {
   byte data[9];
   int index = 0;
-  while (Serial2.available() >0)
+  while (YMotor.available() >0)
   {
-    char recieved = Serial2.read();
+    char recieved = YMotor.read();
     inPortx += recieved; 
     if(index<9)
     {
@@ -497,8 +496,8 @@ void check_button()
 void setup()
 {
     Serial.begin(115200);
-    Serial1.begin(115200, SERIAL_8N1, 22, 23);
-    Serial2.begin(115200, SERIAL_8N1, 16, 17);
+    XMotor.begin(115200, SERIAL_8N1, 22, 23);
+    YMotor.begin(115200, SERIAL_8N1, 16, 17);
 
     pinMode(BUTTON_ENABLE_PIN, INPUT_PULLUP);
     pinMode(BUTTON_DISABLE_PIN, INPUT_PULLUP);
@@ -535,7 +534,4 @@ void loop()
   check_button();
   led1(errorStateX);
   led2(errorStateY);
-    // Serial2.print("hello kitty");
-//  delay(10);
-  
 }
