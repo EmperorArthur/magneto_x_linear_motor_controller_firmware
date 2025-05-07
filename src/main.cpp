@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "ModeBusSender.h"
+#include "ModbusSender.h"
 
 void disableMotor(int number);
 void enableMotor(int number);
@@ -224,18 +224,18 @@ void setInerdia(int motor_num, int value)
   set_motor_intertia_code_cmd[4]= (value >> 8) & 0xFF; 
 
   delay(100);
-  sendModebusCmd(motor_num, set_motor_intertia_code_cmd, 6);
+  sendModbusCommand(motor_num, set_motor_intertia_code_cmd, 6);
   delay(100);
   
   disableMotor(motor_num);
   delay(100);
-  sendModebusCmd(motor_num, save_param_code_cmd, 6);
+  sendModbusCommand(motor_num, save_param_code_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, check_save_param_code_cmd, 6);
+  sendModbusCommand(motor_num, check_save_param_code_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, clean_error_cmd, 6); 
+  sendModbusCommand(motor_num, clean_error_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, enable_motor_cmd, 6);
+  sendModbusCommand(motor_num, enable_motor_cmd, 6);
 }
 
 void setCurentGain(int motor_num, unsigned char value)
@@ -244,66 +244,66 @@ void setCurentGain(int motor_num, unsigned char value)
   set_motor_current_gain_code_cmd[5]=value;
   
   delay(100);
-  sendModebusCmd(motor_num, set_motor_current_gain_code_cmd, 6);
+  sendModbusCommand(motor_num, set_motor_current_gain_code_cmd, 6);
   delay(100);
   disableMotor(motor_num);
   delay(100);
-  sendModebusCmd(motor_num, save_param_code_cmd, 6);
+  sendModbusCommand(motor_num, save_param_code_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, check_save_param_code_cmd, 6);
+  sendModbusCommand(motor_num, check_save_param_code_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, clean_error_cmd, 6); 
+  sendModbusCommand(motor_num, clean_error_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, enable_motor_cmd, 6);
+  sendModbusCommand(motor_num, enable_motor_cmd, 6);
 }
 
 void set_auto_gain_off(int motor_num)
 {
   delay(100);
-  sendModebusCmd(motor_num, set_auto_gain_cmd, 6);
+  sendModbusCommand(motor_num, set_auto_gain_cmd, 6);
   delay(100);
   disableMotor(motor_num);
   delay(100);
-  sendModebusCmd(motor_num, save_param_code_cmd, 6);
+  sendModbusCommand(motor_num, save_param_code_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, check_save_param_code_cmd, 6);
+  sendModbusCommand(motor_num, check_save_param_code_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, clean_error_cmd, 6); 
+  sendModbusCommand(motor_num, clean_error_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, enable_motor_cmd, 6);
+  sendModbusCommand(motor_num, enable_motor_cmd, 6);
 }
 
 void set_filter1_off(int motor_num)
 {
   delay(100);
-  sendModebusCmd(motor_num, set_filter1_cmd, 6);
+  sendModbusCommand(motor_num, set_filter1_cmd, 6);
   delay(100);
   disableMotor(motor_num);
   delay(100);
-  sendModebusCmd(motor_num, save_param_code_cmd, 6);
+  sendModbusCommand(motor_num, save_param_code_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, check_save_param_code_cmd, 6);
+  sendModbusCommand(motor_num, check_save_param_code_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, clean_error_cmd, 6); 
+  sendModbusCommand(motor_num, clean_error_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, enable_motor_cmd, 6);
+  sendModbusCommand(motor_num, enable_motor_cmd, 6);
 }
 
 
 void set_filter2_off(int motor_num)
 {
   delay(100);
-  sendModebusCmd(motor_num, set_filter2_cmd, 6);
+  sendModbusCommand(motor_num, set_filter2_cmd, 6);
   delay(100);
   disableMotor(motor_num);
   delay(100);
-  sendModebusCmd(motor_num, save_param_code_cmd, 6);
+  sendModbusCommand(motor_num, save_param_code_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, check_save_param_code_cmd, 6);
+  sendModbusCommand(motor_num, check_save_param_code_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, clean_error_cmd, 6); 
+  sendModbusCommand(motor_num, clean_error_cmd, 6);
   delay(100);
-  sendModebusCmd(motor_num, enable_motor_cmd, 6);
+  sendModbusCommand(motor_num, enable_motor_cmd, 6);
 }
 void printHexArray(unsigned char* hex_data, int len)
 {
@@ -335,7 +335,7 @@ void pureCMD(String cmds, int motor_num)
       cmdArray[index] = buffer_tx.substring(startPos).toInt();
   }
   printHexArray(cmdArray, 6);
-  sendModebusCmd(motor_num, cmdArray, 6);
+  sendModbusCommand(motor_num, cmdArray, 6);
   if(motor_num==0)
     read_state = 1;
   else if(motor_num==1)
@@ -349,9 +349,9 @@ void sendCmdByPort( String cmd_str)
     String cmd = cmd_str;
     if(cmd.startsWith("DISABLE"))
     {
-      sendModebusCmd(0, disable_motor_cmd, 6);
+      sendModbusCommand(0, disable_motor_cmd, 6);
       delay(100);
-      sendModebusCmd(1, disable_motor_cmd, 6);
+      sendModbusCommand(1, disable_motor_cmd, 6);
     }
     else if(cmd.startsWith("VERSION"))
     {
@@ -410,25 +410,25 @@ void sendCmdByPort( String cmd_str)
     else if(cmd.startsWith("GET_CURRENT_X"))
     {
         //get_motor_current_gain_code_cmd
-        sendModebusCmd(0, get_motor_current_gain_code_cmd, 6);
+        sendModbusCommand(0, get_motor_current_gain_code_cmd, 6);
         read_state = 1;
         delay(20);
     }
     else if(cmd.startsWith("GET_CURRENT_Y"))
     {
-        sendModebusCmd(1, get_motor_current_gain_code_cmd, 6);
+        sendModbusCommand(1, get_motor_current_gain_code_cmd, 6);
         read_state = 2;
         delay(20);
     }
    else if(cmd.startsWith("GET_INERDIA_X"))
    {
-        sendModebusCmd(0, get_motor_intertia_code_cmd, 6);
+        sendModbusCommand(0, get_motor_intertia_code_cmd, 6);
         read_state = 1;
         delay(20);
    }
    else if(cmd.startsWith("GET_INERDIA_Y"))
    {
-        sendModebusCmd(1, get_motor_intertia_code_cmd, 6);
+        sendModbusCommand(1, get_motor_intertia_code_cmd, 6);
         read_state = 2;
         delay(20);
    }
@@ -477,16 +477,16 @@ void led2(int state)
 
 void disableMotor(int number)
 {
-  sendModebusCmd(number, disable_motor_cmd, 6);
+  sendModbusCommand(number, disable_motor_cmd, 6);
 }
 
 void enableMotor(int number)
 {
-      sendModebusCmd(number, disable_motor_cmd, 6);
+      sendModbusCommand(number, disable_motor_cmd, 6);
       delay(100);
-      sendModebusCmd(number, clean_error_cmd, 6);
+      sendModbusCommand(number, clean_error_cmd, 6);
       delay(100);
-      sendModebusCmd(number, enable_motor_cmd, 6);
+      sendModbusCommand(number, enable_motor_cmd, 6);
      
 }
 
@@ -512,10 +512,10 @@ void check_button()
     delay(100);
     if(digitalRead(BUTTON_DISABLE_PIN) == LOW) 
     {
-      sendModebusCmd(0, disable_motor_cmd, 6);
+      sendModbusCommand(0, disable_motor_cmd, 6);
 //      errorStateX = true;
       delay(100);
-      sendModebusCmd(1, disable_motor_cmd, 6);
+      sendModbusCommand(1, disable_motor_cmd, 6);
 //      errorStateY = true;
     }
   }
@@ -556,9 +556,9 @@ void setup()
 
 void get_error_code()
 {
-  sendModebusCmd(0, get_motor_error_code_cmd, 6);
+  sendModbusCommand(0, get_motor_error_code_cmd, 6);
   delay(50);
-  sendModebusCmd(1, get_motor_error_code_cmd, 6);
+  sendModbusCommand(1, get_motor_error_code_cmd, 6);
   delay(50);
 }
 
