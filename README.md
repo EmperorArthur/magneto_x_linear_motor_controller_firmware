@@ -10,6 +10,10 @@ LED灯效:
 X轴: 当有错误时，灯是红色，正常时，灯是绿色
 Y轴: 当有错误时，灯是红色，正常时，灯是绿色
 
+# Hardware Information
+System On Chip: ESP32-WROOM-32D
+
 # External Documentation
 https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_esp32-wroom-32u_datasheet_en.pdf
+https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf
 https://modbus.org/docs/Modbus_Application_Protocol_V1_1b3.pdf
