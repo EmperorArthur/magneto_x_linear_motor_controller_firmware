@@ -57,7 +57,7 @@ uint16_t modeCrc16 (const uint8_t *nData, uint16_t wLength)
 
 //test1: 01 03 f0 0a 00 01 97 08
 //test2: 01 06 f0 0a 00 03 da c9
-void sendModbusCommand(uint8_t id, unsigned char *tx_buffer, int len)
+void sendModbusCommand(uint8_t id, const uint8_t *tx_buffer, int len)
 {
     uint8_t package[len+2];
     memset(package, ' ', len+2);

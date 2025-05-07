@@ -1,5 +1,10 @@
+/**
+ *@file
+ */
+#include <cstring>
 #include <Arduino.h>
 #include "ModbusSender.h"
+#include "LinearMotorCommands.hpp"
 
 void disableMotor(int number);
 void enableMotor(int number);
@@ -11,48 +16,6 @@ void sendCmdByPort( String cmd_str);
 #define ERROR_CODE_1 0x00
 #define ERROR_CODE_2 0x00
 #define VERSION "1.0.7-20240227"
-unsigned char current_mode[6]={0x01, 0x03, 0xF0, 0x0A, 0x00, 0x01};
-unsigned char current_position[6]={0x01, 0x03, 0xF0, 0x10, 0x00, 0x02};
-
-//设置自动增益开关,设置为关
-unsigned char set_auto_gain_cmd[6]={0x01, 0x06, 0x04, 0x55, 0x00, 0x00};
-
-//获取自动增益状态
-unsigned char get_auto_gain_cmd[6]={0x01, 0x03, 0x04, 0x55, 0x00, 0x01};
-
-//设置指令电流滤波器1 类型, 不滤波
-unsigned char set_filter1_cmd[6]={0x01, 0x06, 0x04, 0x06, 0x00, 0x00};
-
-//设置指令电流滤波器1 类型, 不滤波
-unsigned char set_filter2_cmd[6]={0x01, 0x06, 0x04, 0x0B, 0x00, 0x00};
-
-//获取指令电流滤波器1类型
-unsigned char get_filter1_cmd[6]={0x01, 0x03, 0x04, 0x06, 0x00, 0x01};
-
-//获取电机动子惯量
-unsigned char get_motor_intertia_code_cmd[6]={0x01, 0x03, 0x00, 0x28, 0x00, 0x02};
-
-//设置电机动子惯量
-unsigned char set_motor_intertia_code_cmd[6]={0x01, 0x06, 0x00, 0x28, 0x00, 0xE6};
-
-
-//获取电气增益值
-unsigned char get_motor_current_gain_code_cmd[6]={0x01, 0x03, 0x00, 0x18, 0x00, 0x02};
-//返回0x01, 0x03, 0x04, 0x00, 0x00, 0x00, 0x64, 0xFB, 0xD8，0x64=100
-
-//设置电气增益值，100
-unsigned char set_motor_current_gain_code_cmd[6]={0x01, 0x06, 0x00, 0x18, 0x00, 0x64};
-
-//保存参数
-unsigned char save_param_code_cmd[6]={0x01, 0x06, 0x60, 0x00, 0x00, 0x01};
-
-//chack save ok
-unsigned char check_save_param_code_cmd[6]={0x01, 0x03, 0x01, 0x8A, 0x00, 0x01};
-
-unsigned char get_motor_error_code_cmd[6]={0x01, 0x03, 0xF0, 0x01, 0x00, 0x02};
-unsigned char enable_motor_cmd[6]={0x01, 0x06, 0xF0, 0x02, 0x00, 0x0F};
-unsigned char disable_motor_cmd[6]={0x01, 0x06, 0xF0, 0x02, 0x00, 0x06};
-unsigned char clean_error_cmd[6]={0x01, 0x06, 0xF0, 0x02, 0x00, 0x80};
 
 bool recvl_ok = false;
 bool recvl_x = false;
@@ -218,13 +181,13 @@ void readPorty()
 
 void setInerdia(int motor_num, int value)
 {
-//  data[0] = (num >> 8) & 0xFF; // 获取高8位
-//    data[1] = num & 0xFF;        // 获取低8位
-  set_motor_intertia_code_cmd[5]= (value & 0xFF);
-  set_motor_intertia_code_cmd[4]= (value >> 8) & 0xFF; 
+  uint8_t command[6];
+  std::memcpy(command, set_motor_intertia_code_cmd, 6);
+  command[5]= (value & 0xFF);
+  command[4]= (value >> 8) & 0xFF;
 
   delay(100);
-  sendModbusCommand(motor_num, set_motor_intertia_code_cmd, 6);
+  sendModbusCommand(motor_num, command, 6);
   delay(100);
   
   disableMotor(motor_num);
@@ -240,11 +203,12 @@ void setInerdia(int motor_num, int value)
 
 void setCurentGain(int motor_num, unsigned char value)
 {
-//  Serial.println(set_motor_current_gain_code_cmd[5]);
-  set_motor_current_gain_code_cmd[5]=value;
-  
+  uint8_t command[6];
+  std::memcpy(command, set_motor_current_gain_code_cmd, 6);
+  command[5]=value;
+
   delay(100);
-  sendModbusCommand(motor_num, set_motor_current_gain_code_cmd, 6);
+  sendModbusCommand(motor_num, command, 6);
   delay(100);
   disableMotor(motor_num);
   delay(100);
