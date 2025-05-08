@@ -3,23 +3,32 @@
  */
 #include <cstring>
 #include <Arduino.h>
+#include <ModbusRTUComm.h>
 #include <ModbusADU.h>
-
-#include "ModbusSender.h"
 #include "LinearMotorCommands.hpp"
-auto & XMotor = Serial1;
-auto & YMotor = Serial2;
 
-void disableMotor(int number);
-void enableMotor(int number);
+ModbusRTUComm* XMotor;
+ModbusRTUComm* YMotor;
+
+auto & XMotorSerial = Serial1;
+auto & YMotorSerial = Serial2;
+
+bool disableMotor(ModbusRTUComm &rtuComm);
+bool enableMotor(ModbusRTUComm &rtuComm);
+
 void processPureData();
 void sendCmdByPort( String cmd_str);
+
+inline bool sendAdu(ModbusRTUComm &comm, const ModbusADU &adu) {
+    auto local = adu;
+    return comm.writeAdu(local);
+}
 
 //test1: 01 03 f0 0a 00 01 97 08
 //test2: 01 06 f0 0a 00 03 da c9
 #define ERROR_CODE_1 0x00
 #define ERROR_CODE_2 0x00
-#define VERSION "1.0.7-20240227"
+#define VERSION "1.0.7-git"
 
 bool recvl_ok = false;
 bool recvl_x = false;
@@ -30,6 +39,7 @@ unsigned char read_state = 0;  //0: read error code   1: get params value
 String inData="";
 String inPortx="";
 
+#define MODBUS_BAUD 115200
 #define BUTTON_ENABLE_PIN 15
 #define BUTTON_DISABLE_PIN 4
 
@@ -92,9 +102,9 @@ void readPortx()
 {
   byte pdata[9];
   int index = 0;
-  while (XMotor.available() >0)
+  while (XMotorSerial.available() >0)
   {
-    char recieved = XMotor.read();
+    char recieved = XMotorSerial.read();
     inPortx += recieved; 
     if(index<9)
     {
@@ -138,9 +148,9 @@ void readPorty()
 {
   byte data[9];
   int index = 0;
-  while (YMotor.available() >0)
+  while (YMotorSerial.available() >0)
   {
-    char recieved = YMotor.read();
+    char recieved = YMotorSerial.read();
     inPortx += recieved; 
     if(index<9)
     {
@@ -180,94 +190,77 @@ void readPorty()
 
 }
 
-void setInerdia(int motor_num, int value)
+void saveParam(ModbusRTUComm &rtuComm)
 {
-  auto command = set_motor_intertia_code_cmd;
-  command[5]= (value & 0xFF);
-  command[4]= (value >> 8) & 0xFF;
-
-  delay(100);
-  sendModbusCommand(motor_num, command, 6);
-  delay(100);
-  
-  disableMotor(motor_num);
-  delay(100);
-  sendModbusCommand(motor_num, save_param_code_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, check_save_param_code_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, clean_error_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, enable_motor_cmd, 6);
+    sendAdu(rtuComm, save_param_code_cmd);
+    delay(100);
+    sendAdu(rtuComm, check_save_param_code_cmd);
 }
 
-void setCurentGain(int motor_num, unsigned char value)
+void setInertia(ModbusRTUComm &rtuComm, int value)
 {
-  auto command = set_motor_current_gain_code_cmd;
-  command[5]=value;
+    auto command = set_motor_intertia_code_cmd;
+    command.rtu[5]= (value & 0xFF);
+    command.rtu[4]= (value >> 8) & 0xFF;
+    command.updateCrc();
 
-  delay(100);
-  sendModbusCommand(motor_num, command, 6);
-  delay(100);
-  disableMotor(motor_num);
-  delay(100);
-  sendModbusCommand(motor_num, save_param_code_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, check_save_param_code_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, clean_error_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, enable_motor_cmd, 6);
+    disableMotor(rtuComm);
+    delay(100);
+    rtuComm.writeAdu(command);
+    delay(100);
+    saveParam(rtuComm);
+    delay(100);
+    enableMotor(rtuComm);
 }
 
-void set_auto_gain_off(int motor_num)
+void setCurentGain(ModbusRTUComm &rtuComm, uint8_t value)
 {
-  delay(100);
-  sendModbusCommand(motor_num, set_auto_gain_cmd, 6);
-  delay(100);
-  disableMotor(motor_num);
-  delay(100);
-  sendModbusCommand(motor_num, save_param_code_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, check_save_param_code_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, clean_error_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, enable_motor_cmd, 6);
+    auto command = set_motor_current_gain_code_cmd;
+    command.rtu[5]=value;
+
+    disableMotor(rtuComm);
+    delay(100);
+    rtuComm.writeAdu(command);
+    delay(100);
+    saveParam(rtuComm);
+    delay(100);
+    enableMotor(rtuComm);
 }
 
-void set_filter1_off(int motor_num)
+void set_auto_gain_off(ModbusRTUComm &rtuComm)
 {
-  delay(100);
-  sendModbusCommand(motor_num, set_filter1_cmd, 6);
-  delay(100);
-  disableMotor(motor_num);
-  delay(100);
-  sendModbusCommand(motor_num, save_param_code_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, check_save_param_code_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, clean_error_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, enable_motor_cmd, 6);
+    disableMotor(rtuComm);
+    delay(100);
+    sendAdu(rtuComm, set_auto_gain_cmd);
+    delay(100);
+    saveParam(rtuComm);
+    delay(100);
+    enableMotor(rtuComm);
+}
+
+void set_filter1_off(ModbusRTUComm &rtuComm)
+{
+    disableMotor(rtuComm);
+    delay(100);
+    sendAdu(rtuComm, set_filter1_cmd);
+    delay(100);
+    saveParam(rtuComm);
+    delay(100);
+    enableMotor(rtuComm);
 }
 
 
-void set_filter2_off(int motor_num)
+void set_filter2_off(ModbusRTUComm &rtuComm)
 {
-  delay(100);
-  sendModbusCommand(motor_num, set_filter2_cmd, 6);
-  delay(100);
-  disableMotor(motor_num);
-  delay(100);
-  sendModbusCommand(motor_num, save_param_code_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, check_save_param_code_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, clean_error_cmd, 6);
-  delay(100);
-  sendModbusCommand(motor_num, enable_motor_cmd, 6);
+    disableMotor(rtuComm);
+    delay(100);
+    sendAdu(rtuComm, set_filter2_cmd);
+    delay(100);
+    saveParam(rtuComm);
+    delay(100);
+    enableMotor(rtuComm);
 }
+
 void printHexArray(unsigned char* hex_data, int len)
 {
   for(int i=0; i<len; i++)
@@ -278,27 +271,32 @@ void printHexArray(unsigned char* hex_data, int len)
   Serial.println(" ");
 }
 
-void pureCMD(String cmds, int motor_num)
+void pureCMD(const String &cmds, int motor_num)
 {
+    auto rtuComm = motor_num ? *YMotor : *XMotor;
+
+    auto adu = ModbusADU();
+    adu.setLength(6);
+
 //  String cmds = "##1,2,3,4,5,6";
   String buffer_tx = cmds.substring(2, cmds.length());
-  unsigned char cmdArray[6] = {0};
+
   int index = 0;
   int startPos = 0;
   int commaPos = buffer_tx.indexOf(',', startPos);
   while (commaPos != -1 && index < 6) 
   {
-      cmdArray[index++] = buffer_tx.substring(startPos, commaPos).toInt();
+      adu.rtu[index++] = buffer_tx.substring(startPos, commaPos).toInt();
       startPos = commaPos + 1;
       commaPos = buffer_tx.indexOf(',', startPos);
   }
   // 处理最后一个数字（如果有）
   if (startPos < buffer_tx.length() && index < 6) 
   {
-      cmdArray[index] = buffer_tx.substring(startPos).toInt();
+      adu.rtu[index] = buffer_tx.substring(startPos).toInt();
   }
-  printHexArray(cmdArray, 6);
-  sendModbusCommand(motor_num, cmdArray, 6);
+    printHexArray(adu.rtu, 6);
+    rtuComm.writeAdu(adu);
   if(motor_num==0)
     read_state = 1;
   else if(motor_num==1)
@@ -308,13 +306,12 @@ void pureCMD(String cmds, int motor_num)
 
 void sendCmdByPort( String cmd_str)
 {
-    
     String cmd = cmd_str;
     if(cmd.startsWith("DISABLE"))
     {
-      sendModbusCommand(0, disable_motor_cmd, 6);
+      disableMotor(*XMotor);
       delay(100);
-      sendModbusCommand(1, disable_motor_cmd, 6);
+      disableMotor(*YMotor);
     }
     else if(cmd.startsWith("VERSION"))
     {
@@ -330,68 +327,67 @@ void sendCmdByPort( String cmd_str)
     }
     else if(cmd.startsWith("ENABLE"))
     {
-        enableMotor(0); 
+        enableMotor(*XMotor);
         delay(100);
-        enableMotor(1); 
+        enableMotor(*YMotor);
     }
     else if(cmd.startsWith("AUTO_GAIN_OFF"))
     {
-        set_auto_gain_off(0);
+        set_auto_gain_off(*XMotor);
         delay(100);
-        set_auto_gain_off(1);
+        set_auto_gain_off(*YMotor);
     }
     else if(cmd.startsWith("FILTER_OFF"))
     {
-        set_filter1_off(0);
+        set_filter1_off(*XMotor);
         delay(100);
-        set_filter1_off(1);
+        set_filter1_off(*YMotor);
         delay(100);
-        set_filter2_off(0);
+        set_filter2_off(*XMotor);
         delay(100);
-        set_filter2_off(1);
+        set_filter2_off(*YMotor);
     }
     else if(cmd.startsWith("CURRENT_X:"))
     {
         unsigned char value = (unsigned char)(cmd.substring(10).toInt());
-        setCurentGain(0, value);
+        setCurentGain(*XMotor, value);
     }
     else if(cmd.startsWith("CURRENT_Y:"))
     {
         unsigned char value = (unsigned char)(cmd.substring(10).toInt());
-        setCurentGain(1, value);
+        setCurentGain(*YMotor, value);
      }
      else if(cmd.startsWith("INERDIA_X:"))
      {
          int value = (int)(cmd.substring(10).toInt());
-         setInerdia(0, value);
+         setInertia(*XMotor, value);
      }
      else if(cmd.startsWith("INERDIA_Y:"))
      {
          int value = (int)(cmd.substring(10).toInt());
-         setInerdia(1, value);
+         setInertia(*YMotor, value);
      }
     else if(cmd.startsWith("GET_CURRENT_X"))
     {
-        //get_motor_current_gain_code_cmd
-        sendModbusCommand(0, get_motor_current_gain_code_cmd, 6);
+        sendAdu(*XMotor, get_motor_current_gain_code_cmd);
         read_state = 1;
         delay(20);
     }
     else if(cmd.startsWith("GET_CURRENT_Y"))
     {
-        sendModbusCommand(1, get_motor_current_gain_code_cmd, 6);
+        sendAdu(*YMotor, get_motor_current_gain_code_cmd);
         read_state = 2;
         delay(20);
     }
    else if(cmd.startsWith("GET_INERDIA_X"))
    {
-        sendModbusCommand(0, get_motor_intertia_code_cmd, 6);
+        sendAdu(*XMotor, get_motor_intertia_code_cmd);
         read_state = 1;
         delay(20);
    }
    else if(cmd.startsWith("GET_INERDIA_Y"))
    {
-        sendModbusCommand(1, get_motor_intertia_code_cmd, 6);
+        sendAdu(*YMotor, get_motor_intertia_code_cmd);
         read_state = 2;
         delay(20);
    }
@@ -438,19 +434,19 @@ void led2(int state)
   }
 }
 
-void disableMotor(int number)
+bool disableMotor(ModbusRTUComm &rtuComm)
 {
-  sendModbusCommand(number, disable_motor_cmd, 6);
+    return sendAdu(rtuComm, disable_motor_cmd);
 }
 
-void enableMotor(int number)
+bool enableMotor(ModbusRTUComm &rtuComm)
 {
-      sendModbusCommand(number, disable_motor_cmd, 6);
-      delay(100);
-      sendModbusCommand(number, clean_error_cmd, 6);
-      delay(100);
-      sendModbusCommand(number, enable_motor_cmd, 6);
-     
+    bool result = sendAdu(rtuComm, disable_motor_cmd);
+    delay(100);
+    result &= sendAdu(rtuComm, clean_error_cmd);
+    delay(100);
+    result &= sendAdu(rtuComm, enable_motor_cmd);
+    return result;
 }
 
 void check_button()
@@ -460,14 +456,8 @@ void check_button()
     delay(100);
     if(digitalRead(BUTTON_ENABLE_PIN) == LOW) 
     {
-//      if(errorStateX)
-      {
-        enableMotor(0); 
-       }
-//       if(errorStateY)
-       {
-        enableMotor(1); 
-       }
+        enableMotor(*XMotor);
+        enableMotor(*YMotor);
     }
   }
   if(digitalRead(BUTTON_DISABLE_PIN) == LOW) 
@@ -475,11 +465,8 @@ void check_button()
     delay(100);
     if(digitalRead(BUTTON_DISABLE_PIN) == LOW) 
     {
-      sendModbusCommand(0, disable_motor_cmd, 6);
-//      errorStateX = true;
-      delay(100);
-      sendModbusCommand(1, disable_motor_cmd, 6);
-//      errorStateY = true;
+        disableMotor(*XMotor);
+        disableMotor(*YMotor);
     }
   }
 
@@ -495,15 +482,19 @@ void check_button()
 
 void setup()
 {
-    Serial.begin(115200);
+    Serial.begin(MODBUS_BAUD);
 
-    XMotor.setRxBufferSize(sizeof(ModbusADU));
-    XMotor.setTxBufferSize(sizeof(ModbusADU));
-    XMotor.begin(115200, SERIAL_8N1, 22, 23);
+    XMotorSerial.setRxBufferSize(sizeof(ModbusADU));
+    XMotorSerial.setTxBufferSize(sizeof(ModbusADU));
+    XMotorSerial.begin(MODBUS_BAUD, SERIAL_8N1, 22, 23);
+    XMotor = new ModbusRTUComm(XMotorSerial);
+    XMotor->begin(MODBUS_BAUD);
 
-    YMotor.setRxBufferSize(sizeof(ModbusADU));
-    YMotor.setTxBufferSize(sizeof(ModbusADU));
-    YMotor.begin(115200, SERIAL_8N1, 16, 17);
+    YMotorSerial.setRxBufferSize(sizeof(ModbusADU));
+    YMotorSerial.setTxBufferSize(sizeof(ModbusADU));
+    YMotorSerial.begin(MODBUS_BAUD, SERIAL_8N1, 16, 17);
+    YMotor = new ModbusRTUComm(YMotorSerial);
+    YMotor->begin(MODBUS_BAUD);
 
     pinMode(BUTTON_ENABLE_PIN, INPUT_PULLUP);
     pinMode(BUTTON_DISABLE_PIN, INPUT_PULLUP);
@@ -524,9 +515,9 @@ void setup()
 
 void get_error_code()
 {
-  sendModbusCommand(0, get_motor_error_code_cmd, 6);
+    sendAdu(*XMotor, get_motor_error_code_cmd);
   delay(50);
-  sendModbusCommand(1, get_motor_error_code_cmd, 6);
+    sendAdu(*YMotor, get_motor_error_code_cmd);
   delay(50);
 }
 
