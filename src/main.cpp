@@ -182,8 +182,7 @@ void readPorty()
 
 void setInerdia(int motor_num, int value)
 {
-  uint8_t command[6];
-  std::memcpy(command, set_motor_intertia_code_cmd, 6);
+  auto command = set_motor_intertia_code_cmd;
   command[5]= (value & 0xFF);
   command[4]= (value >> 8) & 0xFF;
 
@@ -204,8 +203,7 @@ void setInerdia(int motor_num, int value)
 
 void setCurentGain(int motor_num, unsigned char value)
 {
-  uint8_t command[6];
-  std::memcpy(command, set_motor_current_gain_code_cmd, 6);
+  auto command = set_motor_current_gain_code_cmd;
   command[5]=value;
 
   delay(100);
