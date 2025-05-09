@@ -5,6 +5,8 @@
 #include <Arduino.h>
 #include <ModbusRTUComm.h>
 #include <ModbusADU.h>
+
+#include "Button.hpp"
 #include "LinearMotorCommands.hpp"
 #include "RGLed.hpp"
 
@@ -17,6 +19,11 @@ auto & YMotorSerial = Serial2;
 auto XLed = RGLed(19, 21);
 auto YLed = RGLed(5, 18);
 
+auto EnableButton = Button(15, 1000);
+auto DisableButton = Button(4, 1000);
+
+void disableBothMotors();
+void enableBothMotors();
 bool disableMotor(ModbusRTUComm &rtuComm);
 bool enableMotor(ModbusRTUComm &rtuComm);
 
@@ -39,8 +46,6 @@ bool recvl_ok = false;
 String inData="";
 
 #define MODBUS_BAUD 115200
-#define BUTTON_ENABLE_PIN 15
-#define BUTTON_DISABLE_PIN 4
 
 #define EMERGE_STOP_PIN 14 //stop klipper when error occur
 
@@ -252,9 +257,7 @@ void sendCmdByPort(const String &cmd)
 {
     if(cmd.startsWith("DISABLE"))
     {
-      disableMotor(*XMotor);
-      delay(100);
-      disableMotor(*YMotor);
+        disableBothMotors();
     }
     else if(cmd.startsWith("VERSION"))
     {
@@ -270,9 +273,7 @@ void sendCmdByPort(const String &cmd)
     }
     else if(cmd.startsWith("ENABLE"))
     {
-        enableMotor(*XMotor);
-        delay(100);
-        enableMotor(*YMotor);
+        enableBothMotors();
     }
     else if(cmd.startsWith("AUTO_GAIN_OFF"))
     {
@@ -351,26 +352,18 @@ bool enableMotor(ModbusRTUComm &rtuComm)
     return result;
 }
 
-void check_button()
+void disableBothMotors()
 {
-  if(digitalRead(BUTTON_ENABLE_PIN) == LOW) 
-  {
-    delay(100);
-    if(digitalRead(BUTTON_ENABLE_PIN) == LOW) 
-    {
-        enableMotor(*XMotor);
-        enableMotor(*YMotor);
-    }
-  }
-  if(digitalRead(BUTTON_DISABLE_PIN) == LOW) 
-  {
-    delay(100);
-    if(digitalRead(BUTTON_DISABLE_PIN) == LOW) 
-    {
-        disableMotor(*XMotor);
-        disableMotor(*YMotor);
-    }
-  }
+    disableMotor(*XMotor);
+    delay(50);
+    disableMotor(*YMotor);
+}
+
+void enableBothMotors()
+{
+    enableMotor(*XMotor);
+    delay(50);
+    enableMotor(*YMotor);
 }
 
 void clearIncomingData(Stream & stream)
@@ -397,13 +390,11 @@ void setup()
     YMotor = new ModbusRTUComm(YMotorSerial);
     YMotor->begin(MODBUS_BAUD);
 
-    pinMode(BUTTON_ENABLE_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_DISABLE_PIN, INPUT_PULLUP);
+    EnableButton.Setup(enableBothMotors);
+    DisableButton.Setup(disableBothMotors);
 
-    pinMode(LED1_A_PIN, OUTPUT);
-    pinMode(LED1_B_PIN, OUTPUT);
-    pinMode(LED2_A_PIN, OUTPUT);
-    pinMode(LED2_B_PIN, OUTPUT);
+    XLed.Setup();
+    YLed.Setup();
 
     Serial.print("System inited, Version: magx-eslm-");
     Serial.println(VERSION);
@@ -419,7 +410,8 @@ void loop()
     readCmd();
     clearIncomingData(XMotorSerial);
     clearIncomingData(YMotorSerial);
-    check_button();
+    EnableButton.Update();
+    DisableButton.Update();
     clearIncomingData(XMotorSerial);
     clearIncomingData(YMotorSerial);
 }
