@@ -6,12 +6,16 @@
 #include <ModbusRTUComm.h>
 #include <ModbusADU.h>
 #include "LinearMotorCommands.hpp"
+#include "RGLed.hpp"
 
 ModbusRTUComm* XMotor;
 ModbusRTUComm* YMotor;
 
 auto & XMotorSerial = Serial1;
 auto & YMotorSerial = Serial2;
+
+auto XLed = RGLed(19, 21);
+auto YLed = RGLed(5, 18);
 
 bool disableMotor(ModbusRTUComm &rtuComm);
 bool enableMotor(ModbusRTUComm &rtuComm);
@@ -39,18 +43,6 @@ String inData="";
 #define BUTTON_DISABLE_PIN 4
 
 #define EMERGE_STOP_PIN 14 //stop klipper when error occur
-
-#define LED1_A_PIN 19  //X axis
-#define LED1_B_PIN 21
-
-#define LED2_A_PIN 5  //Y axis
-#define LED2_B_PIN 18
-
-int8_t led1_state = 0;
-int8_t led2_state = 0;
-
-bool errorStateX = false;
-bool errorStateY = false;
 
 unsigned char getStringIndexChar(String cmd, int index)
 {
@@ -344,34 +336,6 @@ void sendCmdByPort(const String &cmd)
    }
 }
 
-void led1(int state)
-{
-  if(state==0)
-  {
-    digitalWrite(LED1_A_PIN, HIGH);
-    digitalWrite(LED1_B_PIN, LOW);
-  }
-  else
-  {
-    digitalWrite(LED1_A_PIN, LOW);
-    digitalWrite(LED1_B_PIN, HIGH);
-  }
-}
-
-void led2(int state)
-{
-  if(state==0)
-  {
-    digitalWrite(LED2_A_PIN, HIGH);
-    digitalWrite(LED2_B_PIN, LOW);
-  }
-  else
-  {
-    digitalWrite(LED2_A_PIN, LOW);
-    digitalWrite(LED2_B_PIN, HIGH);
-  }
-}
-
 bool disableMotor(ModbusRTUComm &rtuComm)
 {
     return sendAdu(rtuComm, disable_motor_cmd);
@@ -406,15 +370,6 @@ void check_button()
         disableMotor(*XMotor);
         disableMotor(*YMotor);
     }
-  }
-
-  if(digitalRead(BUTTON_ENABLE_PIN) == HIGH) 
-  {
-    led1(0);
-  }
-  if(digitalRead(BUTTON_DISABLE_PIN) == HIGH)
-  {
-    led2(0);
   }
 }
 
@@ -459,15 +414,12 @@ void setup()
 }
 
 void loop()
-{
-    errorStateX = checkForError(*XMotor, "X");
-    errorStateY = checkForError(*YMotor, "Y");
-  readCmd();
+{   checkForError(*XMotor, "X") ? XLed.SetRed() : XLed.SetGreen();
+    checkForError(*YMotor, "Y") ? YLed.SetRed() : YLed.SetGreen();
+    readCmd();
     clearIncomingData(XMotorSerial);
     clearIncomingData(YMotorSerial);
     check_button();
     clearIncomingData(XMotorSerial);
     clearIncomingData(YMotorSerial);
-  led1(errorStateX);
-  led2(errorStateY);
 }
