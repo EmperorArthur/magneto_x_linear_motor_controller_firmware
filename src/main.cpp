@@ -17,7 +17,7 @@ bool disableMotor(ModbusRTUComm &rtuComm);
 bool enableMotor(ModbusRTUComm &rtuComm);
 
 void processPureData();
-void sendCmdByPort( String cmd_str);
+void sendCmdByPort(const String &cmd);
 
 inline bool sendAdu(ModbusRTUComm &comm, const ModbusADU &adu) {
     auto local = adu;
@@ -31,13 +31,8 @@ inline bool sendAdu(ModbusRTUComm &comm, const ModbusADU &adu) {
 #define VERSION "1.0.7-git"
 
 bool recvl_ok = false;
-bool recvl_x = false;
-bool recvl_y = false;
-
-unsigned char read_state = 0;  //0: read error code   1: get params value 
 
 String inData="";
-String inPortx="";
 
 #define MODBUS_BAUD 115200
 #define BUTTON_ENABLE_PIN 15
@@ -95,99 +90,61 @@ void readCmd()
     sendCmdByPort(inData);  
     recvl_ok= false;
   }
-  
 }
 
-void readPortx()
+/**
+ * @brief Query the motor driver for errors.
+ * @param rtuComm Motor Comm Channel
+ * @param axisName Used for reporting errors
+ * @return true if there is an error.  Otherwise, false.
+ */
+bool checkForError(ModbusRTUComm &rtuComm, const String &axisName)
 {
-  byte pdata[9];
-  int index = 0;
-  while (XMotorSerial.available() >0)
-  {
-    char recieved = XMotorSerial.read();
-    inPortx += recieved; 
-    if(index<9)
-    {
-       pdata[index]=recieved;
-    }
-     index++;
-  }
+    sendAdu(rtuComm, get_motor_error_code_cmd);
+    delay(100);
 
-    if(read_state==0)
-    {
-         // Check if the received data packet is an error packet
-        if ((pdata[5] != ERROR_CODE_1) && (pdata[6] != ERROR_CODE_2)) 
-        {
-          errorStateX = true; // Set error state
-          Serial.print("X axis error:");
-          printHex(pdata[5]);
-          Serial.print(",");
-          printHex(pdata[6]);
-          Serial.println(" ");
-          digitalWrite(EMERGE_STOP_PIN, LOW);
-          delay(100);
-          digitalWrite(EMERGE_STOP_PIN, HIGH);
-        } 
-        else 
-        {
-          errorStateX = false; // No error
-        }
-    }
-    else
-    {
-          Serial.print("X axis value:");
-          printHex(pdata[5]);
-          Serial.print(",");
-          printHex(pdata[6]);
-          Serial.println(" ");
-    }
+    auto adu = ModbusADU();
+    const auto readStatus = rtuComm.readAdu(adu);
 
-}
-
-void readPorty()
-{
-  byte data[9];
-  int index = 0;
-  while (YMotorSerial.available() >0)
-  {
-    char recieved = YMotorSerial.read();
-    inPortx += recieved; 
-    if(index<9)
+    if (readStatus)
     {
-       data[index]=recieved;
-     }
-     index++;
-  }
-
-    if(read_state==0)
-    {
-       // Check if the received data packet is an error packet
-      if ((data[5] != ERROR_CODE_1) && (data[6] != ERROR_CODE_2)) 
-      {
-        errorStateY = true; // Set error state
         digitalWrite(EMERGE_STOP_PIN, LOW);
         delay(100);
         digitalWrite(EMERGE_STOP_PIN, HIGH);
-        Serial.print("Y axis error:");
-        printHex(data[5]);
-        Serial.print(",");
-        printHex(data[6]);
-        Serial.println(" ");
-      } 
-      else 
-      {
-        errorStateY = false; // No error
-      }
-    }
-    else 
-    {
-        Serial.print("Y axis value:");
-        printHex(data[5]);
-        Serial.print(",");
-        printHex(data[6]);
-        Serial.println(" ");
+        Serial.println(axisName + " axis error: Communication Error");
+        return true;
     }
 
+    if ((adu.rtu[5] != ERROR_CODE_1 && adu.rtu[6] != ERROR_CODE_2))
+    {
+        Serial.print(axisName + " axis error:");
+        printHex(adu.rtu[5]);
+        Serial.print(",");
+        printHex(adu.rtu[6]);
+        Serial.println(" ");
+        digitalWrite(EMERGE_STOP_PIN, LOW);
+        delay(100);
+        digitalWrite(EMERGE_STOP_PIN, HIGH);
+        return true;
+    }
+    return false;
+}
+
+/**
+ * @brief Read a response ADU, and print it.
+ * @param rtuComm Motor Comm Channel
+ * @param axisName Used for response.
+ */
+void readAndPrintResponse(ModbusRTUComm &rtuComm, const String &axisName)
+{
+    auto adu = ModbusADU();
+    rtuComm.readAdu(adu);
+
+    Serial.print(axisName + " axis value:");
+    printHex(adu.rtu[5]);
+    Serial.print(",");
+    printHex(adu.rtu[6]);
+    Serial.println(" ");
 }
 
 void saveParam(ModbusRTUComm &rtuComm)
@@ -197,11 +154,11 @@ void saveParam(ModbusRTUComm &rtuComm)
     sendAdu(rtuComm, check_save_param_code_cmd);
 }
 
-void setInertia(ModbusRTUComm &rtuComm, int value)
+void setInertia(ModbusRTUComm &rtuComm, uint16_t value)
 {
     auto command = set_motor_intertia_code_cmd;
-    command.rtu[5]= (value & 0xFF);
-    command.rtu[4]= (value >> 8) & 0xFF;
+    command.rtu[5]= lowByte(value);
+    command.rtu[4]= highByte(value);
     command.updateCrc();
 
     disableMotor(rtuComm);
@@ -271,10 +228,8 @@ void printHexArray(unsigned char* hex_data, int len)
   Serial.println(" ");
 }
 
-void pureCMD(const String &cmds, int motor_num)
+void pureCMD(const String &cmds, ModbusRTUComm &rtuComm, const String &axisName)
 {
-    auto rtuComm = motor_num ? *YMotor : *XMotor;
-
     auto adu = ModbusADU();
     adu.setLength(6);
 
@@ -297,16 +252,12 @@ void pureCMD(const String &cmds, int motor_num)
   }
     printHexArray(adu.rtu, 6);
     rtuComm.writeAdu(adu);
-  if(motor_num==0)
-    read_state = 1;
-  else if(motor_num==1)
-    read_state = 2;
   delay(100);
+    readAndPrintResponse(rtuComm, axisName);
 }
 
-void sendCmdByPort( String cmd_str)
+void sendCmdByPort(const String &cmd)
 {
-    String cmd = cmd_str;
     if(cmd.startsWith("DISABLE"))
     {
       disableMotor(*XMotor);
@@ -319,11 +270,11 @@ void sendCmdByPort( String cmd_str)
     }
     else if(cmd.startsWith("##"))
     {
-       pureCMD(cmd,0);
+       pureCMD(cmd, *XMotor,"X");
     }
     else if(cmd.startsWith("@@"))
     {
-       pureCMD(cmd,1);
+       pureCMD(cmd, *YMotor,"Y");
     }
     else if(cmd.startsWith("ENABLE"))
     {
@@ -370,40 +321,27 @@ void sendCmdByPort( String cmd_str)
     else if(cmd.startsWith("GET_CURRENT_X"))
     {
         sendAdu(*XMotor, get_motor_current_gain_code_cmd);
-        read_state = 1;
         delay(20);
+        readAndPrintResponse(*XMotor, "X");
     }
     else if(cmd.startsWith("GET_CURRENT_Y"))
     {
         sendAdu(*YMotor, get_motor_current_gain_code_cmd);
-        read_state = 2;
         delay(20);
+        readAndPrintResponse(*YMotor, "Y");
     }
    else if(cmd.startsWith("GET_INERDIA_X"))
    {
         sendAdu(*XMotor, get_motor_intertia_code_cmd);
-        read_state = 1;
         delay(20);
+        readAndPrintResponse(*XMotor, "X");
    }
    else if(cmd.startsWith("GET_INERDIA_Y"))
    {
         sendAdu(*YMotor, get_motor_intertia_code_cmd);
-        read_state = 2;
         delay(20);
+        readAndPrintResponse(*YMotor, "Y");
    }
-
-   if(read_state == 1)
-   {
-      readPortx();
-      read_state = 0;
-   }
-   else if(read_state==2)
-   {
-      readPorty(); 
-      read_state = 0;
-   }
-     
-    inData = "";
 }
 
 void led1(int state)
@@ -480,6 +418,14 @@ void check_button()
   }
 }
 
+void clearIncomingData(Stream & stream)
+{
+    while(stream.available())
+    {
+        stream.read();
+    }
+}
+
 void setup()
 {
     Serial.begin(MODBUS_BAUD);
@@ -510,24 +456,18 @@ void setup()
     delay(1000);
     pinMode(EMERGE_STOP_PIN, OUTPUT);
     digitalWrite(EMERGE_STOP_PIN, HIGH);
-   
-}
-
-void get_error_code()
-{
-    sendAdu(*XMotor, get_motor_error_code_cmd);
-  delay(50);
-    sendAdu(*YMotor, get_motor_error_code_cmd);
-  delay(50);
 }
 
 void loop()
 {
+    errorStateX = checkForError(*XMotor, "X");
+    errorStateY = checkForError(*YMotor, "Y");
   readCmd();
-  get_error_code();
-  readPortx();
-  readPorty();
-  check_button();
+    clearIncomingData(XMotorSerial);
+    clearIncomingData(YMotorSerial);
+    check_button();
+    clearIncomingData(XMotorSerial);
+    clearIncomingData(YMotorSerial);
   led1(errorStateX);
   led2(errorStateY);
 }
