@@ -300,17 +300,11 @@ void setup()
 {
     Serial.begin(MODBUS_BAUD);
 
-    XMotorSerial.setRxBufferSize(sizeof(ModbusADU));
-    XMotorSerial.setTxBufferSize(sizeof(ModbusADU));
-    XMotorSerial.begin(MODBUS_BAUD, SERIAL_8N1, 22, 23);
     XMotor = new LinearMotor(XMotorSerial, 1);
-    XMotor->rtuComm.begin(MODBUS_BAUD);
+    XMotor->begin(MODBUS_BAUD, SERIAL_8N1, 22, 23);
 
-    YMotorSerial.setRxBufferSize(sizeof(ModbusADU));
-    YMotorSerial.setTxBufferSize(sizeof(ModbusADU));
-    YMotorSerial.begin(MODBUS_BAUD, SERIAL_8N1, 16, 17);
     YMotor = new LinearMotor(YMotorSerial, 1);
-    YMotor->rtuComm.begin(MODBUS_BAUD);
+    YMotor->begin(MODBUS_BAUD, SERIAL_8N1, 16, 17);
 
     EnableButton.Setup(enableBothMotors);
     DisableButton.Setup(disableBothMotors);

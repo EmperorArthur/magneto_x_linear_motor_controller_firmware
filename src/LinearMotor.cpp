@@ -8,15 +8,19 @@
 #include "LinearMotor.hpp"
 #include "LinearMotorCommands.hpp"
 
-LinearMotor::LinearMotor(Stream& serial, uint8_t id):
+LinearMotor::LinearMotor(HardwareSerial& serial, uint8_t id):
     id{id},
-    rtuComm(serial)
+    rtuComm(serial),
+    serial{serial}
 {
 }
 
-void LinearMotor::begin()
+void LinearMotor::begin(uint32_t baud, uint32_t config, int8_t rxPin, int8_t txPin)
 {
-
+    serial.setRxBufferSize(sizeof(ModbusADU));
+    serial.setTxBufferSize(sizeof(ModbusADU));
+    serial.begin(baud, config, rxPin, txPin);
+    rtuComm.begin(baud, config);
 }
 
 void LinearMotor::disable()

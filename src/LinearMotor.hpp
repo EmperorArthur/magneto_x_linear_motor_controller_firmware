@@ -22,9 +22,9 @@ public:
 
 class LinearMotor {
 public:
-    LinearMotor(Stream& serial, uint8_t id);
+    LinearMotor(HardwareSerial& serial, uint8_t id);
 
-    void begin();
+    void begin(uint32_t baud, uint32_t config, int8_t rxPin, int8_t txPin);
 
     void disable();
     void enable();
@@ -57,6 +57,11 @@ public:
     ModbusRTUComm rtuComm;
 
 private:
+    /**
+     * @brief Underlying connection.
+     */
+    HardwareSerial& serial;
+
     /**
      * @brief Simple helper to allow sending const adus.
      * @param adu
