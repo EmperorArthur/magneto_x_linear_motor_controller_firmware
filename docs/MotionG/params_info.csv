@@ -1,0 +1,1031 @@
+Name,NameC,Category,CategoryIndex,Cmd,ObjectCode,DataType,Access,LowerLimit,UpperLimit,DefaultValue,Unit,VariableName,NonVolatile,DriveStatus,Effective,Public,Transform,402Index,402SubIndex,402ObjectCode,402DataType,402LowerLimit,402UpperLimit,402DefaultValue,402Unit,Description,InternalNotes,PDOMapping,ModbusStartAddress,ModbusLength,正确性,备注,ParamsType
+Product Code,产品代号,Drive,0,,Val,UNS32,RO,0,4294967295,65537,-,product_code,Y,Enabled|Disabled,只读,Y,1,0x3589,0x00,Val,UNS32,0,4294967295,65537,-,产品代号用于区分产品系列和通讯类型,https://hs9e67ygio.feishu.cn/wiki/wikcnCLWlQ5FZIxOQXYy13kkr2c,No,530,2,,,驱动器参数
+Motor Type,电机类型,Motor,0,MTYPE,Val,UNS16,RW,0,65535,3,-,motor_type,Y,Disabled,立即,Y,1,0x6402,0x00,Val,UNS16,0,65535,3,-,"0x01：直流有刷电机
+0x03：永磁同步旋转电机
+0x08：步进电机
+0x8001：永磁同步直线电机
+0x8002：音圈电机",,,61660,1,疑问,,伺服电机参数
+Serial Number,序列号,Drive,1,,Array,UNS8,RO,0,255,0,-,sn[32],Y,Enabled|Disabled,只读,Y,1,0x35AE,,Array,UNS8,0,255,0,-,序列号用于区分不同的驱动器,,No,771,1,,,驱动器参数
+InterfaceBoard Hardware Version,接口板硬件版本号,Drive,2,,Val,UNS32,RO,0,4294967295,0,-,interfaceboard_hw_version,Y,Enabled|Disabled,只读,Y,1,0x3561,0x00,Val,UNS32,0,4294967295,0,-,,,No,401,2,,,驱动器参数
+InterfaceBoard Softerware Version,接口板软件版本号,Drive,3,,Val,UNS32,RO,0,4294967295,0,-,interfaceboard_sw_version,Y,Enabled|Disabled,只读,Y,1,0x3562,0x00,Val,UNS32,0,4294967295,0,-,,,No,403,2,,,驱动器参数
+DriveBoard Hardware Version,驱动板硬件版本号,Drive,4,,Val,UNS32,RO,0,4294967295,0,-,driveboard_hw_version,Y,Enabled|Disabled,只读,Y,1,0x3563,0x00,Val,UNS32,0,4294967295,0,-,,,No,405,2,,,驱动器参数
+DriveBoard Software Version,驱动板软件版本号,Drive,5,,Val,UNS32,RO,0,4294967295,0,-,driveboard_sw_version,Y,Enabled|Disabled,只读,Y,1,0x3564,0x00,Val,UNS32,0,4294967295,0,-,,,No,407,2,,,驱动器参数
+Supported Communication Type,支持的通讯类型,Drive,6,,Val,UNS32,RO,0,4294967295,0,-,supported_communication_type,Y,Enabled|Disabled,只读,Y,1,0x35AB,0x00,Val,UNS8,0,255,0,-,,,No,756,1,错误,前后数据类型不一致（需要改为UNS32）,驱动器参数
+Supported Position Feedback Type,支持的位置反馈类型,Drive,7,,Val,UNS32,RO,,,2,-,supported_position_fb_type,Y,Enabled|Disabled,只读,Y,1,0x35AC,0x00,Val,UNS8,0,0,2,-,,,No,757,1,错误,前后数据类型不一致（需要改为UNS32）,驱动器参数
+Supported Control Signal Type,支持的控制信号类型,Drive,8,,Val,UNS32,RO,,,3,-,supported_control_signal_type,Y,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,No,,,,实际没有使用,驱动器参数
+Supported Operation Modes,支持的运行模式,Drive,9,,Val,UNS32,RO,0,,1005,-,supported_op_modes,Y,Enabled|Disabled,只读,Y,1,0x6502,0x00,Val,UNS32,0,0,1005,-,,,No,61662,2,,实际没有使用,驱动器参数
+Drive Bus Voltage Upper Limit,驱动器母线电压上限,Drive,10,,Val,REAL32,RO,0,3.40282347e+38,2,V,drive_bus_voltage_upper_limit,Y,Enabled|Disabled,只读,Y,1000,0x35BE,0x00,Val,UNS32,0,4294967295,2000,mV,驱动器正常工作的母线电压最大值,,No,897,2,疑问,实际读出来是0,驱动器参数
+Drive Bus Voltage Lower Limit,驱动器母线电压下限,Drive,11,,Val,REAL32,RO,0,3.40282347e+38,1,V,drive_bus_voltage_lower_limit,Y,Enabled|Disabled,只读,Y,1000,0x35BF,0x00,Val,UNS32,0,4294967295,1000,mV,驱动器正常工作的母线电压的最小值，低于此电压驱动器不工作,,No,899,2,疑问,实际读出来是0,驱动器参数
+Drive Peak Current,驱动器峰值电流,Drive,12,DIPEAK,Val,REAL32,RO,0,3.40282347e+38,20,A,drive_peak_current,Y,Enabled|Disabled,只读,Y,1000,0x35B8,0x02,Val,UNS32,0,4294967295,20000,mA,,https://hs9e67ygio.feishu.cn/wiki/wikcnZ2JYA2xB8EBAXHphXM7Ejg?from=from_copylink,,825,2,,,驱动器参数
+Communication Type,通讯类型,Commucation,0,,Val,UNS8,RW,0,3,0,-,communication_type,Y,Disabled,,Y,1,0x3004,0x00,Val,UNS8,0,3,0,-,"0：CAN
+1：EtheCat
+2：Modbus
+3：Pluse",,,3,1,错误,Access错误。通讯类型可读可写？应该是只读吧,通讯参数
+Drive Continuous Current,驱动器额定电流,Drive,13,DICONT,Val,REAL32,RO,0,3.40282347e+38,10,A,drive_cont_current,Y,Enabled|Disabled,只读,Y,1000,0x35B8,0x01,Val,UNS32,0,4294967295,10000,mA,,https://hs9e67ygio.feishu.cn/wiki/wikcnZ2JYA2xB8EBAXHphXM7Ejg?from=from_copylink,,823,2,,,驱动器参数
+Production Batch Version,生产批次版本号,Drive,14,,Val,UNS32,RO,0,4294967295,0,-,production_batch_version,Y,Enabled|Disabled,只读,Y,1,0x35F1,0x00,Val,UNS32,0,4294967295,0,,,,,973,2,,,驱动器参数
+ADC Hardware Voltage Lower Limit,ADC硬件电压下限,Drive,15,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,-10,V,adc_hw_voltage_lower_limit,Y,Enabled|Disabled,只读,Y,1000,0x3650,0x00,,INTEGER32,-2147483648,2147483647,-10000,mV,,,,1129,2,疑问,没有402ObjectCode,驱动器参数
+Motor Special Type,电机特殊类型,Motor,1,MSTYPE,Val,UNS8,RW,0,255,0,-,motor_special_type,Y,Disabled,,N,1,,,,,-,-,-,,,,,,,,,伺服电机参数
+ADC Hardware Voltage Upper Limit,ADC硬件电压上限,Drive,16,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,10,V,adc_hw_voltage_upper_limit,Y,Enabled|Disabled,只读,Y,1000,0x3651,0x00,,INTEGER32,-2147483648,2147483647,10000,mV,,,,1131,2,疑问,没有402ObjectCode,驱动器参数
+Drive Name,驱动器名称,Drive,17,,Array,UNS8,RW,0,255,0,-,drive_name[20],Y,Enabled|Disabled,立即,Y,1,0x365D,,Array,UNS8,0,255,0,-,,,,1154,1,,,驱动器参数
+BSP Software Version,BSP软件版本号,Drive,18,,Val,UNS32,RO,0,4294967295,0,-,bsp_sw_version,Y,Enabled|Disabled,只读,N,1,,,Val,UNS32,-,-,-,-,,,,,,,暂未添加,驱动器参数
+Deadzone Compensation Enable,死区补偿开关,ExternalDevice,0,,Val,UNS8,RW,0,1,1,-,deadzone_comp_enable,Y,Enabled|Disabled,立即,Y,1,0x35B3,0x00,Val,UNS8,0,1,1,-,"0：关闭
+1：打开
+驱动器默认打开死区补偿开关",,,793,1,,,补偿功能参数
+Motor Movement Type,电机运动类型,Motor,2,MMTYPE,Val,UNS8,RW,0,255,0,-,motor_move_type,Y,Disabled,,N,1,,,,,-,-,-,,,,,,,,,伺服电机参数
+Motor Commutation Type,电机换向类型,Motor,3,MCTYPE,Val,UNS8,RW,0,255,0,-,motor_commutation_type,Y,Disabled,,N,1,,,,,-,-,-,,,,,,,,,伺服电机参数
+Motor Peak Current,电机峰值电流,Motor,4,MIPEAK,Val,REAL32,RW,0,3.40282347e+38,3,A,motor_peak_current,Y,Disabled,立即,Y,1000,0x3528,0x00,Val,UNS32,0,4294967295,3000,mA,电机参数表中的电机峰值电流,https://hs9e67ygio.feishu.cn/wiki/wikcnZ2JYA2xB8EBAXHphXM7Ejg?from=from_copylink,,64,2,,,伺服电机参数
+Motor Continuous Current,电机额定电流,Motor,5,MICONT,Val,REAL32,RW,0,3.40282347e+38,1,A,motor_cont_current,Y,Disabled,立即,Y,1000,0x6075,0x00,Val,UNS32,0,4294967295,1000,mA,电机参数表中的电机额定电流,https://hs9e67ygio.feishu.cn/wiki/wikcnZ2JYA2xB8EBAXHphXM7Ejg?from=from_copylink,,61480,2,,,伺服电机参数
+Motor Rated Torque,电机额定力矩/推力,Motor,6,MRT,Val,REAL32,RW,0,3.40282347e+38,1,"mN·m
+mN",motor_rated_torque,Y,Disabled,立即,Y,1,0x6076,0x00,Val,UNS32,0,4294967295,1,mN·m,,,,61482,2,疑问,前后单位不对应,伺服电机参数
+Motor Maximum Speed RPM,电机最大转速/速度(RPM),Motor,7,MSPEED,Val,UNS32,RW,1,4294967295,2000,"rpm
+mm/s",motor_max_speed_rpm,Y,Enabled|Disabled,立即,Y,1,0x6080,0x00,Val,UNS32,1,4294967295,2000,"RPM
+",应用限制速度不可超过电机最大转速,https://hs9e67ygio.feishu.cn/wiki/wikcnPBeikPIxBY4uNW44gqqfJg#doxcnc0Yym06s402MItadJ7pBwb,,61503,2,,,伺服电机参数
+Motor Inductance,电机相间电感,Motor,8,ML,Val,UNS32,RW,1,4294967295,675,uH,motor_inductance,Y,Disabled,立即,Y,1,0x3513,0x00,Val,UNS32,1,4294967295,675,uH,,,,35,2,,,伺服电机参数
+Motor Resistance,电机相间电阻,Motor,9,MR,Val,UNS32,RW,1,4294967295,900,momh,motor_resistance,Y,Disabled,立即,Y,1,0x3514,0x00,Val,UNS32,1,4294967295,900,momh,,,,37,2,,,伺服电机参数
+Motor Pole Pairs,电机极对数（旋转电机）,Motor,10,MPP,Val,UNS32,RW,1,4294967295,7,poles,motor_pole_pairs,Y,Disabled,立即,Y,1,0x3515,0x00,Val,UNS32,1,4294967295,7,对,,,,39,2,,,伺服电机参数
+Motor Pole Pair Pitch,电机极对距（直线电机）,Motor,11,MPITCH,Val,UNS32,RW,1,4294967295,2000,um,motor_pole_pair_pitch,Y,Disabled,立即,Y,1,0x35C2,,,UNS32,1,4294967295,2000,um,,,,905,2,错误,402DefaultValue不对,伺服电机参数
+Motor Torque Constant,电机转矩常数（旋转电机）,Motor,12,MKT,Val,UNS32,RW,0,4294967295,75,mN.m/A,motor_torque_constant,Y,Disabled,立即,Y,1,0x3533,0x00,Val,UNS32,0,4294967295,75,mN.m/A,,,,73,2,,,伺服电机参数
+Motor Rotor Inertia,电机转子惯量（旋转电机）,Motor,13,MJ,Val,UNS32,RW,0,4294967295,200,g·cm^2,motor_rotor_inertia,Y,Disabled,立即,Y,1,0x3516,0x00,Val,UNS32,0,4294967295,200,g*cm2,,,,41,2,,,伺服电机参数
+Motor Force Constant,电机力矩常数（直线电机）,Motor,14,MKF,Val,UNS32,RW,0,4294967295,75,mN/A,motor_force_constant,Y,Disabled,立即,Y,1,0x35C3,,,UNS32,0,4294967295,75,,,,,907,2,错误,读取此字典的值为0，与402DefaultValue不匹配,伺服电机参数
+Motor Mover Mass,电机动子质量（直线电机）,Motor,15,MMASS,Val,UNS32,RW,0,4294967295,200,g,motor_mover_mass,Y,Disabled,立即,Y,1,0x35C4,,,UNS32,0,4294967295,200,,,,,909,2,错误,读取此字典的值为0，与402DefaultValue不匹配,伺服电机参数
+Motor Damping,电机速度阻尼系数,Motor,16,MD,Val,INTEGER32,RW,-2147483648,2147483647,0,N*M/(rad/s),motor_damping,Y,Enabled|Disabled,立即,Y,1,0x3517,0x00,Val,INTEGER32,-2147483648,2147483647,0,N*M/(rad/s),,,,43,2,,,伺服电机参数
+Motor Flux Linkage,电机磁链,Motor,17,MFL,Val,UNS32,RW,0,4294967295,1,Wb,motor_flux_linkage,Y,Disabled,立即,Y,1,0x3518,0x00,Val,UNS32,0,4294967295,1,Wb,,,,45,2,,,伺服电机参数
+Motor Name,电机名称,Motor,18,,Array,UNS8,RW,0,255,0,-,motor_name[20],Y,Enabled|Disabled,立即,Y,1,0x365E,,Array,UNS8,0,255,0,-,,,,1175,1,,,伺服电机参数
+Can Baudrate,CAN通讯波特率,Commucation,1,,Val,UNS32,RW,0,4294967295,1000,kbps,can_baudrate,Y,Disabled,重启,Y,1,0x3519,0x00,Val,UNS32,0,4294967295,1000,kb,,https://hs9e67ygio.feishu.cn/wiki/wikcnLEMkuWTlTTBWf9EMS66Iih?from=from_copylink,,47,2,疑问,实测修改波特率后不需要保存复位生效,通讯参数
+Can Node ID,CAN节点ID,Commucation,2,,Val,UNS8,RW,0,255,1,-,can_node_id,Y,Disabled,重启,Y,1,0x351A,0x00,Val,UNS8,0,255,1,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnLEMkuWTlTTBWf9EMS66Iih?from=from_copylink,,48,1,疑问,实测修改ID后不需要保存复位后生效,通讯参数
+Modbus Baudrate,Modbus通讯波特率,Commucation,3,,Val,UNS32,RW,0,4294967295,115200,bps,modbus_baudrate,Y,Disabled,重启,Y,1,0x3659,0x00,Val,UNS32,0,4294967295,115200,bps,,,,1146,2,疑问,实测修改波特率后不需要保存复位生效,通讯参数
+Modbus Node ID,Modbus节点ID,Commucation,4,,Val,UNS8,RW,0,255,1,-,modbus_node_id,Y,Disabled,重启,Y,1,0x365A,0x00,Val,UNS8,0,255,1,-,,,,1147,1,疑问,实测修改ID后不需要保存复位后生效,通讯参数
+Current Loop Frequency,电流环运行频率,Control,0,,Val,UNS32,RW,0,4294967295,40000,-,current_loop_freq,Y,Disabled,,Y,1,0x355F,0x00,Val,UNS32,0,4294967295,40000,-,,,,397,2,疑问,生效时刻？,基本控制参数
+Hall Type,霍尔类型,ExternalDevice,1,,Val,UNS8,RW,0,2,0,-,hall_type,Y,Disabled,立即,Y,1,0x3532,0x00,Val,UNS8,0,2,0,-,"0：无霍尔
+1：120°霍尔",https://hs9e67ygio.feishu.cn/wiki/wikcnfD1XCSVWqfdkeLZxiWl5Gg?from=from_copylink,,71,1,,,霍尔参数
+Hall Error Counting Time,霍尔累计错误计数时间,ExternalDevice,2,,Val,UNS32,RW,0,4294967295,10000,ms,hall_error_counting_time,Y,Disabled,,Y,1,0x3567,0x00,Val,UNS32,0,4294967295,10000,ms,,,,413,2,疑问,此字典可读可写？实际测试可读可写,霍尔参数
+ADC1 Voltage Range,ADC1电压范围,ExternalDevice,3,,Val,UNS8,RW,0,11,0,-,adc1_voltage_range,Y,Disabled,,Y,1,0x3578,0x00,Val,UNS8,0,11,0,-,,,,444,1,错误,读取此字典的值为0，与402DefaultValue不匹配,模拟量控制模式参数
+ADC2 Voltage Range,ADC2电压范围,ExternalDevice,4,,Val,UNS8,RW,0,11,0,-,adc2_voltage_range,Y,Disabled,,Y,1,0x3579,0x00,Val,UNS8,0,11,0,-,,,,445,1,错误,读取此字典的值为0，与402DefaultValue不匹配,模拟量控制模式参数
+ADC1 Sampling Offset,ADC1采样偏移值,ExternalDevice,5,,Val,INTEGER32,RW,-2147483648,2147483647,0,-,adc1_sampling_offset,Y,Enabled|Disabled,立即,Y,1,0x35B4,0x01,Struct,INTEGER32,-2147483648,2147483647,0,-,ADC1采样偏移设置正值，ADC1当前值负向偏移；反之，ADC1当前值正向偏移。,https://hs9e67ygio.feishu.cn/wiki/wikcn9ROIQLcfvG959e6AlYSVEb?from=from_copylink,,795,2,,,模拟量控制模式参数
+ADC2 Sampling Offset,ADC2采样偏移值,ExternalDevice,6,,Val,INTEGER32,RW,-2147483648,2147483647,0,-,adc2_sampling_offset,Y,Enabled|Disabled,立即,Y,1,0x35B4,0x02,Struct,INTEGER32,-2147483648,2147483647,0,-,ADC2采样偏移设置正值，ADC2当前值负向偏移；反之，ADC2当前值正向偏移。,https://hs9e67ygio.feishu.cn/wiki/wikcn9ROIQLcfvG959e6AlYSVEb?from=from_copylink,,797,2,,,模拟量控制模式参数
+ADC1 Sampling Resolution Reduction,ADC1降低分辨率,ExternalDevice,7,,Val,UNS32,RW,0,31,0,bit,adc1_sampling_res_reduction,Y,Disabled,立即,Y,1,0x35A9,0x00,Val,UNS32,0,31,0,二进制位数,降低ADC1分辨率，会使采集到的ADC1当前值精度降低,https://hs9e67ygio.feishu.cn/wiki/wikcn9ROIQLcfvG959e6AlYSVEb?from=from_copylink,,753,2,,,模拟量控制模式参数
+ADC2 Sampling Resolution Reduction,ADC2降低分辨率,ExternalDevice,8,,Val,UNS32,RW,0,31,0,bit,adc2_sampling_res_reduction,Y,Disabled,立即,Y,1,0x35AA,0x00,Val,UNS32,0,31,0,二进制位数,降低ADC2分辨率，会使采集到的ADC2当前值精度降低,https://hs9e67ygio.feishu.cn/wiki/wikcn9ROIQLcfvG959e6AlYSVEb?from=from_copylink,,755,2,,,模拟量控制模式参数
+PWM Capture Period Filter Time,PWM捕获周期滤波时间,ExternalDevice,9,,Val,UNS8,RW,0,255,20,ms,pwm_capture_period_filter_time,Y,Enabled|Disabled,立即,Y,1,0x35A1,0x02,Struct,UNS8,0,255,20,ms,,https://hs9e67ygio.feishu.cn/wiki/wikcnHzsUfaC7r8791yUxEwbYDh?from=from_copylink,,731,1,,,PWM控速模式参数
+PWM Capture Period Resolution Reduction,PWM捕获周期降低分辨率,ExternalDevice,10,,Val,UNS8,RW,0,32,0,bit,pwm_capture_period_res_reduction,Y,Enabled|Disabled,立即,Y,1,0x35A1,0x03,Struct,UNS8,0,32,0,二进制位数,,https://hs9e67ygio.feishu.cn/wiki/wikcnHzsUfaC7r8791yUxEwbYDh?from=from_copylink,,732,1,,,PWM控速模式参数
+Pulse Capture Signal Type,脉冲捕获信号模式,ExternalDevice,11,,Val,UNS8,RW,0,4,0,-,pulse_capture_signal_type,Y,Disabled,立即,Y,1,0x35B2,0x02,Val,UNS8,0,4,0,-,"0：正交控制
+1：方向脉冲控制
+2：正负双脉冲控制",https://hs9e67ygio.feishu.cn/wiki/wikcnadoYsAoShVPxSiRoK4HFzd#doxcnq0SSCskYUEYcOKO6fz3FVc,,792,1,,,脉冲控位置模式参数
+Serial Encoder Error Counting Time,串行通信编码器错误计数时间窗口,ExternalDevice,12,,Val,UNS32,RW,0,4294967295,10000,ms,serial_enc_error_counting_time,Y,Disabled,立即,Y,1,0x3566,0x00,Val,UNS32,0,4294967295,10000,ms,,,,411,2,,,编码器参数
+Encoder1 Type,编码器1类型,ExternalDevice,13,,Val,INTEGER8,RW,-1,127,0,-,enc1_type,Y,Disabled,重启,Y,1,0x3002,0x00,Val,UNS8,0,127,0,-,"0：增量式
+1：增量式AB
+2：绝对式-BISS-C
+3：绝对式-Tamagawa
+4：绝对式-SSI
+5：Halls Only
+6：绝对式-UDC.Pa
+7：绝对式-NiKon
+8：增量式-UDC.Pa
+9：绝对式EnDat22
+255:无编码器",https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc#doxcnmEoGmOsO6iYcUHF7XibcOf,,2,1,错误,前后数据类型不一致,编码器参数
+Encoder1 Single Turn Hardware Resolution,编码器1硬件单圈分辨率（p）,ExternalDevice,14,,Val,UNS32,RW,0,4294967295,4096,p,enc1_single_turn_hw_res,Y,Disabled,重启,Y,1,0x35B9,0x01,Struct,UNS8,0,255,4096,,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,831,2,,,编码器参数
+Encoder1 Single Turn Effective Resolution,编码器1单圈有效分辨率脉冲数,ExternalDevice,15,,Val,UNS32,RW,1,4294967295,4096,p,enc1_single_turn_eff_res,Y,Disabled,重启,Y,1,0x35C5,0x00,Val,UNS32,1,4294967295,4096,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,911,2,,,编码器参数
+Encoder1 Multi Turn Hardware Resolution,编码器1多圈硬件分辨率脉冲数,ExternalDevice,16,,Val,UNS32,RW,0,4294967295,1,p,enc1_multi_turn_hw_res,Y,Disabled,重启,Y,1,0x353E,0x00,Val,UNS32,0,4294967295,1,p,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,91,2,,,编码器参数
+Encoder1 High Mask Bits,编码器1数据高位忽略位数（bit）,ExternalDevice,17,,Val,UNS8,RW,0,255,0,bit,enc1_high_mask_bits,Y,Disabled,重启,Y,1,0x35B9,0x05,Struct,UNS8,0,255,0,,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,835,1,,,编码器参数
+Encoder1 Baudrate,编码器1通讯波特率,ExternalDevice,18,,Val,UNS32,RW,0,4294967295,2500000,bps,enc1_baudrate,Y,Disabled,重启,Y,1,0x3540,0x00,Val,UNS32,0,4294967295,2500000,bit/s,625000: 0.625 MHz 1250000: 1.25 MHz 2500000: 2.5 MHz 5000000: 5.0 MHz,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,95,2,,,编码器参数
+Encoder1 Zero Bits,编码器1通讯零位,ExternalDevice,19,,Val,UNS8,RW,0,36,0,-,enc1_zero_bits,Y,Disabled,重启,Y,1,0x3542,0x00,Val,UNS8,0,36,0,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,98,1,,,编码器参数
+Encoder1 Ack Bits,编码器1应答位数,ExternalDevice,20,,Val,UNS8,RW,0,36,0,-,enc1_ack_bits,Y,Disabled,重启,Y,1,0x354C,0x00,Val,UNS8,0,36,0,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,371,1,,,编码器参数
+Encoder1 Error Warning Bits,编码器1错误警告位数,ExternalDevice,21,,Val,UNS8,RW,0,36,2,-,enc1_error_bits,Y,Disabled,重启,Y,1,0x354D,0x00,Val,UNS8,0,36,2,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,372,1,,,编码器参数
+Encoder1 Crc Bits,编码器1CRC校验位数,ExternalDevice,22,,Val,UNS8,RW,0,36,6,-,enc1_crc_bits,Y,Disabled,重启,Y,1,0x354E,0x00,Val,UNS8,0,36,6,-,,,,373,1,,,编码器参数
+Encoder1 Crc Poly,编码器1CRC校验多项式,ExternalDevice,23,,Val,UNS32,RW,0,4294967295,67,-,enc1_crc_poly,Y,Disabled,重启,Y,1,0x354F,0x00,Val,UNS32,0,4294967295,67,-,,,,375,2,,,编码器参数
+Encoder1 Error Active Level,编码器1错误应答电平,ExternalDevice,24,,Val,UNS8,RW,0,2,2,-,enc1_error_active_level,Y,Disabled,重启,Y,1,0x3550,0x00,Val,UNS8,0,2,2,-,"0: 0 
+1: 1 
+2: None",https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,376,1,,,编码器参数
+Encoder1 Data Encoding Format,编码器1数据编码格式,ExternalDevice,25,,Val,UNS8,RW,0,1,0,-,enc1_data_coding_format,Y,Disabled,重启,Y,1,0x3551,0x00,Val,UNS8,0,1,0,-,"0: 二进制 
+1: 格雷码",https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,377,1,,,编码器参数
+Encoder1 Control Word Status,编码器1控制字状态,ExternalDevice,26,,Val,UNS8,RW,0,2,0,-,enc1_control_word_status,Y,Disabled,重启,Y,1,0x35B9,0x02,Struct,UNS8,0,2,0,-,"0: 0 
+1: 1 
+2: None",https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,832,1,,,编码器参数
+Encoder1 Protocol Total Bits,编码器1协议数据总位数（bit）,ExternalDevice,27,,Val,UNS8,RW,0,255,32,bit,enc1_protocol_total_bits,Y,Disabled,重启,Y,1,0x35B9,0x03,Struct,UNS8,0,255,32,bit,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,833,1,,,编码器参数
+Encoder1 Position LSB Number,编码器1位置数据LSB位置（bit）,ExternalDevice,28,,Val,UNS8,RW,0,255,8,bit,enc1_positon_lsb_num,Y,Disabled,重启,Y,1,0x35B9,0x04,Struct,UNS8,0,255,8,bit,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,834,1,,,编码器参数
+Encoder1 Error Bit Number,编码器1错误位位置（bit）,ExternalDevice,29,,Val,UNS8,RW,0,255,7,bit,enc1_error_bit_num,Y,Disabled,重启,Y,1,0x35B9,0x06,Struct,UNS8,0,255,7,bit,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,836,1,,,编码器参数
+Encoder1 Data Polling Time,编码器1数据轮询时间（TS）,ExternalDevice,30,,Val,UNS8,RW,0,7,0,-,enc1_data_polling_time,Y,Disabled,重启,Y,1,0x35B9,0x07,Struct,UNS8,0,7,0,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,837,1,,,编码器参数
+Encoder1 Temperature Threshold,编码器1温度保护阈值,ExternalDevice,31,,Val,UNS8,RW,0,255,0,℃,enc1_temp_threshold,Y,Disabled,重启,Y,1,0x35B9,0x09,Struct,UNS8,0,255,0,℃,,,,839,1,,,编码器参数
+Encoder2 Type,编码器2类型,ExternalDevice,32,,Val,INTEGER8,RW,-1,127,-1,-,enc2_type,Y,Disabled,重启,Y,1,0x3537,0x00,Val,UNS8,0,127,-1,-,"1：增量式AB
+2：绝对式-BISS-C
+3：绝对式-Tamagawa
+4：绝对式-SSI
+6：绝对式-UDC.Pa
+7：绝对式-NiKon
+8：增量式-UDC.Pa
+9：绝对式EnDat22
+10：模拟量-SIN/COS
+11：模拟量-Hiperface
+12：模拟量-线性霍尔
+255:无编码器",https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc#doxcnmEoGmOsO6iYcUHF7XibcOf,,78,1,错误,前后数据类型不一致,编码器参数
+Encoder2 Single Turn Hardware Resolution,编码器2硬件单圈分辨率（p）,ExternalDevice,33,,Val,UNS32,RW,0,4294967295,4096,p,enc2_single_turn_hw_res,Y,Disabled,重启,Y,1,0x35BA,0x01,Struct,UNS32,0,4294967295,4096,p,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,847,2,,,编码器参数
+Encoder2 Single Turn Effective Resolution,编码器2单圈有效分辨率脉冲数,ExternalDevice,34,,Val,UNS32,RW,1,4294967295,4096,p,enc2_single_turn_eff_res,Y,Disabled,重启,Y,1,0x3538,0x00,Val,UNS32,1,4294967295,4096,p,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,80,2,,,编码器参数
+Encoder2 Multi Turn Hardware Resolution,编码器2多圈硬件分辨率脉冲数,ExternalDevice,35,,Val,UNS32,RW,0,4294967295,1,p,enc2_multi_turn_hw_res,Y,Disabled,重启,Y,1,0x353F,0x00,Val,UNS32,0,4294967295,1,p,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,93,2,,,编码器参数
+Encoder2 High Mask Bits,编码器2数据高位忽略位数（bit）,ExternalDevice,36,,Val,UNS8,RW,0,255,0,bit,enc2_high_mask_bits,Y,Disabled,重启,Y,1,0x35BA,0x05,Struct,UNS8,0,255,0,bit,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,851,1,,,编码器参数
+Encoder2 Baudrate,编码器2通讯波特率,ExternalDevice,37,,Val,UNS32,RW,0,4294967295,2500000,bps,enc2_baudrate,Y,Disabled,重启,Y,1,0x3541,0x00,Val,UNS32,0,4294967295,2500000,bit/s,625000: 0.625 MHz 1250000: 1.25 MHz 2500000: 2.5 MHz 5000000: 5.0 MHz,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,97,2,,,编码器参数
+Encoder2 Zero Bits,编码器2通讯零位,ExternalDevice,38,,Val,UNS8,RW,0,36,0,-,enc2_zero_bits,Y,Disabled,重启,Y,1,0x3543,0x00,Val,UNS8,0,36,0,-,,,,99,1,,,编码器参数
+Encoder2 Ack Bits,编码器2应答位数,ExternalDevice,39,,Val,UNS8,RW,0,36,0,-,enc2_ack_bits,Y,Disabled,重启,Y,1,0x3552,0x00,Val,UNS8,0,36,0,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,378,1,,,编码器参数
+Encoder2 Error Warning Bits,编码器2错误警告位数,ExternalDevice,40,,Val,UNS8,RW,0,36,2,-,enc2_error_bits,Y,Disabled,重启,Y,1,0x3553,0x00,Val,UNS8,0,36,2,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,379,1,,,编码器参数
+Encoder2 Crc Bits,编码器2CRC校验位数,ExternalDevice,41,,Val,UNS8,RW,0,36,6,-,enc2_crc_bits,Y,Disabled,重启,Y,1,0x3554,0x00,Val,UNS8,0,36,6,-,,,,380,1,,,编码器参数
+Encoder2 Crc Poly,编码器2CRC校验多项式,ExternalDevice,42,,Val,UNS32,RW,0,4294967295,67,-,enc2_crc_poly,Y,Disabled,重启,Y,1,0x3555,0x00,Val,UNS32,0,4294967295,67,-,,,,382,2,,,编码器参数
+Encoder2 Error Active Level,编码器2错误应答电平,ExternalDevice,43,,Val,UNS8,RW,0,2,2,-,enc2_error_active_level,Y,Disabled,重启,Y,1,0x3556,0x00,Val,UNS8,0,2,2,-,"0: 0 
+1: 1 
+2: None",https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,383,1,,,编码器参数
+Encoder2 Data Encoding Format,编码器2数据编码格式,ExternalDevice,44,,Val,UNS8,RW,0,1,0,-,enc2_data_coding_format,Y,Disabled,重启,Y,1,0x3557,0x00,Val,UNS8,0,1,0,-,"0: 二进制 
+1: 格雷码",https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,384,1,,,编码器参数
+Encoder2 Control Word Status,编码器2控制字状态,ExternalDevice,45,,Val,UNS8,RW,0,2,0,-,enc2_control_word_status,Y,Disabled,重启,Y,1,0x35BA,0x02,Struct,UNS8,0,2,0,-,"0: 0 
+1: 1 
+2: None",https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,848,1,,,编码器参数
+Encoder2 Protocol Total Bits,编码器2协议数据总位数（bit）,ExternalDevice,46,,Val,UNS8,RW,0,255,32,bit,enc2_protocol_total_bits,Y,Disabled,重启,Y,1,0x35BA,0x03,Struct,UNS8,0,255,32,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,849,1,,,编码器参数
+Encoder2 Position LSB Number,编码器2位置数据LSB位置（bit）,ExternalDevice,47,,Val,UNS8,RW,0,255,8,bit,enc2_positon_lsb_num,Y,Disabled,重启,Y,1,0x35BA,0x04,Struct,UNS8,0,255,8,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,850,1,,,编码器参数
+Encoder2 Error Bit Number,编码器2错误位位置（bit）,ExternalDevice,48,,Val,UNS8,RW,0,255,7,bit,enc2_error_bit_num,Y,Disabled,重启,Y,1,0x35BA,0x06,Struct,UNS8,0,255,7,bit,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,852,1,,,编码器参数
+Encoder2 Data Polling Time,编码器2数据轮询时间（TS）,ExternalDevice,49,,Val,UNS8,RW,0,7,0,-,enc2_data_polling_time,Y,Disabled,重启,Y,1,0x35BA,0x07,Struct,UNS8,0,7,0,bit,,https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,853,1,,,编码器参数
+Encoder2 Temperature Threshold,编码器2温度保护阈值,ExternalDevice,50,,Val,UNS8,RW,0,255,0,℃,enc2_temp_threshold,Y,Disabled,重启,Y,1,0x35BA,0x09,Struct,UNS8,0,255,0,,,,,855,1,,,编码器参数
+Pulse Output Mode,脉冲输出模式,ExternalDevice,51,,Val,UNS8,RW,0,2,0,-,pulse_output_mode,Y,Enabled|Disabled,立即,Y,1,0x35EE,0x00,Val,UNS8,0,2,0,,"0：关闭脉冲输出，
+1：正交输出+软件Z相，
+2：正交输出+硬件Z相",https://hs9e67ygio.feishu.cn/wiki/wikcnk4L7t8hj6WPOpTNp47seCe?from=from_copylink,,968,1,,,脉冲分频输出参数
+Pulse Output Frequency Division,脉冲输出分频系数,ExternalDevice,52,,Val,UNS16,RW,1,65535,1,-,pulse_output_freq_div,Y,Enabled|Disabled,立即,Y,1,0x35EF,0x00,Val,UNS16,1,65535,1,,,,,968,1,,,脉冲分频输出参数
+Encoder1 Glitch Filter Coefficient,编码器1毛刺滤波系数,ExternalDevice,53,,Val,UNS32,RW,0,4294967295,0,-,enc1_glitch_filter_coef,Y,Disabled,重启,Y,1,0x3606,0x00,Val,UNS32,0,4294967295,0,,"0：关闭滤波
+1~4294967295：滤波系数",https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc#doxcnsmauQ8SemykO2Z80jJoc0f,,1010,2,,,编码器参数
+Encoder2 Glitch Filter Coefficient,编码器2毛刺滤波系数,ExternalDevice,54,,Val,UNS32,RW,0,4294967295,0,-,enc2_glitch_filter_coef,Y,Disabled,重启,Y,1,0x3607,0x00,Val,UNS32,0,4294967295,0,,"0：关闭滤波
+1~4294967295：滤波系数",https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc#doxcnsmauQ8SemykO2Z80jJoc0f,,1012,2,,,编码器参数
+Pulse Capture Glitch Filter Coefficient,脉冲捕获毛刺滤波系数,ExternalDevice,55,,Val,UNS32,RW,0,4294967295,0,-,pulse_capture_glitch_filter_coef,Y,Enabled|Disabled,立即,Y,1,0x3608,0x00,Val,UNS32,0,4294967295,0,,"0：关闭滤波
+1~4294967295：滤波系数",https://hs9e67ygio.feishu.cn/wiki/wikcnadoYsAoShVPxSiRoK4HFzd#doxcn2oCwa2yUUAoyQPadbsleWh,,1014,2,,,脉冲控位置模式参数
+Pulse Output Resolution,脉冲输出分辨率,ExternalDevice,56,,Val,INTEGER32,RW,-2147483648,2147483647,1024,LPR/LPP,pulse_output_resolution,Y,Enabled|Disabled,立即,Y,1,0x3621,0x00,Val,INTEGER32,-2147483648,2147483647,1024,,最大4倍频脉冲输出。设置负数即反方向脉冲。,https://hs9e67ygio.feishu.cn/wiki/wikcnk4L7t8hj6WPOpTNp47seCe?from=from_copylink,,1052,2,,,脉冲分频输出参数
+Pulse Capture Channel,脉冲捕获通道,ExternalDevice,57,,Val,UNS8,RW,0,255,0,-,pulse_capture_channel,Y,Enabled|Disabled,立即,Y,1,0x3624,0x00,Val,UNS8,0,255,0,,"0：高速输入
+1：低速输入",https://hs9e67ygio.feishu.cn/wiki/wikcnadoYsAoShVPxSiRoK4HFzd#doxcnUOiWQ6eaO0ekHO3jOXteNA,,1056,1,,,脉冲控位置模式参数
+Position Feedback Attribute,位置反馈属性,ExternalDevice,58,,Val,UNS32,RW,0,4294967295,0,-,position_fb_attr,Y,Enabled|Disabled,立即,N,1,0x363C,0x00,Val,UNS32,-,-,-,,,,,1097,2,,,位置模式参数
+Encoder1 Signal Type,编码器1信号类型,ExternalDevice,59,,Val,UNS8,RW,0,1,0,-,enc1_signal_type,Y,Disabled,重启,Y,1,0x364E,0x00,Val,UNS8,0,1,0,,"0：差分
+1：单端",https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,1126,1,,,编码器参数
+Encoder2 Signal Type,编码器2信号类型,ExternalDevice,60,,Val,UNS8,RW,0,1,0,-,enc2_signal_type,Y,Disabled,重启,Y,1,0x364F,0x00,Val,UNS8,0,1,0,,"0：差分
+1：单端",https://hs9e67ygio.feishu.cn/wiki/wikcnCiTgrUYCvosocErK6CJtCc?from=from_copylink,,1127,1,,,编码器参数
+ADC User Voltage Lower Limit,ADC用户电压下限,ExternalDevice,61,,Val,REAL32,RW,drive_param_.adc_hw_voltage_lower_limit,drive_param_.adc_hw_voltage_upper_limit,-10,,adc_user_voltage_lower_limit,Y,Disabled,立即,Y,1,0x3652,0x00,Val,INTEGER32,#VALUE!,#VALUE!,-10,mV,,https://hs9e67ygio.feishu.cn/wiki/wikcn9ROIQLcfvG959e6AlYSVEb?from=from_copylink,,1133,2,疑问,无法计算402Upplimit和402Lowlimit,模拟量控制模式参数
+ADC User Voltage Upper Limit,ADC用户电压上限,ExternalDevice,62,,Val,REAL32,RW,drive_param_.adc_hw_voltage_lower_limit,drive_param_.adc_hw_voltage_upper_limit,10,,adc_user_voltage_upper_limit,Y,Disabled,立即,Y,1,0x3653,0x00,Val,INTEGER32,#VALUE!,#VALUE!,10,mV,,https://hs9e67ygio.feishu.cn/wiki/wikcn9ROIQLcfvG959e6AlYSVEb?from=from_copylink,,1135,2,疑问,无法计算402Upplimit和402Lowlimit,模拟量控制模式参数
+Encoder Divided Pulse Output Zero Duration,编码器分频脉冲输出Z相持续时间,ExternalDevice,63,,Val,UNS32,RW,100,100000,100,us,encoder_divided_pulse_output_zero_duration,Y,Enabled|Disabled,立即,Y,1,0x365F,0x00,Val,UNS32,100,100000,100,us,输出脉冲的Z相持续的时间,https://hs9e67ygio.feishu.cn/wiki/wikcnk4L7t8hj6WPOpTNp47seCe?from=from_copylink,,1197,2,,,脉冲分频输出参数
+Incremental Encoder Wire Saving Type,增量编码器省线式类型,ExternalDevice,64,,Val,UNS8,RW,0,3,0,-,inc_enc_wire_saving_type,Y,Disabled,重启,Y,1,0x3661,0x00,Val,UNS8,0,3,0,,"bit0 编码器1是否为省线式
+bit1 编码器2是否为省线式",https://hs9e67ygio.feishu.cn/wiki/wikcnkEfcwlg2SvYFYvJEIjELrb#doxcnQEqSYQEMEc28UPbgHRPfZb,,1200,1,,,编码器参数
+Resolver1 Channel1 Pole Pairs,旋转变压器1通道1极对数,ExternalDevice,65,,Val,UNS8,RW,1,255,1,-,resolver1_ch1_pole_pairs,Y,Disabled,重启,Y,1,0x3663,0x01,Struct,UNS8,1,255,1,,,,,1221,1,,,编码器参数
+Resolver1 Channel1 Multiplication Factor,旋转变压器1通道1乘法因子,ExternalDevice,66,,Val,UNS8,RW,2,255,12,-,resolver1_ch1_multiplication_factor,Y,Disabled,重启,Y,1,0x3663,0x02,Struct,UNS8,2,255,12,,,,,1222,1,,,编码器参数
+Resolver1 Channel1 Excitation Signal Frequency,旋转变压器1通道1激励信号频率,ExternalDevice,67,,Val,UNS32,RW,1,4294967295,10000,-,resolver1_ch1_excitation_signal_freq,Y,Disabled,重启,Y,1,0x3663,0x03,Struct,UNS32,1,4294967295,10000,,,,,1224,2,,,编码器参数
+Resolver1 Channel2 Pole Pairs,旋转变压器1通道2极对数,ExternalDevice,68,,Val,UNS8,RW,1,255,1,-,resolver1_ch2_pole_pairs,Y,Disabled,重启,Y,1,0x3663,0x04,Struct,UNS8,1,255,1,,,,,1225,1,,,编码器参数
+Resolver1 Channel2 Multiplication Factor,旋转变压器1通道2乘法因子,ExternalDevice,69,,Val,UNS8,RW,2,255,12,-,resolver1_ch2_multiplication_factor,Y,Disabled,重启,Y,1,0x3663,0x05,Struct,UNS8,2,255,12,,,,,1226,1,,,编码器参数
+Resolver1 Channel2 Excitation Signal Frequency,旋转变压器1通道2激励信号频率,ExternalDevice,70,,Val,UNS32,RW,1,4294967295,10000,,resolver1_ch2_excitation_signal_freq,Y,Disabled,重启,Y,1,0x3663,0x06,Struct,UNS32,1,4294967295,10000,,,,,1228,2,,,编码器参数
+Resolver2 Channel1 Pole Pairs,旋转变压器2通道1极对数,ExternalDevice,71,,Val,UNS8,RW,1,255,1,,resolver2_ch1_pole_pairs,Y,Disabled,重启,Y,1,0x3664,0x01,Struct,UNS8,1,255,1,,,,,1229,1,,,编码器参数
+Resolver2 Channel1 Multiplication Factor,旋转变压器2通道1乘法因子,ExternalDevice,72,,Val,UNS8,RW,2,255,12,,resolver2_ch1_multiplication_factor,Y,Disabled,重启,Y,1,0x3664,0x02,Struct,UNS8,2,255,12,,,,,1230,1,,,编码器参数
+Resolver2 Channel1 Excitation Signal Frequency,旋转变压器2通道1激励信号频率,ExternalDevice,73,,Val,UNS32,RW,1,4294967295,10000,,resolver2_ch1_excitation_signal_freq,Y,Disabled,重启,Y,1,0x3664,0x03,Struct,UNS32,1,4294967295,10000,,,,,1232,2,,,编码器参数
+Resolver2 Channel2 Pole Pairs,旋转变压器2通道2极对数,ExternalDevice,74,,Val,UNS8,RW,1,255,1,,resolver2_ch2_pole_pairs,Y,Disabled,重启,Y,1,0x3664,0x04,Struct,UNS8,1,255,1,,,,,1233,1,,,编码器参数
+Resolver2 Channel2 Multiplication Factor,旋转变压器2通道2乘法因子,ExternalDevice,75,,Val,UNS8,RW,2,255,12,,resolver2_ch2_multiplication_factor,Y,Disabled,重启,Y,1,0x3664,0x05,Struct,UNS8,2,255,12,,,,,1234,1,,,编码器参数
+Resolver2 Channel2 Excitation Signal Frequency,旋转变压器2通道2激励信号频率,ExternalDevice,76,,Val,UNS32,RW,1,4294967295,10000,,resolver2_ch2_excitation_signal_freq,Y,Disabled,重启,Y,1,0x3664,0x06,Struct,UNS32,1,4294967295,10000,,,,,1236,2,,,编码器参数
+Phase Current Offset,相电流偏移值,ExternalDevice,77,,Array,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,ADC,phase_current_offset[3],Y,,,Y,1,0x3668,,Array,INTEGER32,-2147483648,2147483647,0,,,,,,,疑问,生效时刻？modbus地址？,相电流校准参数
+Position Loop Frequency,位置环运行频率,Control,1,,Val,UNS32,RW,0,4294967295,20000,-,position_loop_freq,Y,Disabled,,Y,1,0x3560,0x00,Val,UNS32,0,4294967295,20000,-,,,,399,2,疑问,生效时刻？,基本控制参数
+Current Loop Control Algorithm,电流环控制算法,Control,2,,Val,UNS8,RW,0,1,0,-,current_loop_control_algo,Y,Disabled,,Y,1,0x3599,0x00,Val,UNS8,0,1,0,-,,,,561,1,疑问,生效时刻？,基本控制参数
+Position Loop Control Algorithm,位置环控制算法,Control,3,,Val,UNS8,RW,0,1,0,-,position_loop_control_algo,Y,Disabled,,Y,1,0x35C6,0x00,Val,UNS8,0,1,0,,,,,912,1,疑问,生效时刻？,基本控制参数
+Current Controller Gain,电流控制器增益,Control,4,,Val,UNS32,RW,0,4294967295,100,-,current_controller_gain,Y,Enabled|Disabled,立即,Y,1,0x350A,0x00,Val,UNS32,0,4294967295,100,无量纲,,https://hs9e67ygio.feishu.cn/wiki/wikcnFyvupcXum5yzfAMrOQ6aZd?from=from_copylink,,25,2,,,基本控制参数
+Position Controller Gain,位置控制器增益,Control,5,,Val,UNS32,RW,0,4294967295,100,-,position_controller_gain,Y,Enabled|Disabled,立即,Y,1,0x3509,0x00,Val,UNS32,0,4294967295,100,无量纲,,https://hs9e67ygio.feishu.cn/wiki/wikcnFyvupcXum5yzfAMrOQ6aZd?from=from_copylink,,23,2,,,基本控制参数
+Speed Observer Bandwidth,速度观测器带宽,Control,6,,Val,UNS32,RW,0,4294967295,400,Hz,speed_observer_bw,Y,Enabled|Disabled,立即,Y,1,0x3530,0x00,Val,UNS32,0,4294967295,400,无量纲,,https://hs9e67ygio.feishu.cn/wiki/wikcnMSgcxS6MYm5D8XDKDmCS3d?from=from_copylink,,68,2,,,基本控制参数
+Position Velocity FeedForward,位置速度前馈,Control,7,,Val,UNS32,RW,0,4294967295,100,-,position_velocity_ff,Y,Enabled|Disabled,立即,Y,1,0x3511,0x00,Val,UNS32,0,4294967295,100,无量纲,,https://hs9e67ygio.feishu.cn/wiki/wikcnMSgcxS6MYm5D8XDKDmCS3d?from=from_copylink,,31,2,,,基本控制参数
+Position Acceleration FeedForward,位置加速度前馈,Control,8,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,-,position_acc_ff,Y,Enabled|Disabled,立即,Y,1,0x3512,0x00,Val,UNS32,0,4294967295,0,无量纲,,,,33,2,,,基本控制参数
+Static Friction Current,静摩擦对应的力矩电流,Control,9,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,A,static_friction_current,Y,Enabled|Disabled,立即,Y,1,0x3531,0x00,Val,UNS32,0,4294967295,0,mA,,,,70,2,,,补偿功能参数
+Smoothing Factor,平滑系数,Control,10,,Val,UNS32,RW,1,1000,1,-,smoothing_factor,Y,Enabled|Disabled,立即,Y,1,0x3534,0x00,Val,UNS32,1,1000,1,无量纲,"根据不同的滤波类型取值不同。
+TD滤波：1~1000
+滑动均值滤波：20~512（0.2~51.2ms）",https://hs9e67ygio.feishu.cn/wiki/wikcnTY8QGVpOUfMnpRZW7UzBFh?from=from_copylink,,75,2,,,基本控制参数
+Inertia Adaptive Gain,惯量自适应增益,Control,11,,Val,UNS32,RW,0,4294967295,0,-,inertia_adaptive_gain,Y,Enabled|Disabled,立即,Y,1,0x3549,0x00,Val,UNS32,0,4294967295,0,-,,,,366,2,,,基本控制参数
+Inertia Adaptive LPF Cutoff Frequency,惯量自适应低通滤波截止频率,Control,12,,Val,UNS32,RW,0,40000,20,Hz,inertia_adaptive_freq,Y,Enabled|Disabled,立即,Y,1,0x354A,0x00,Val,UNS32,0,40000,20,HZ,,,,368,2,,,基本控制参数
+Torque Ripple Compensation Enable,转矩脉动补偿开关,Control,13,,Val,UNS8,RW,0,1,0,-,torque_ripple_comp_enable,Y,Enabled|Disabled,立即,Y,1,0x3559,0x00,Val,UNS8,0,1,0,-,"0：关闭
+1：打开",https://hs9e67ygio.feishu.cn/wiki/wikcnd2T3TU1rlfMzzeMoAnZXyf?from=from_copylink,,387,1,,,辨识功能参数
+Friction Compensation Enable,摩擦补偿开关,Control,14,,Val,UNS8,RW,0,1,0,-,friction_comp_enable,Y,Enabled|Disabled,立即,Y,1,0x355A,0x00,Val,UNS8,0,1,0,-,"0：关闭
+1：打开",https://hs9e67ygio.feishu.cn/wiki/wikcnt7EyadNBWU7d7L346WXpmc?from=from_copylink,,388,1,,,辨识功能参数
+Field Weakening Control Current,弱磁控制电流,Control,15,,Val,INTEGER32,RW,-2147483648,2147483647,0,mA,fwc_current,Y,Enabled|Disabled,立即,Y,1,0x3586,0x00,Val,INTEGER32,-2147483648,2147483647,0,mA,设置弱磁控制电流为负值时，可提高电机极限速度；设置弱磁电流为正值时，可降低电机极限速度。,https://hs9e67ygio.feishu.cn/wiki/wikcnagrK2lKixFtHtrIXigujRe?from=from_copylink,,520,2,,,弱磁控制参数
+Position Feedback Mapping,位置反馈映射,Control,16,,Val,UNS8,RW,0,4,1,-,position_fb_mapping,Y,Disabled,,Y,1,0x35C7,0x01,Struct,UNS8,0,4,1,-,,,,913,1,错误,402字典子索引与modbus地址表中不一致，需要确认，生效时刻？,
+Velocity Feedback Mapping,速度反馈映射,Control,17,,Val,UNS8,RW,0,4,1,-,velocity_fb_mapping,Y,Disabled,重启,Y,1,0x35C8,0x02,Struct,UNS8,0,4,1,-,设置速度反馈映射后需要保存复位才会生效。,https://hs9e67ygio.feishu.cn/wiki/wikcnMSgcxS6MYm5D8XDKDmCS3d?from=from_copylink,,914,1,错误,402字典子索引与modbus地址表中不一致，需要确认，生效时刻？,
+Elec Angle Feedback Mapping,电角度反馈映射,Control,18,,Val,UNS8,RW,0,4,1,-,elec_angle_fb_mapping,Y,Disabled,,Y,1,0x35C9,0x03,Struct,UNS8,0,4,1,-,,,,915,1,错误,402字典子索引与modbus地址表中不一致，需要确认，生效时刻？,
+Motor Position Feedback Direction,电机端位置反馈方向,Control,19,,Val,INTEGER8,RW,0,127,1,-,motor_position_fb_direction,Y,Disabled,,Y,1,0x359A,0x01,Struct,INTEGER8,0,127,1,-,,,,563,1,错误,402字典子索引与modbus地址表中不一致，需要确认，生效时刻,
+Load Position Feedback Direction,负载端位置反馈方向,Control,20,,Val,INTEGER8,RW,-128,127,1,-,load_position_fb_direction,Y,Disabled,,Y,1,0x359A,0x02,Struct,INTEGER8,-128,127,1,-,,,,564,1,错误,402字典子索引与modbus地址表中不一致，需要确认，生效时刻,
+Motor Position Feedback Resolution,电机端位置反馈分辨率,Control,21,,Val,UNS32,RO,0,4294967295,4096,p,motor_position_fb_res,Y,Enabled|Disabled,只读,Y,1,0x35CA,0x00,Val,UNS32,0,4294967295,4096,,,,,917,2,疑问,生效时刻？,
+Load Position Feedback Resolution,负载端位置反馈分辨率,Control,22,,Val,UNS32,RO,0,4294967295,4096,p,load_position_fb_res,Y,Enabled|Disabled,只读,Y,1,0x608F,0x01,Struct,UNS32,0,4294967295,4096,,,,,61525,2,疑问,生效时刻？,
+Hall State Electrical Angle Table,霍尔状态对应电角度表,Control,23,,Array,UNS8,RW,0,5,0,-,hall_state_elec_angle_table[8],Y,Disabled,立即,Y,1,0x35A2,,Array,UNS8,0,5,0,-,,,,733,1,,,霍尔参数
+Zero Pulse Electrical Angle,Z相对应电角度,Control,24,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,rad,zero_pulse_elec_angle,Y,Disabled,立即,Y,1000,0x35A3,0x00,Val,UNS32,0,4294967295,0,-,,,,743,2,,,编码器参数
+Electrical Angle Offset,电角度偏移值,Control,25,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,rad,elec_angle_offset,Y,Disabled,立即,Y,1000,0x35A4,0x00,Val,UNS32,0,4294967295,0,-,,,,745,2,,,编码器参数
+Torque Ripple Compensation Table,转矩脉动补偿表,Control,26,,Array,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,-,torque_ripple_comp_table[360],N,Enabled|Disabled,立即,N,1,,,,,-,-,-,,,,,,,,,
+Force Torque Feedforward,力-力矩控制前馈系数,Control,27,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,A/ADC,force_torque_feedforward,Y,Enabled|Disabled,立即,Y,1,0x35CB,0x00,Val,INTEGER32,-2147483648,2147483647,0,,"电流控制模式开环控制时，设置为1；
+电流控制模式闭环控制时，认为模拟量反馈与当前电流呈线性关系。",https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcnkwOKM64GOycMiIs137YgHb,,919,2,,,力控模式参数
+Force Torque Kp,力-力矩控制比例系数,Control,28,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,-,force_torque_kp,Y,Enabled|Disabled,立即,Y,1,0x35CC,0x00,Val,INTEGER32,-2147483648,2147483647,0,,调节力控的响应速度,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcnu6c6e4mo2mE0E9QQKvAaec,,921,2,,,力控模式参数
+Force Torque Ki,力-力矩控制积分系数,Control,29,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,-,force_torque_ki,Y,Enabled|Disabled,立即,Y,1,0x35CD,0x00,Val,INTEGER32,-2147483648,2147483647,0,,调节力控的精度,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcnOuuGqO0YeWiKIRpnZEmdLd,,923,2,,,力控模式参数
+Force Position Impedance K,力-位置阻抗控制系数K,Control,30,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,-,force_position_impedance_k,Y,Enabled|Disabled,立即,Y,1,0x3588,0x01,,INTEGER32,-2147483648,2147483647,0,,,,,524,2,疑问,402ObjectCode是val？,力控模式参数
+Force Position Impedance B,力-位置阻抗控制系数B,Control,31,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,-,force_position_impedance_b,Y,Enabled|Disabled,立即,Y,1,0x3588,0x02,Val,INTEGER32,-2147483648,2147483647,0,,,,,526,2,疑问,402ObjectCode是val？,力控模式参数
+Force Position Impedance M,力-位置阻抗控制系数M,Control,32,,Val,REAL32,RW,1,3.40282347e+38,1,-,force_position_impedance_m,Y,Enabled|Disabled,立即,Y,1,0x3588,0x03,Val,INTEGER32,1,2147483647,1,,,,,528,2,疑问,402ObjectCode是val？,力控模式参数
+Force Position Admittance K,力-位置导纳控制系数K,Control,33,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,-,force_position_admittance_k,Y,Enabled|Disabled,立即,Y,1,0x3592,0x01,Val,INTEGER32,-2147483648,2147483647,0,,相当于劲度系数,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcnmuMKOAI6CYUgPHNiuzP6o6,,545,2,疑问,402ObjectCode是val？,力控模式参数
+Force Position Admittance B,力-位置导纳控制系数B,Control,34,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,-,force_position_admittance_b,Y,Enabled|Disabled,立即,Y,1,0x3592,0x02,Val,INTEGER32,-2147483648,2147483647,0,,相当于阻尼系数,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcnwK6AksaOUwyYQvomClhQUc,,547,2,疑问,402ObjectCode是val？,力控模式参数
+Force Position Admittance M,力-位置导纳控制系数M,Control,35,,Val,REAL32,RW,1,3.40282347e+38,1,-,force_position_admittance_m,Y,Enabled|Disabled,立即,Y,1,0x3592,0x03,Val,INTEGER32,1,2147483647,1,,相当于质量系数,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcnYkMgS6kCcC6IklfR4C7Oke,,549,2,疑问,402ObjectCode是val？,力控模式参数
+Force Sensor LPF Cutoff Frequency,力传感器低通滤波截止频率,Control,36,,Val,UNS32,RW,0,4294967295,0,Hz,force_sensor_cutoff_freq,Y,Disabled,立即,Y,1,0x3593,0x00,Val,UNS32,0,4294967295,0,,,,,551,2,,,力控模式参数
+Force Torque Unit Index,力-力矩控制单位指数,Control,37,,Val,INTEGER8,RW,-6,0,-3,-,force_torque_unit_index,Y,Enabled|Disabled,立即,Y,1,0x35FB,0x00,Val,INTEGER8,-6,0,-3,,用于设置单位指数，例如标准单位是A/unit，设置此参数为-3，则相关的参数单位会变成(10^-3)*A/unit。,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcn422eo64C8umiesyuiFrncg,,992,1,,,力控模式参数
+Force Position Admittance Unit Index,力-位置导纳控制单位指数,Control,38,,Val,INTEGER8,RW,-6,0,-3,-,force_position_admittance_unit_index,Y,Enabled|Disabled,立即,Y,1,0x35FC,0x00,Val,INTEGER8,-6,0,-3,,用于设置单位指数，例如标准单位是A/unit，设置此参数为-3，则相关的参数单位会变成(10^-3)*A/unit。,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcn422eo64C8umiesyuiFrncg,,993,1,,,力控模式参数
+Speed Measurement Cycle,速度测量周期,Control,39,,Val,UNS32,RW,1,1000000,200,-,speed_measurement_cycle,Y,Enabled|Disabled,立即,Y,1,0x3558,0x00,Val,UNS32,1,1000000,200,,,https://hs9e67ygio.feishu.cn/wiki/wikcnMSgcxS6MYm5D8XDKDmCS3d?from=from_copylink,,386,2,,,基本控制参数
+Abort Connection Action Mode,连接中断动作模式,Service,0,,Val,INTEGER16,RW,0,3,1,-,abort_connection_action_mode,Y,Enabled|Disabled,立即,Y,1,0x6007,0x00,Val,INTEGER16,0,3,1,,,,,61441,1,,,基本控制参数
+Operation Mode,运行模式,App,0,,Val,INTEGER8,RW,0,127,0,-,op_mode,Y,Disabled,立即,N,,,,,,-,-,-,,,,,,,,,
+Position Target Value,位置目标值,Output,0,,Val,INTEGER64,RW,-9223372036854775808,9223372036854775807,0,p,position_target_value,N,Enabled|Disabled,立即,N,1,0x607A,0x00,Val,INTEGER32,-,-,-,UU,,,,61488,2,错误,前后数据类型不一致,位置模式参数
+Motor Position Actual Value,电机端位置当前值,Feedback,0,,Val,INTEGER64,RO,-9223372036854775808,9223372036854775807,0,p,motor_position_actual_value,N,Enabled|Disabled,只读,Y,1,0x3572,0x00,Val,INTEGER32,-2147483648,2147483647,0,,,https://hs9e67ygio.feishu.cn/wiki/wikcn1XCUpIfmH7JhsWYQwYWpTf#doxcn6WeOweaGi2gEA3vIq8xy5b,,433,2,错误,前后数据类型不一致,位置模式参数
+Motor Zero Pulse Error Value,电机端 Z 相检测误差,Calc,0,,Val,INTEGER32,RO,-2147483648,2147483647,0,p,motor_zero_pulse_error_value,N,Enabled|Disabled,只读,Y,1,0x3568,0x00,Val,INTEGER32,-2147483648,2147483647,0,-,,,,415,2,,,监控参数
+Flash Storage Status,Flash存储状态,Status,0,,Val,INTEGER8,RO,-128,127,1,,flash_storage_status,N,Enabled|Disabled,只读,Y,1,0x355E,0x00,Val,UNS8,0,127,1,,,,,395,1,错误,前后数类型不一致,监控参数
+Multi Segment Param,多段运行参数,MultiSegment,0,,Struct,,RW,,,0,,multi_segment_param_,Y,Enabled|Disabled,立即,N,,,,,,-,-,-,,,,,,,疑问,无数据类型,
+Error Correction Table,位置误差补偿表,ErrorCorrection,0,,Array,INTEGER32,RW,-2147483648,2147483647,0,p,error_corr_table[1000],Y,Enabled|Disabled,立即,N,,,,,,-,-,-,,,,,,,,,
+License Code,激活码,LicenseCode,0,,Array,INTEGER32,WO,-2147483648,2147483647,0,,license_code_[360],Y,Enabled|Disabled,立即,,,,,,,#N/A,#N/A,0,,,,,,,疑问,是否对用户开放,
+Error Record,错误记录,ErrorRecord,0,,Struct,,RW,,,,,error_record_,Y,Enabled|Disabled,立即,N,,,,,,-,-,-,,,,,,,疑问,数据类型，是否对用户开放,
+Zero Position Bias,零点位置偏移,Control,40,,Val,INTEGER64,RW,-9223372036854775808,9223372036854775807,0,p,zero_position_bias,Y,Enabled|Disabled,立即,N,1,,,,,-,-,-,,,,,,,,,
+Current Target Filter1 Type,指令电流滤波器1类型,Control,41,,Val,UNS8,RW,0,4,0,-,current_target_filter1_type,Y,Disabled,立即,Y,1,0x3615,0x00,Val,UNS8,0,4,0,-,"0：不滤波
+1：低通滤波
+4：带阻滤波",,,1031,1,,,基本控制参数
+Current Target Filter1 Frequency,指令电流滤波器1频率,Control,42,,Val,REAL32,RW,0.01,3.40282347e+38,1000,Hz,current_target_filter1_freq,Y,Disabled,立即,Y,10,0x3616,0x00,Val,UNS32,0,4294967295,10000,0.1Hz,,,,1033,2,,,基本控制参数
+Current Target Filter1 Bandwidth,指令电流滤波器1带宽,Control,43,,Val,REAL32,RW,0.01,3.40282347e+38,1,Hz,current_target_filter1_bw,Y,Disabled,立即,Y,10,0x3617,0x00,Val,UNS32,0,4294967295,10,0.1Hz,,,,1035,2,,,基本控制参数
+Current Target Filter2 Type,指令电流滤波器2类型,Control,44,,Val,UNS8,RW,0,4,0,-,current_target_filter2_type,Y,Disabled,立即,Y,1,0x3618,0x00,Val,UNS8,0,4,0,-,"0：不滤波
+1：低通滤波
+4：带阻滤波",,,1036,1,,,基本控制参数
+Current Target Filter2 Frequency,指令电流滤波器2频率,Control,45,,Val,REAL32,RW,0.01,3.40282347e+38,1000,Hz,current_target_filter2_freq,Y,Disabled,立即,Y,10,0x3619,0x00,Val,UNS32,0,4294967295,10000,0.1Hz,,,,1038,2,,,基本控制参数
+Current Target Filter2 Bandwidth,指令电流滤波器2带宽,Control,46,,Val,REAL32,RW,0.01,3.40282347e+38,1,Hz,current_target_filter2_bw,Y,Disabled,立即,Y,10,0x361A,0x00,Val,UNS32,0,4294967295,10,0.1Hz,,,,1040,2,,,基本控制参数
+Current Target Filter3 Type,指令电流滤波器3类型,Control,47,,Val,UNS8,RW,0,4,0,-,current_target_filter3_type,Y,Disabled,立即,Y,1,0x361B,0x00,Val,UNS8,0,4,0,-,"0：不滤波
+1：低通滤波
+4：带阻滤波",,,1041,1,,,基本控制参数
+Current Target Filter3 Frequency,指令电流滤波器3频率,Control,48,,Val,REAL32,RW,0.01,3.40282347e+38,1000,Hz,current_target_filter3_freq,Y,Disabled,立即,Y,10,0x361C,0x00,Val,UNS32,0,4294967295,10000,0.1Hz,,,,1043,2,,,基本控制参数
+Current Target Filter3 Bandwidth,指令电流滤波器3带宽,Control,49,,Val,REAL32,RW,0.01,3.40282347e+38,1,Hz,current_target_filter3_bw,Y,Disabled,立即,Y,10,0x361D,0x00,Val,UNS32,0,4294967295,10,0.1Hz,,,,1045,2,,,基本控制参数
+Current Target Filter4 Type,指令电流滤波器4类型,Control,50,,Val,UNS8,RW,0,4,0,-,current_target_filter4_type,Y,Disabled,立即,Y,1,0x361E,0x00,Val,UNS8,0,4,0,-,"0：不滤波
+1：低通滤波
+4：带阻滤波",,,1046,1,,,基本控制参数
+Current Target Filter4 Frequency,指令电流滤波器4频率,Control,51,,Val,REAL32,RW,0.01,3.40282347e+38,1000,Hz,current_target_filter4_freq,Y,Disabled,立即,Y,10,0x361F,0x00,Val,UNS32,0,4294967295,10000,0.1Hz,,,,1048,2,,,基本控制参数
+Current Target Filter4 Bandwidth,指令电流滤波器4带宽,Control,52,,Val,REAL32,RW,0.01,3.40282347e+38,1,Hz,current_target_filter4_bw,Y,Disabled,立即,Y,10,0x3620,0x00,Val,UNS32,0,4294967295,10,0.1Hz,,,,1050,2,,,基本控制参数
+Auto Gain Tuning Enable,自动增益调整开关,Control,53,,Val,UNS8,RW,0,1,0,-,auto_gain_tuning_enable,Y,Enabled|Disabled,立即,Y,1,0x3644,0x00,Val,,#N/A,#N/A,0,,"0：关闭
+1：打开",https://hs9e67ygio.feishu.cn/wiki/wikcnsFdIqn82qc4gr6uDxAiPVe#doxcn0c60iW6i8mK8Ahx1U0aY9b,,1110,1,疑问,402数据类型？,基本控制参数
+Auto Gain Tuning Method,自动增益调整方法,Control,54,,Val,UNS8,RW,0,255,0,-,auto_gain_tuning_method,Y,Disabled,立即,Y,1,0x3645,0x00,Val,,#N/A,#N/A,0,,,,,1111,1,疑问,402数据类型？,基本控制参数
+Auto Gain Estimation Speed,自动增益估计速度,Control,55,,Val,UNS8,RW,0,7,4,-,auto_gain_estimation_speed,Y,Enabled|Disabled,立即,Y,1,0x3646,0x00,Val,,#N/A,#N/A,4,,,https://hs9e67ygio.feishu.cn/wiki/wikcnsFdIqn82qc4gr6uDxAiPVe#doxcnkEakkeEWM2KeUPzkN1Fh8c,,1112,1,疑问,402数据类型？,基本控制参数
+Smoothing Factor Index,平滑系数指数,Control,56,,Val,INTEGER8,RW,-3,3,0,-,smoothing_factor_index,Y,Enabled|Disabled,立即,Y,1,0x364B,0x00,Val,INTEGER8,-3,3,0,,"TD滤波：-3~3
+滑动均值滤波：固定为-1",https://hs9e67ygio.feishu.cn/wiki/wikcnTY8QGVpOUfMnpRZW7UzBFh?from=from_copylink,,1121,1,,,基本控制参数
+Gain Switching Time 1,增益切换时间 1,Control,57,,Val,UNS16,RW,0,65535,0,ms,gain_switching_time_1,Y,Disabled,立即,N,1,,,Struct,UNS16,-,-,-,ms,,,,,,,,
+Gain Switching Time 2,增益切换时间 2,Control,58,,Val,UNS16,RW,0,65535,0,ms,gain_switching_time_2,Y,Disabled,立即,N,1,,,Struct,UNS16,-,-,-,ms,,,,,,,,
+Gain Switching Wait Time 1,增益切换等待时间 1,Control,59,,Val,UNS16,RW,0,65535,0,ms,gain_switching_wait_time_1,Y,Disabled,立即,N,1,,,Struct,UNS16,-,-,-,ms,,,,,,,,
+Gain Switching Wait Time 2,增益切换等待时间 2,Control,60,,Val,UNS16,RW,0,65535,0,ms,gain_switching_wait_time_2,Y,Disabled,立即,N,1,,,Struct,UNS16,-,-,-,ms,,,,,,,,
+Gain Switching Mode,增益切换模式,Control,61,,Val,UNS8,RW,0,255,0,-,gain_switching_mode,Y,Disabled,立即,N,1,,,Struct,UNS8,-,-,-,无量纲,,,,,,,,
+Gain Switching Condition,增益切换条件,Control,62,,Val,UNS8,RW,0,255,0,-,gain_switching_condition,Y,Disabled,立即,N,1,,,Struct,UNS8,-,-,-,无量纲,,,,,,,,
+Position Controller Gain 1,位置控制增益 1,Control,63,,Val,UNS32,RW,0,4294967295,100,%,position_controller_gain_1,Y,Enabled|Disabled,立即,N,1,,,Struct,UNS32,-,-,-,%,,,,,,,,
+Current Target Filter Frequency 1,转矩指令滤波截止频率 1,Control,64,,Val,UNS32,RW,0,4294967295,20000,0.1Hz,current_target_filter_freq_1,Y,Enabled|Disabled,立即,N,1,,,Struct,UNS32,-,-,-,0.1Hz,,,,,,,,
+Speed Observer Bandwidth 1,速度观测器带宽 1,Control,65,,Val,UNS32,RW,0,4294967295,400,Hz,speed_observer_bw_1,Y,Enabled|Disabled,立即,N,1,,,Struct,UNS32,-,-,-,Hz,,,,,,,,
+Friction Compensation Gain 1,摩擦补偿增益 1,Control,66,,Val,UNS32,RW,10,1000,10,%,friction_compensation_gain_1,Y,Enabled|Disabled,立即,N,1,,,Struct,UNS32,-,-,-,%,,,,,,,,
+Position Controller Gain 2,位置控制增益 2,Control,67,,Val,UNS32,RW,0,4294967295,100,%,position_controller_gain_2,Y,Enabled|Disabled,立即,N,1,,,Struct,UNS32,-,-,-,%,,,,,,,,
+Current Target Filter Frequency 2,转矩指令滤波截止频率 2,Control,68,,Val,UNS32,RW,0,4294967295,20000,0.1Hz,current_target_filter_freq_2,Y,Enabled|Disabled,立即,N,1,,,Struct,UNS32,-,-,-,0.1Hz,,,,,,,,
+Speed Observer Bandwidth 2,速度观测器带宽 2,Control,69,,Val,UNS32,RW,0,4294967295,400,Hz,speed_observer_bw_2,Y,Enabled|Disabled,立即,N,1,,,Struct,UNS32,-,-,-,Hz,,,,,,,,
+Friction Compensation Gain 2,摩擦补偿增益 2,Control,70,,Val,UNS32,RW,10,1000,10,%,friction_compensation_gain_2,Y,Enabled|Disabled,立即,N,1,,,Struct,UNS32,-,-,-,%,,,,,,,,
+Electrical Angle Identification Parameter 1,电角度辨识参数 1,Control,71,,Val,UNS32,RW,1,2,1,-,elec_angle_ident_param_1,Y,Enabled|Disabled,立即,Y,1,0x3654,,Array,UNS32,1,2,1,-,寻相距离。仅适用于短距离寻相电角度辨识模式,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,1137,2,,,辨识功能参数
+Electrical Angle Identification Parameter 2,电角度辨识参数 2,Control,72,,Val,UNS32,RW,1,1000,20,-,elec_angle_ident_param_2,Y,Enabled|Disabled,立即,Y,1,0x3655,,Array,UNS32,1,1000,20,-,置信区间。仅适用于短距离寻相电角度辨识模式。,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,1139,2,,,辨识功能参数
+Electrical Angle Identification Parameter 3,电角度辨识参数 3,Control,73,,Val,UNS32,RW,1,1000,20,-,elec_angle_ident_param_3,Y,Enabled|Disabled,立即,Y,1,0x3656,,Array,UNS32,1,1000,20,-,电流上升时间。仅适用于短距离寻相电角度辨识模式,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,1141,2,,,辨识功能参数
+Low Frequency Vibration Filter1 Type,低频振动滤波器1类型,Control,74,,Val,UNS8,RW,0,4,0,-,low_freq_vibra_filter1_type,Y,Enabled|Disabled,立即,Y,1,0x3662,0x1,Struct,UNS8,0,4,0,-,"0：不滤波
+1：低通滤波
+4：带阻滤波",,,1201,1,疑问,滤波器的DriveStatus与指令滤波器的DriveStatus不一样，是否滤波器的DriveStatus都应该是一样的？,基本控制参数
+Low Frequency Vibration Filter1 Frequency,低频振动滤波器1频率,Control,75,,Val,REAL32,RW,0.01,3.40282347e+38,1000,Hz,low_freq_vibra_filter1_freq,Y,Enabled|Disabled,立即,Y,10,0x3662,0x2,Struct,UNS32,0,4294967295,10000,0.1Hz,,,,1203,2,疑问,滤波器的DriveStatus与指令滤波器的DriveStatus不一样，是否滤波器的DriveStatus都应该是一样的？,基本控制参数
+Low Frequency Vibration Filter1 Bandwidth,低频振动滤波器1带宽,Control,76,,Val,REAL32,RW,0.01,3.40282347e+38,1,Hz,low_freq_vibra_filter1_bw,Y,Enabled|Disabled,立即,Y,10,0x3662,0x3,Struct,UNS32,0,4294967295,10,0.1Hz,,,,1205,2,疑问,滤波器的DriveStatus与指令滤波器的DriveStatus不一样，是否滤波器的DriveStatus都应该是一样的？,基本控制参数
+Low Frequency Vibration Filter2 Type,低频振动滤波器2类型,Control,77,,Val,UNS8,RW,0,4,0,-,low_freq_vibra_filter2_type,Y,Enabled|Disabled,立即,Y,1,0x3662,0x4,Struct,UNS8,0,4,0,-,"0：不滤波
+1：低通滤波
+4：带阻滤波",,,1206,1,疑问,滤波器的DriveStatus与指令滤波器的DriveStatus不一样，是否滤波器的DriveStatus都应该是一样的？,基本控制参数
+Low Frequency Vibration Filter2 Frequency,低频振动滤波器2频率,Control,78,,Val,REAL32,RW,0.01,3.40282347e+38,1000,Hz,low_freq_vibra_filter2_freq,Y,Enabled|Disabled,立即,Y,10,0x3662,0x5,Struct,UNS32,0,4294967295,10000,0.1Hz,,,,1208,2,疑问,滤波器的DriveStatus与指令滤波器的DriveStatus不一样，是否滤波器的DriveStatus都应该是一样的？,基本控制参数
+Low Frequency Vibration Filter2 Bandwidth,低频振动滤波器2带宽,Control,79,,Val,REAL32,RW,0.01,3.40282347e+38,1,Hz,low_freq_vibra_filter2_bw,Y,Enabled|Disabled,立即,Y,10,0x3662,0x6,Struct,UNS32,0,4294967295,10,0.1Hz,,,,1210,2,疑问,滤波器的DriveStatus与指令滤波器的DriveStatus不一样，是否滤波器的DriveStatus都应该是一样的？,基本控制参数
+Low Frequency Vibration Filter3 Type,低频振动滤波器3类型,Control,80,,Val,UNS8,RW,0,4,0,-,low_freq_vibra_filter3_type,Y,Enabled|Disabled,立即,Y,1,0x3662,0x7,Struct,UNS8,0,4,0,-,"0：不滤波
+1：低通滤波
+4：带阻滤波",,,1211,1,疑问,滤波器的DriveStatus与指令滤波器的DriveStatus不一样，是否滤波器的DriveStatus都应该是一样的？,基本控制参数
+Low Frequency Vibration Filter3 Frequency,低频振动滤波器3频率,Control,81,,Val,REAL32,RW,0.01,3.40282347e+38,1000,Hz,low_freq_vibra_filter3_freq,Y,Enabled|Disabled,立即,Y,10,0x3662,0x8,Struct,UNS32,0,4294967295,10000,0.1Hz,,,,1213,2,疑问,滤波器的DriveStatus与指令滤波器的DriveStatus不一样，是否滤波器的DriveStatus都应该是一样的？,基本控制参数
+Low Frequency Vibration Filter3 Bandwidth,低频振动滤波器3带宽,Control,82,,Val,REAL32,RW,0.01,3.40282347e+38,1,Hz,low_freq_vibra_filter3_bw,Y,Enabled|Disabled,立即,Y,10,0x3662,0x9,Struct,UNS32,0,4294967295,10,0.1Hz,,,,1215,2,疑问,滤波器的DriveStatus与指令滤波器的DriveStatus不一样，是否滤波器的DriveStatus都应该是一样的？,基本控制参数
+Low Frequency Vibration Filter4 Type,低频振动滤波器4类型,Control,83,,Val,UNS8,RW,0,4,0,-,low_freq_vibra_filter4_type,Y,Enabled|Disabled,立即,Y,1,0x3662,0xA,Struct,UNS8,0,4,0,-,"0：不滤波
+1：低通滤波
+4：带阻滤波",,,1216,1,疑问,滤波器的DriveStatus与指令滤波器的DriveStatus不一样，是否滤波器的DriveStatus都应该是一样的？,基本控制参数
+Low Frequency Vibration Filter4 Frequency,低频振动滤波器4频率,Control,84,,Val,REAL32,RW,0.01,3.40282347e+38,1000,Hz,low_freq_vibra_filter4_freq,Y,Enabled|Disabled,立即,Y,10,0x3662,0xB,Struct,UNS32,0,4294967295,10000,0.1Hz,,,,1218,2,疑问,滤波器的DriveStatus与指令滤波器的DriveStatus不一样，是否滤波器的DriveStatus都应该是一样的？,基本控制参数
+Low Frequency Vibration Filter4 Bandwidth,低频振动滤波器4带宽,Control,85,,Val,REAL32,RW,0.01,3.40282347e+38,1,Hz,low_freq_vibra_filter4_bw,Y,Enabled|Disabled,立即,Y,10,0x3662,0xC,Struct,UNS32,0,4294967295,10,0.1Hz,,,,1220,2,疑问,滤波器的DriveStatus与指令滤波器的DriveStatus不一样，是否滤波器的DriveStatus都应该是一样的？,基本控制参数
+Input Shaping Enable,末端振动抑制功能开关,Control,86,,Val,UNS8,RW,0,1,0,-,input_shaping_enable,Y,Disabled,立即,Y,1,0x3665,0x01,Struct,UNS8,0,1,0,-,,,,1237,1,,,末端振动抑制参数
+System Vibration Frequency,系统振动频率,Control,87,,Val,REAL32,RW,0.01,3.40282347e+38,1,Hz,system_vibration_freq,Y,Disabled,立即,Y,10,0x3665,0x02,Struct,UNS32,0,4294967295,10,0.1Hz,,,,1239,2,,,末端振动抑制参数
+System Vibration Damping Ratio,系统振动阻尼比,Control,88,,Val,REAL32,RW,0.001,1,0,-,system_vibration_damping_ratio,Y,Disabled,立即,Y,1000,0x3665,0x03,Struct,UNS32,1,1000,0,-,,,,1241,2,,,末端振动抑制参数
+Residual Vibration Ratio,残余振动比,Control,89,,Val,REAL32,RW,0.001,1,0,-,residual_vibration_ratio,Y,Disabled,立即,Y,1000,0x3665,0x04,Struct,UNS32,1,1000,0,0.10%,,,,1243,2,,,末端振动抑制参数
+Feedback Swap Enable,反馈互换开关,Control,90,,Val,UNS8,RW,0,1,0,-,fb_swap_enable,Y,Disabled,立即,Y,1,0x366b,0x00,Val,UNS8,0,1,0,-,,,,,,,,编码器参数
+Motor Direction Reverse,电机方向反向,Control,90,,Val,UNS8,RW,0,1,0,-,fb_swap_enable,Y,Disabled,立即,Y,1,0x3680,0x00,Val,UNS8,0,1,0,-,,,,,,,,编码器参数
+Force Torque Compensation Enable,力控力矩补偿功能开关,Control,91,,Val,UNS8,RW,0,1,0,-,force_torque_comp_enable,Y,Disabled,立即,N,1,,,Val,UNS8,-,-,-,,,,,,,,,
+Force Torque Compensation Table,力控力矩补偿表,Control,92,,Array,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,-,force_torque_table[100],Y,Disabled,立即,N,1,,,,,-,-,-,,,,,,,,,
+Quick Stop Action Mode,快速停止动作模式,Service,1,,Val,INTEGER16,RW,0,8,2,-,quick_stop_action_mode,Y,Enabled|Disabled,立即,Y,1,0x605A,0x00,Val,INTEGER16,0,8,2,,"0：自由停机，保持自由运行状态
+1：以0x6084-0x00（轮廓减速度）设定的减速度斜坡停机（回零模式下则为0x609A-0x00，回零减速度），停机完成后保持自由运行状态
+2：以0x6085-0x00（快速停止减速度）设定的减速度斜坡停机。停机完成后保持switch on disabled
+3：以最大减速度紧急停止转矩停机，停机完成后保持自由运行状态
+5：以0x6084-0x00（轮廓减速度）设定的减速度斜坡停机（回零模式下则为0x609A-0x00，回零减速度），完成后保持位置锁定状态
+6：以0x6085-0x00（快速停止减速度）设定的减速度斜坡停机，停机完成后保持位置锁定状态
+7：以最大减速度紧急停止转矩停机，停机完成后保持位置锁定状态",https://hs9e67ygio.feishu.cn/wiki/wikcnkvEH4O7rOoccLEnBNkRrOK#doxcnsIwiQU0YOy0UC6snH521Wc,,61445,1,,,quick stop参数
+Shutdown Action Mode,停机动作模式,Service,2,,Val,INTEGER16,RW,0,1,0,-,shutdown_action_mode,Y,Enabled|Disabled,立即,Y,1,0x605B,0x00,Val,INTEGER16,0,1,0,,,,,61446,1,,,基本控制参数
+Fault Response Action Mode,故障响应动作模式,Service,3,,Val,INTEGER16,RW,0,4,0,-,fault_response_action_mode,Y,Enabled|Disabled,立即,Y,1,0x605E,0x00,Val,INTEGER16,0,4,0,,,,,61449,1,,,基本控制参数
+Quick Stop Deceleration,快速停止减速度,Service,4,,Val,REAL32,RW,0,service_param_.app_dec_limit,2147483647,p/s^2,quick_stop_deceleration,Y,Enabled|Disabled,立即,Y,1,0x6085,0x00,Val,UNS32,0,#VALUE!,2147483647,,接收到急停指令后电机速度以此减速度减速到0,https://hs9e67ygio.feishu.cn/wiki/wikcnkvEH4O7rOoccLEnBNkRrOK#doxcnsIwiQU0YOy0UC6snH521Wc,,61513,2,疑问,无法计算402Upplimit,quick stop参数
+Quick Stop Deceleration RPM,快速停止减速度(RPM),Service,5,,Val,UNS32,RW,0,4294967295,2147483647,rpm/s,quick_stop_deceleration_rpm,Y,Enabled|Disabled,立即,N,1,,,,,-,-,-,,,,,,,,,
+System Max Current,驱动器电机组合电流限制,Service,6,IMAX,Val,REAL32,RO,0,3.40282347e+38,10,A,system_max_current,Y,Enabled|Disabled,只读,N,1,,,,,-,-,-,,,,,,,,,
+System Max Speed,驱动器电机组合速度限制,Service,7,VMAX,Val,REAL32,RO,0,3.40282347e+38,136534,p/s,system_max_speed,Y,Enabled|Disabled,只读,N,1,,,,,-,-,-,,,,,,,,,
+System Max Speed RPM,驱动器电机组合速度限制(RPM),Service,8,VMAX,Val,UNS32,RO,0,4294967295,2000,rpm,system_max_speed_rpm,Y,Enabled|Disabled,只读,N,1,,,,,-,-,-,,,,,,,,,
+Application Current Limit Relative,应用电流限制相对值,Service,9,ILIMR,Val,REAL32,RW,0,service_param_.system_max_current / motor_param_.motor_cont_current,2,-,app_current_limit_relative,Y,Enabled|Disabled,立即,Y,1000,0x6073,0x00,Val,UNS16,0,#VALUE!,2000,,应用电流限制相对值为电机额定电流的百分比。,https://hs9e67ygio.feishu.cn/wiki/wikcnj21j5OH9lEg7eoLT8HB1Ob?from=from_copylink,,61477,1,错误,前后数据类型不一致，无法计算402Upplimit,驱动器限制类参数
+Application Current Limit,应用电流限制,Service,10,ILIM,Val,REAL32,RW,0,service_param_.system_max_current,2,A,app_current_limit,Y,Enabled|Disabled,立即,Y,1000,0x364C,0x00,Val,UNS32,0,#VALUE!,2000,,应用限制电流 = min[电机额定电流*应用限制电流相对值，电机峰值电流，驱动器峰值电流],https://hs9e67ygio.feishu.cn/wiki/wikcnj21j5OH9lEg7eoLT8HB1Ob?from=from_copylink,,1123,2,疑问,无法计算402Upplimit,驱动器限制类参数
+Application Torque Limit Relative,应用力矩限制相对值,Service,11,TLIMR,Val,REAL32,RW,0,service_param_.system_max_current / motor_param_.motor_cont_current,2,-,app_torque_limit_relative,Y,Enabled|Disabled,立即,Y,1000,0x6072,0x00,Val,UNS16,0,#VALUE!,2000,,"                                         ",,,61476,1,疑问,无法计算402Upplimit,驱动器限制类参数
+Application Torque Limit,应用力矩限制,Service,12,TLIM,Val,REAL32,RW,0,service_param_.system_max_current,2,mN,app_torque_limit,Y,Enabled|Disabled,立即,N,1000,,,,,-,-,-,,,,,,,,,
+Application Acceleration Limit,应用加速度限制,Service,13,ACCLIM,Val,REAL32,RW,0,0xFFFFFF00,4294967040,p/s^2,app_acc_limit,Y,Enabled|Disabled,立即,Y,1,0x60C5,0x00,Val,UNS32,0,#VALUE!,4294967040,,最大加速度,https://hs9e67ygio.feishu.cn/wiki/wikcn9mUAPtvkzlOcCvaXhJJRxf?from=from_copylink,,61597,2,疑问,无法计算402Upplimit,驱动器限制类参数
+Application Acceleration Limit RPM,应用加速度限制(RPM),Service,14,ACCLIM,Val,UNS32,RW,0,N,4294967295,rpm/s,app_acc_limit_rpm,Y,Enabled|Disabled,立即,N,1,,,,,-,-,-,,,,,,,,,
+Application Deceleration Limit,应用减速度限制,Service,15,DECLIM,Val,REAL32,RW,0,0xFFFFFF00,4294967040,p/s^2,app_dec_limit,Y,Enabled|Disabled,立即,Y,1,0x60C6,0x00,Val,UNS32,0,#VALUE!,4294967040,,最大减速度,https://hs9e67ygio.feishu.cn/wiki/wikcnd71t6CQFvp7pWZyrxVQV9c?from=from_copylink,,61599,2,疑问,无法计算402Upplimit,驱动器限制类参数
+Application Deceleration Limit RPM,应用减速度限制(RPM),Service,16,DECLIM,Val,UNS32,RW,0,4294967295,4294967295,rpm/s,app_dec_limit_rpm,Y,Enabled|Disabled,立即,N,1,,,,,-,-,-,,,,,,,,,
+Application Speed Limit,应用速度限制,Service,17,VLIM,Val,REAL32,RW,0,service_param_.system_max_speed,136533.333,p/s,app_speed_limit,Y,Enabled|Disabled,立即,Y,1,0x607F,0x00,Val,UNS32,0,#VALUE!,136533,,位置模式和速度模式下的目标速度不可以超过应用速度限制值。力矩模式下的运行速度不超过应用速度限制值。,http://wiki.dige.com/pages/viewpage.action?pageId=27429625,,61501,2,疑问,无法计算402Upplimit,驱动器限制类参数
+Application Speed Limit RPM,应用速度限制(RPM),Service,18,VLIM,Val,UNS32,RW,0,4294967295,2000,rpm,app_speed_limit_rpm,Y,Enabled|Disabled,立即,N,1,,,,,-,-,-,,,,,,,,,
+Position Underflow Threshold,位置溢出最小值,Service,19,,Val,INTEGER64,RW,-9223372036854775808,9223372036854775807,-2147483647,p,position_underflow_threshold,Y,Enabled|Disabled,立即,Y,1,0x607B,0x01,Struct,INTEGER32,-2147483648,2147483647,-2147483647,,限制用户位置下限值,https://hs9e67ygio.feishu.cn/wiki/wikcnw650eIW0aZEClDbUKRyrPf?from=from_copylink,,61490,2,疑问,前后数据类型不一致,驱动器限制类参数
+Position Overflow Threshold,位置溢出最大值,Service,20,,Val,INTEGER64,RW,-9223372036854775808,9223372036854775807,2147483647,p,position_overflow_threshold,Y,Enabled|Disabled,立即,Y,1,0x607B,0x02,Struct,INTEGER32,-2147483648,2147483647,2147483647,,限制用户位置上限值,https://hs9e67ygio.feishu.cn/wiki/wikcnw650eIW0aZEClDbUKRyrPf?from=from_copylink,,61492,2,疑问,前后数据类型不一致,驱动器限制类参数
+Application Position Limit Enable,应用位置限制开关,Service,21,,Val,UNS8,RW,0,1,0,-,app_position_limit_enable,Y,Disabled,立即,Y,1,0x3535,0x00,Val,UNS8,0,1,0,,"用于软件位置超程警告功能
+0：关闭
+1：打开
+",https://hs9e67ygio.feishu.cn/wiki/wikcnw650eIW0aZEClDbUKRyrPf?from=from_copylink,,76,1,,,驱动器限制类参数
+Application Position Lower Limit,应用位置下限,Service,22,,Val,INTEGER64,RW,-9223372036854775808,9223372036854775807,-2147483647,p,app_position_lower_limit,Y,Enabled|Disabled,立即,N,1,,,,,-,-,-,,,,,,,,,
+Application Position Upper Limit,应用位置上限,Service,23,,Val,INTEGER64,RW,-9223372036854775808,9223372036854775807,2147483647,p,app_position_upper_limit,Y,Enabled|Disabled,立即,N,1,,,,,-,-,-,,,,,,,,,
+Hardware Short Circuit Detect Enable,硬件短路保护检测开关,Service,24,,Val,UNS8,RW,0,1,1,-,hw_short_circuit_detect_enable,Y,Disabled,立即,N,1,0x35CE,0x00,Val,UNS8,-,-,-,,,,,924,1,疑问,目前没有启动，读到的一直是0，不可写,
+Flash Status Detect Enable,Flash存储状态检测开关,Service,25,,Val,UNS8,RW,0,1,1,-,flash_status_detect_enable,Y,Disabled,立即,N,1,0x35CF,0x00,Val,UNS8,-,-,-,,,,,925,1,疑问,目前没有启动，读到的一直是0，不可写,
+Position Feedback Status Detect Enable,位置反馈状态检测开关,Service,26,,Val,UNS8,RW,0,1,1,-,position_fb_status_detect_enable,Y,Disabled,立即,N,1,0x35D0,0x00,Val,UNS8,-,-,-,,,,,926,1,疑问,目前没有启动，读到的一直是0，不可写,
+Hall Status Detect Enable,霍尔传感器状态检测开关,Service,27,,Val,UNS8,RW,0,1,1,-,hall_status_detect_enable,Y,Disabled,立即,N,1,0x35D1,0x00,Val,UNS8,-,-,-,,,,,927,1,疑问,目前没有启动，读到的一直是0，不可写,
+Voltage Range Detect Enable,电压范围检测开关,Service,28,,Val,UNS8,RW,0,1,1,-,voltage_range_detect_enable,Y,Disabled,立即,N,1,0x35D2,0x00,Val,UNS8,-,-,-,,,,,928,1,疑问,目前没有启动，读到的一直是0，不可写,
+Bus Under Voltage Threshold,母线欠压阈值,Service,29,,Val,REAL32,RW,drive_param_,drive_param_,1,V,bus_under_voltage_threshold,Y,Disabled,立即,Y,1000,0x3527,0x00,Val,UNS32,#VALUE!,#VALUE!,1000,mV,驱动器母线电压低于此阈值报母线欠压错误,https://hs9e67ygio.feishu.cn/wiki/wikcnkcbduyeSbFPOCbT5zd1eCb#doxcnuu6QSwEeAesYIz6Z0Mfc0f,,62,2,疑问,无法计算402Upplimit和402Lowlimit,设备保护参数
+Bus Over Voltage Threshold,母线过压阈值,Service,30,,Val,REAL32,RW,drive_param_.drive_bus_voltage_lower_limit,drive_param_.drive_bus_voltage_upper_limit,2,V,bus_over_voltage_threshold,Y,Enabled|Disabled,立即,Y,1000,0x3526,0x00,Val,UNS32,#VALUE!,#VALUE!,2000,mV,驱动器母线电压超过此阈值报母线过压错误,https://hs9e67ygio.feishu.cn/wiki/wikcnkcbduyeSbFPOCbT5zd1eCb#doxcnuu6QSwEeAesYIz6Z0Mfc0f,,60,2,疑问,无法计算402Upplimit和402Lowlimit,设备保护参数
+STO Enable,STO功能开关,Service,31,,Val,UNS8,RW,0,1,1,-,sto_enable,Y,Enabled|Disabled,立即,N,1,0x3539,0x00,Val,UNS8,-,-,-,-,,,,81,1,疑问,目前实际STO没有开关设置,
+Positive Limit Switch Alert Enable,正极限开关检测开关,Service,32,,Val,UNS8,RW,0,1,0,-,positive_limit_switch_alert_enable,Y,Enabled|Disabled,立即,Y,1,0x3544,0x00,Val,UNS8,0,1,0,-,"此开关用于硬件限位功能（增量式编码器回零后生效）。
+0：关闭
+1：打开",http://wiki.dige.com/pages/viewpage.action?pageId=19269207,,100,1,,,位置保护参数
+Negative Limit Switch Alert Enable,负极限开关检测开关,Service,33,,Val,UNS8,RW,0,1,0,-,negative_limit_switch_alert_enable,Y,Enabled|Disabled,立即,Y,1,0x3545,0x00,Val,UNS8,0,1,0,-,"此开关用于硬件限位功能（增量式编码器回零后生效）。
+0：关闭
+1：打开",http://wiki.dige.com/pages/viewpage.action?pageId=19269207,,101,1,,,位置保护参数
+Drive Overload Detect Enable,驱动器过载检测开关,Service,34,,Val,UNS8,RW,0,1,0,,drive_overload_detect_enable,Y,Enabled|Disabled,立即,N,1,0x35D3,0x00,Val,UNS8,-,-,-,,,,,929,1,疑问,目前没有启动，读到的一直是0，不可写,
+Drive Overload Current,驱动器过载电流,Service,35,DIOL,Val,REAL32,RW,drive_param_.drive_cont_current,drive_param_.drive_peak_current,10,A,drive_overload_current,Y,Enabled|Disabled,立即,Y,1,0x35B8,0x01,Struct,UNS32,#VALUE!,#VALUE!,10,mA,即驱动器额定电流。,http://wiki.dige.com/pages/viewpage.action?pageId=17137784,,823,2,错误,此字典实际不可写，无法计算402Upplimit和402Lowlimit,电流保护参数
+Drive Overload Current Duration,驱动器过载电流持续时间,Service,36,,Val,UNS32,RW,0,4294967295,2000,ms,drive_overload_current_duration,Y,Enabled|Disabled,立即,Y,1,0x35B8,0x04,Struct,UNS32,0,4294967295,2000,ms,驱动器累计热量最大值 Qmax =  驱动器额定电流^2 * 驱动器过载电流持续时间，驱动器累计热量达到最大值时，报驱动器过载保护,http://wiki.dige.com/pages/viewpage.action?pageId=17137784,,829,2,,,电流保护参数
+Drive Peak Current Detect Enable,驱动器峰值电流检测开关,Service,37,,Val,UNS8,RW,0,1,1,,drive_peak_current_detect_enable,Y,Enabled|Disabled,立即,N,1,0x35D4,0x00,Val,UNS8,-,-,-,,,,,930,1,疑问,目前没有启动，读到的一直是0，不可写,
+Drive Peak Current Duration,驱动器峰值电流持续时间,Service,38,,Val,UNS32,RW,0,4294967295,200,ms,drive_peak_current_duration,Y,Disabled,重启,Y,1,0x35B8,0x03,Struct,UNS32,0,4294967295,200,ms,当前电流 ≥ 驱动器峰值电流 且 持续时间 ≥ 驱动器峰值电流持续时间时，报驱动器峰值电流过载保护,https://hs9e67ygio.feishu.cn/wiki/wikcnZ2JYA2xB8EBAXHphXM7Ejg?from=from_copylink,,827,2,错误,此字典实际不可写,电流保护参数
+Motor Overload Detect Enable,电机过载检测开关,Service,39,,Val,UNS8,RW,0,1,1,,motor_overload_detect_enable,Y,Enabled|Disabled,立即,N,1,0x35D5,0x00,Val,UNS8,-,-,-,,,,,931,1,疑问,目前没有启动，读到的一直是0，不可写,
+Motor Overload Current,电机过载电流,Service,40,MIOL,Val,REAL32,RW,motor_param_.motor_cont_current,motor_param_.motor_peak_current,10,A,motor_overload_current,Y,Enabled|Disabled,立即,Y,1,0x35D6,0x00,Val,UNS32,#VALUE!,#VALUE!,10,,即电机额定电流。电机额定电流不受驱动器额定电流、驱动器峰值电流限制。,https://hs9e67ygio.feishu.cn/wiki/wikcnZ2JYA2xB8EBAXHphXM7Ejg#doxcnKAU4Uay4EiwEykx4t7zwSX,,933,2,疑问,无法计算402Upplimit和402Lowlimit,电流保护参数
+Motor Overload Current Duration,电机过载电流持续时间,Service,41,,Val,UNS32,RW,0,4294967295,2000,ms,motor_overload_current_duration,Y,Enabled|Disabled,立即,Y,1,0x3524,0x00,Val,UNS32,0,4294967295,2000,,用于计算电机热量累计值。电机热量累计最大值 Qmax =  电机额定电流^2 * 电机过载电流持续时间，电机累计热量达到最大值时，报电机过载保护。,https://hs9e67ygio.feishu.cn/wiki/wikcnZ2JYA2xB8EBAXHphXM7Ejg#doxcng8gUuc2ekEcsistoTLDhgg,,56,2,,,电流保护参数
+Motor Peak Current Detect Enable,电机峰值电流检测开关,Service,42,,Val,UNS8,RW,0,1,1,,motor_peak_current_detect_enable,Y,Enabled|Disabled,立即,N,1,0x35D7,0x00,Val,UNS8,-,-,-,,,,,934,1,疑问,目前没有启动，读到的一直是0，不可写,
+Motor Peak Current Duration,电机峰值电流持续时间,Service,43,,Val,UNS32,RW,0,4294967295,200,ms,motor_peak_current_duration,Y,Enabled|Disabled,立即,Y,1,0x35D8,0x00,Val,UNS32,0,4294967295,200,,用于判断电机峰值电流过载。当前电流 ≥ 电机峰值电流 且 持续时间 ≥ 电机峰值电流持续时间时，报电机峰值电流过载保护。,https://hs9e67ygio.feishu.cn/wiki/wikcnZ2JYA2xB8EBAXHphXM7Ejg#doxcnKGCMeA2kkEkYMlIxo6stjh,,936,2,,,电流保护参数
+Overspeed Detect Enable,过速检测开关,Service,44,,Val,UNS8,RW,0,1,0,-,overspeed_detect_enable,Y,Enabled|Disabled,立即,Y,1,0x3536,0x00,Val,UNS8,0,1,0,,0：关闭，1：开启,https://hs9e67ygio.feishu.cn/wiki/wikcnbs9ia41jC5mgEzzcKiyBxh?from=from_copylink,,77,1,,,速度保护参数
+Overspeed Threshold,过速阈值,Service,45,VOL,Val,REAL32,RW,0,3.40282347e+38,163840,p/s,overspeed_threshold,Y,Enabled|Disabled,立即,Y,1,0x35D9,0x00,Val,UNS32,0,4294967295,163840,,过速阈值为应用限制速度的1.2倍。过速检测开关有效时，电机负载端速度超过过速保护阈值时，报电机过速故障。,https://hs9e67ygio.feishu.cn/wiki/wikcnbs9ia41jC5mgEzzcKiyBxh?from=from_copylink,,938,2,,,速度保护参数
+Overspeed Threshold RPM,过速阈值(RPM),Service,46,VOL,Val,UNS32,RW,0,4294967295,2400,rpm,overspeed_threshold_rpm,Y,Enabled|Disabled,立即,N,1,,,,,-,-,-,,,,,,,,,
+Motor Stuck Detect Enable,电机堵转保护开关,Service,47,,Val,UNS8,RW,0,1,1,,motor_stuck_detect_enable,Y,Enabled|Disabled,立即,N,1,0x35DA,0x00,Val,UNS8,-,-,-,,,,,939,1,疑问,目前没有启动，读到的一直是0，不可写,
+Motor Stuck Threshold Time,电机堵转检测阈值时间,Service,48,,Val,UNS32,RW,0,4294967295,3000,ms,motor_stuck_threshold_time,Y,Enabled|Disabled,立即,Y,1,0x3525,0x00,Val,UNS32,0,4294967295,3000,,电机堵转判断的条件之一：电机堵转时间 ≥ 电机堵转检测阈值时间,https://hs9e67ygio.feishu.cn/wiki/wikcnCm9DqsB3och8pfJbglAsae#doxcnqYiuMckwOaaYwAq9yAbejb,,58,2,,,设备保护参数
+Position Following Error Detect Enable,位置跟随误差检测开关,Service,49,,Val,UNS8,RW,0,1,1,,position_following_error_detect_enable,Y,Enabled|Disabled,立即,N,1,0x35DB,0x00,Val,UNS8,-,-,-,,,,,940,1,疑问,目前没有启动，读到的一直是0，不可写,
+Position Following Error Threshold,位置跟随误差阈值,Service,50,,Val,UNS32,RW,1,4294967295,10000,p,position_following_error_threshold,Y,Enabled|Disabled,立即,Y,1,0x6065,0x00,Val,UNS32,1,4294967295,10000,UU,当前位置误差大于位置跟随误差阈值且持续位置跟随误差阈值时间时，报跟随误差过大故障。,https://hs9e67ygio.feishu.cn/wiki/wikcnnyEHct2IzFAPR4kNGxeLTc?from=from_copylink,,61459,2,,,位置保护参数
+Position Following Error Threshold Time,位置跟随误差阈值时间,Service,51,,Val,UNS16,RW,0,65535,20,ms,position_following_error_threshold_time,Y,Enabled|Disabled,立即,Y,1,0x6066,0x00,Val,UNS16,0,65535,20,ms,当前位置误差超过位置跟随误差阈值时开始计时。,https://hs9e67ygio.feishu.cn/wiki/wikcnnyEHct2IzFAPR4kNGxeLTc?from=from_copylink,,61460,1,,,位置保护参数
+Force Range Detect Enable,力控范围检测开关,Service,52,,Val,UNS8,RW,0,1,1,,force_range_detect_enable,Y,Enabled|Disabled,立即,N,1,0x35DC,,,UNS8,-,-,-,,,,,941,1,疑问,目前没有启动，读到的一直是0，不可写,
+Under Force Threshold,力控阈值最小值,Service,53,,Val,INTEGER32,RW,-2147483648,2147483647,-2147483647,-,under_force_threshold,Y,Enabled|Disabled,立即,Y,1,0x35B6,0x02,Val,INTEGER32,-2147483648,2147483647,-2147483647,-,,,,811,2,疑问,402ObjectCode不是struct?,
+Over Force Threshold,力控阈值最大值,Service,54,,Val,INTEGER32,RW,-2147483648,2147483647,2147483647,-,over_force_threshold,Y,Enabled|Disabled,立即,Y,1,0x35B6,0x01,Val,INTEGER32,-2147483648,2147483647,2147483647,-,,,,813,2,疑问,402ObjectCode不是Struct？,
+Drive Temperature Detect Enable,驱动器温度检测开关,Service,55,,Val,UNS8,RW,0,1,1,,drive_temp_detect_enable,Y,Enabled|Disabled,立即,N,1,0x35DD,,,UNS8,-,-,-,,,,,942,1,疑问,目前没有启动，读到的一直是0，不可写,
+Drive Low Temperature Fault Threshold,驱动器低温报错阈值,Service,56,,Val,INTEGER32,RW,-2147483648,2147483647,-20,℃,drive_low_temp_fault_threshold,Y,Enabled|Disabled,立即,Y,1,0x353B,0x00,Val,INTEGER32,-2147483648,2147483647,-20,℃,驱动器温度小于此阈值且持续驱动器温度保护时间阈值时，报驱动器温度过低故障,https://hs9e67ygio.feishu.cn/wiki/wikcndCGpI1T3gCIMtkYOefVTGd#doxcngCscGuEqQgCgnNrW8SQToV,,85,2,,,设备保护参数
+Drive High Temperature Warning Threshold,驱动器高温警告阈值,Service,57,,Val,INTEGER32,RW,-2147483648,2147483647,70,℃,drive_high_temp_warning_threshold,Y,Enabled|Disabled,立即,Y,1,0x353D,0x00,Val,INTEGER32,-2147483648,2147483647,70,℃,驱动器温度高于此阈值且持续驱动器温度保护时间阈值时间时，报驱动器温度过高警告,https://hs9e67ygio.feishu.cn/wiki/wikcndCGpI1T3gCIMtkYOefVTGd#doxcnSW0OiYsQY64ieM27DS8I3d,,89,2,,,设备保护参数
+Drive High Temperature Fault Threshold,驱动器高温报错阈值,Service,58,,Val,INTEGER32,RW,-2147483648,100,85,℃,drive_high_temp_fault_threshold,Y,Enabled|Disabled,立即,Y,1,0x353A,0x00,Val,INTEGER32,-2147483648,100,85,℃,驱动器温度高于此阈值且持续驱动器温度保护阈值时间时，报驱动器温度过高故障,https://hs9e67ygio.feishu.cn/wiki/wikcndCGpI1T3gCIMtkYOefVTGd#doxcnMCeacaSsmYws2ztBBEMChd,,83,2,,,设备保护参数
+Drive Temperature Threshold Time,驱动器温度保护阈值时间,Service,59,,Val,UNS32,RW,0,4294967295,2000,ms,drive_temp_threshold_time,Y,Enabled|Disabled,立即,Y,1,0x3587,0x00,Val,UNS32,0,4294967295,2000,ms,驱动器温度超出保护阈值范围时开始计时，驱动器温度在保护阈值范围内时清零或故障清除后清零。,https://hs9e67ygio.feishu.cn/wiki/wikcndCGpI1T3gCIMtkYOefVTGd#doxcncME62MkSycg8YpZUVkOsDc,,522,2,,,设备保护参数
+Motor Temperature Detect Enable,电机温度检测开关,Service,60,,Val,UNS8,RW,0,1,1,,motor_temp_detect_enable,Y,Enabled|Disabled,立即,N,1,0x35DE,0x00,Val,UNS8,-,-,-,,,,,943,1,疑问,目前没有启动，读到的一直是0，不可写,
+Motor Low Temperature Fault Threshold,电机低温报错阈值,Service,61,,Val,INTEGER32,RW,-2147483648,2147483647,-20,℃,motor_low_temp_fault_threshold,Y,Enabled|Disabled,立即,Y,1,0x35DF,0x00,Val,INTEGER32,-2147483648,2147483647,-20,,,,,945,2,,,
+Motor High Temperature Warning Threshold,电机高温警告阈值,Service,62,,Val,INTEGER32,RW,-2147483648,2147483647,75,℃,motor_high_temp_warning_threshold,Y,Enabled|Disabled,立即,Y,1,0x35E0,0x00,Val,INTEGER32,-2147483648,2147483647,75,,,,,947,2,,,
+Motor High Temperature Fault Threshold,电机高温报错阈值,Service,63,,Val,INTEGER32,RW,-2147483648,2147483647,90,℃,motor_high_temp_fault_threshold,Y,Enabled|Disabled,立即,Y,1,0x353C,0x00,Val,INTEGER32,-2147483648,2147483647,90,℃,,,,87,2,,,
+Motor Temperature Threshold Time,电机温度保护阈值时间,Service,64,,Val,UNS32,RW,0,4294967295,2000,ms,motor_temp_threshold_time,Y,Enabled|Disabled,立即,Y,1,0x35E1,0x00,Val,UNS32,0,4294967295,2000,,,,,949,2,,,
+Position Target Reached Detect Enable,位置到达检测开关,Service,65,,Val,UNS8,RW,0,1,1,,position_target_reached_detect_enable,Y,Enabled|Disabled,立即,N,1,0x35E2,0x00,Val,UNS8,-,-,-,,,,,950,1,疑问,目前没有启动，读到的一直是0，不可写,
+Position Target Reached Window,位置到达检测窗口,Service,66,,Val,UNS32,RW,0,4294967295,100,p,position_target_reached_window,Y,Enabled|Disabled,立即,Y,1,0x6067,0x00,Val,UNS32,0,4294967295,100,UU,|当前位置 - 目标位置| ≤ 位置到达检测窗口 且 持续时间  ≧ 位置到达检测窗口时间时，则认为位置到达。,https://hs9e67ygio.feishu.cn/wiki/wikcnrGJB0ZlaxQrw3umPjkbFgc?from=from_copylink,,61462,2,,,位置保护参数
+Position Target Reached Window Time,位置到达检测窗口时间,Service,67,,Val,UNS16,RW,0,65535,20,ms,position_target_reached_window_time,Y,Enabled|Disabled,立即,Y,1,0x6068,0x00,Val,UNS16,0,65535,20,ms,|当前位置-目标位置| ≤ 位置到达窗口阈值时开始计时，|当前位置-目标位置| > 位置到达窗口阈值时清零。,https://hs9e67ygio.feishu.cn/wiki/wikcnrGJB0ZlaxQrw3umPjkbFgc?from=from_copylink,,61463,1,,,位置保护参数
+Velocity Target Reached Detect Enable,速度到达检测开关,Service,68,,Val,UNS8,RW,0,1,1,,velocity_target_reached_detect_enable,Y,Enabled|Disabled,立即,N,1,0x35E3,0x00,Val,UNS8,-,-,-,,,,,951,1,疑问,目前没有启动，读到的一直是0，不可写,
+Velocity Target Reached Window,速度到达检测窗口,Service,69,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,6826.6,p/s,velocity_target_reached_window,Y,Enabled|Disabled,立即,Y,1,0x606D,0x00,Val,UNS16,0,65535,6827,UU,|当前速度 - 目标速度|  ≤ 速度到达检测窗口且持续时间 ≧ 速度到达检测窗口时间时，则认为速度到达。,https://hs9e67ygio.feishu.cn/wiki/wikcnUCwgaeJqTGwmfr6JYBE4bd?from=from_copylink,,61471,1,,,速度保护参数
+Velocity Target Reached Window RPM,速度到达检测窗口(RPM),Service,70,,Val,UNS16,RW,0,65535,100,rpm,velocity_target_reached_window_rpm,Y,Enabled|Disabled,立即,N,1,,,,,-,-,-,,,,,,,,,
+Velocity Target Reached Window Time,速度到达检测窗口时间,Service,71,,Val,UNS16,RW,0,65535,20,ms,velocity_target_reached_window_time,Y,Enabled|Disabled,立即,Y,1,0x606E,0x00,Val,UNS16,0,65535,20,ms,|当前速度 - 目标速度| ≤ 速度到达检测窗口时开始计时，|当前速度 - 目标速度|>速度到达检测窗口时清零。,https://hs9e67ygio.feishu.cn/wiki/wikcnUCwgaeJqTGwmfr6JYBE4bd?from=from_copylink,,61472,1,,,速度保护参数
+Velocity Zero Detect Enable,零速检测开关,Service,72,,Val,UNS8,RW,0,1,1,,velocity_zero_detect_enable,Y,Enabled|Disabled,立即,N,1,0x35E4,0x00,Val,UNS8,-,-,-,,,,,952,1,疑问,目前没有启动，读到的一直是0，不可写,
+Velocity Zero Window,零速检测窗口,Service,73,,Val,REAL32,RW,3.40282347e+38,3.40282347e+38,6826.6,p/s,velocity_zero_window,Y,Enabled|Disabled,立即,Y,1,0x606F,0x00,Val,UNS16,340282347000000000000000000000000000000,65535,6827,UU,|当前速度| ≤  零速检测窗口 且持续时间  ≧  灵素检测窗口时间时，则认为零速到达。,https://hs9e67ygio.feishu.cn/wiki/wikcndjUgYEMKGvDjEctFpPaavh?from=from_copylink,,61473,1,,,速度保护参数
+Velocity Zero Window RPM,零速检测窗口(RPM),Service,74,,Val,REAL32,RW,3.40282347e+38,3.40282347e+38,100,rpm,velocity_zero_window_rpm,Y,Enabled|Disabled,立即,Y,1,0x606F,0x00,Val,UNS16,340282347000000000000000000000000000000,65535,100,UU,,,,,,,,速度保护参数
+Velocity Zero Window Time,零速检测窗口时间,Service,75,,Val,UNS16,RW,0,65535,20,ms,velocity_zero_window_time,Y,Enabled|Disabled,立即,Y,1,0x6070,0x00,Val,UNS16,0,65535,20,ms,|当前速度| ≤ 零速检测窗口时开始计时，|当前速度| > 零速检测窗口时清零。,https://hs9e67ygio.feishu.cn/wiki/wikcndjUgYEMKGvDjEctFpPaavh?from=from_copylink,,61474,1,,,速度保护参数
+Digital IO Input Filter Time,数字IO输入滤波时间,Service,76,,Array,UNS8,RW,0,255,0,ms,digital_io_input_filter_time[32],Y,Enabled|Disabled,立即,Y,1,0x359D,,Array,UNS8,0,255,0,ms,一般建议设置IO滤波时间，防止误触发。,https://hs9e67ygio.feishu.cn/wiki/wikcnKA1WlXyOhcr1CY74mVsamf?from=from_copylink,,631,1,,,GPI输入参数
+Digital IO Input Rising Edge Function,数字IO输入上升沿触发事件表,Service,77,,Array,UNS8,RW,0,41,0,-,digital_io_input_rising_edge_func[32],Y,Enabled|Disabled,立即,Y,1,0x359B,,Array,UNS8,0,41,0,,"0：忽略输入
+1：使能电机
+2：失能电机
+3：清除错误
+4：暂停指令
+5：急停
+6：切换工作模式
+10：回零开始
+15：切换位置模式
+16：切换速度模式
+17：切换力矩模式
+18：切换模拟量控速度模式
+19：切换模拟量控力矩模式
+20：切换脉冲控位置模式
+21：切换力控模式
+22：切换多段运行模式
+23：正极限开关信号
+24：回零开关信号
+25：负极限开关信号
+26：切换回零模式
+27：多段运行模式段触发指令
+28：多段运行模式段选bit0置1
+29：多段运行模式段选bit0置0
+30：多段运行模式段选bit1置1
+31：多段运行模式段选bit1置0
+32：多段运行模式段选bit2置1
+33：多段运行模式段选bit2置0
+34：多段运行模式段选bit3置1
+35：多段运行模式段选bit3置0
+36：取消暂停
+37：清除所有警告
+38：探针1
+39：探针2",https://hs9e67ygio.feishu.cn/wiki/wikcnKA1WlXyOhcr1CY74mVsamf?from=from_copylink,,565,1,,,GPI输入参数
+Digital IO Input Falling Edge Function,数字IO输入下降沿触发事件表,Service,78,,Array,UNS8,RW,0,41,0,-,digital_io_input_falling_edge_func[32],Y,Enabled|Disabled,立即,Y,1,0x359C,,Array,UNS8,0,41,0,,"0：忽略输入
+1：使能电机
+2：失能电机
+3：清除错误
+4：暂停指令
+5：急停
+6：切换工作模式
+10：回零开始
+15：切换位置模式
+16：切换速度模式
+17：切换力矩模式
+18：切换模拟量控速度模式
+19：切换模拟量控力矩模式
+20：切换脉冲控位置模式
+21：切换力控模式
+22：切换多段运行模式
+23：正极限开关信号
+24：回零开关信号
+25：负极限开关信号
+26：切换回零模式
+27：多段运行模式段触发指令
+28：多段运行模式段选bit0置1
+29：多段运行模式段选bit0置0
+30：多段运行模式段选bit1置1
+31：多段运行模式段选bit1置0
+32：多段运行模式段选bit2置1
+33：多段运行模式段选bit2置0
+34：多段运行模式段选bit3置1
+35：多段运行模式段选bit3置0
+36：取消暂停
+37：清除所有警告
+38：探针1
+39：探针2",https://hs9e67ygio.feishu.cn/wiki/wikcnKA1WlXyOhcr1CY74mVsamf?from=from_copylink,,598,1,,,GPI输入参数
+Digital IO Output Function,数字IO输出监视事件,Service,79,,Array,UNS8,RW,39,0,0,-,digital_io_output_function[32],Y,Enabled|Disabled,立即,Y,1,0x359E,,Array,UNS8,39,0,0,-,"0：通用输出
+1：目标到达
+2：伺服准备好
+3：位置到达
+4：零速到达
+5：速度到达
+6：回零成功
+7：驱动器错误
+8：抱闸输出
+9：警告输出
+27：多段运行模式运行状态
+28：Z相脉冲信号",https://hs9e67ygio.feishu.cn/wiki/wikcnbl80zy6stpRKaJyVXRXVSe?from=from_copylink,,664,1,,,GPO输出参数
+Digital IO Output Polarity,数字IO输出极性（上升下降沿）,Service,80,,Array,UNS8,RW,1,1,1,-,digital_io_output_polarity[32],Y,Enabled|Disabled,立即,Y,1,0x359F,,Array,UNS8,1,1,1,-,0：低电平，1：高电平,https://hs9e67ygio.feishu.cn/wiki/wikcnbl80zy6stpRKaJyVXRXVSe?from=from_copylink,,697,1,,,GPO输出参数
+Digital IO Output Mask,数字IO输出掩码开关,Service,81,,Val,UNS32,RW,0,4294967295,0,-,digital_io_output_mask,Y,Enabled|Disabled,立即,Y,1,0x60FE,0x02,Struct,UNS32,0,4294967295,0,-,"bit16控制output1；
+bit17控制output2；
+bit18控制output3；
+bit19控制output4.
+当IO 输出功能设置为通用输出，用户可以通过该字典子索引1的位来控制某个IO的状态，且受子索引2掩码控制子索引1对应的IO的状态是否生效。",https://hs9e67ygio.feishu.cn/wiki/wikcnbl80zy6stpRKaJyVXRXVSe?from=from_copylink,,61657,2,,,GPO输出参数
+Motor Brake Control Mode,电机抱闸控制模式,Service,82,,Val,UNS8,RW,0,1,0,-,motor_brake_control_mode,Y,Enabled|Disabled,立即,Y,1,0x35AD,0x04,Struct,UNS8,0,1,0,-,0：关闭抱闸自动使能，1：开启抱闸自动使能,https://hs9e67ygio.feishu.cn/wiki/wikcnk87bjCE7KVFSx0KFeKbt0e#doxcnyQ8w0GaeQO0k8vhAuSmr5g,,764,1,,,抱闸参数
+Motor Brake Engage Speed Threshold,电机抱闸制动速度阀值,Service,83,,Val,REAL32,RW,0,3.40282347e+38,0,p/s,motor_brake_engage_speed_threshold,Y,Enabled|Disabled,立即,Y,1,0x35AD,0x01,Struct,UNS32,0,4294967295,0,RPM,正常停机时，电机端速度< 抱闸制动速度阈值时，输出抱闸动作。,https://hs9e67ygio.feishu.cn/wiki/wikcnk87bjCE7KVFSx0KFeKbt0e#doxcnSoGmCQqCyioGSs2eXmdKIb,,759,2,,,抱闸参数
+Motor Brake Engage Speed Threshold RPM,电机抱闸制动速度阀值(RPM),Service,84,,Val,UNS32,RW,0,4294967295,30,rpm,motor_brake_engage_speed_threshold_rpm,Y,Enabled|Disabled,立即,N,,,,,,-,-,-,,,,,,,,,
+Motor Brake Engage Time Threshold,电机抱闸制动时间阈值,Service,85,,Val,UNS32,RW,0,4294967295,500,ms,motor_brake_engage_time_threshold,Y,Enabled|Disabled,立即,Y,1,0x35AD,0x07,Struct,UNS32,0,4294967295,500,ms,故障停机时，错误累计时间 > 抱闸制动时间阈值时，输出抱闸动作。,https://hs9e67ygio.feishu.cn/wiki/wikcnk87bjCE7KVFSx0KFeKbt0e#doxcn84OkcoQwyQaCayQDopFHPc,,770,2,,,抱闸参数
+Motor Brake Release Time,电机抱闸机械释放时间,Service,86,,Val,UNS32,RW,0,4294967295,200,ms,motor_brake_release_time,Y,Enabled|Disabled,立即,Y,1,0x35AD,0x02,Struct,UNS32,0,4294967295,200,ms,松闸动作累计时间 ≧ 抱闸机械释放时间时，进入松闸状态。,https://hs9e67ygio.feishu.cn/wiki/wikcnk87bjCE7KVFSx0KFeKbt0e#doxcnIcuk8WqE4e0qGArPjJF0kE,,761,2,,,抱闸参数
+Motor Brake Engage Time,电机抱闸机械制动时间,Service,87,,Val,UNS32,RW,0,4294967295,500,ms,motor_brake_engage_time,Y,Enabled|Disabled,立即,Y,1,0x35AD,0x03,Struct,UNS32,0,4294967295,500,ms,抱闸动作累计时间 ≧ 抱闸机械释放时间时，进入抱闸状态。,https://hs9e67ygio.feishu.cn/wiki/wikcnk87bjCE7KVFSx0KFeKbt0e#doxcnSy0OUOK4cQAy0EEqqFUhId,,763,2,,,抱闸参数
+Motor Brake Release Software Delay Time,电机抱闸释放软件延迟时间,Service,88,,Val,UNS32,RW,0,4294967295,300,ms,motor_brake_release_sw_delay_time,Y,Enabled|Disabled,立即,Y,1,0x35AD,0x05,Struct,UNS32,0,4294967295,300,ms,电机进入使能状态或者quick stop active状态或者第一次使能开始计时，当累计时间  ≧ 松闸释放软件延迟时间时，输出松闸动作。,https://hs9e67ygio.feishu.cn/wiki/wikcnk87bjCE7KVFSx0KFeKbt0e#doxcn40yauqmWoyCaiyQ2nTsnUg,,766,2,,,抱闸参数
+Motor Brake Engage Software Delay Time,电机抱闸制动软件延迟时间,Service,89,,Val,UNS32,RW,0,4294967295,0,ms,motor_brake_engage_sw_delay_time,Y,Enabled|Disabled,立即,Y,1,0x35AD,0x06,Struct,UNS32,0,4294967295,0,ms,电机进入失能状态开始计时，当累计时间  ≧ 抱闸释放软件延迟时间时，输出抱闸动作。,https://hs9e67ygio.feishu.cn/wiki/wikcnk87bjCE7KVFSx0KFeKbt0e#doxcn6WwW2SE8Qqyius3lLkmXVb,,768,2,,,抱闸参数
+Motor Brake PWM Signal Frequency,电机抱闸信号PWM频率,Service,90,,Val,UNS32,RW,1,4294967295,1000,Hz,motor_brake_pwm_signal_freq,Y,Disabled,,,1,0x35E5,0x00,Val,UNS32,1,4294967295,1000,,,,,954,2,疑问,是否对用户开放,
+Motor Brake PWM Signal Duty Cycle,电机抱闸信号PWM占空比,Service,91,,Val,UNS8,RW,1,100,50,％,motor_brake_pwm_signal_duty_cycle,Y,Disabled,,,1,0x35E6,0x00,Val,UNS8,1,100,50,,,,,955,1,疑问,是否对用户开放,
+Gear Ratio Motor Revolutions,齿轮比分子,Service,92,,Val,UNS32,RW,1,4294967295,1,-,gear_ratio_motor_rev,Y,Disabled,立即,N,1,0x6091,0x01,Val,UNS32,-,-,-,-,,,,61529,2,疑问,读取的字典值一直是0，写入几读出来也是0，是否对用户开放,
+Gear Ratio Load Revolutions,齿轮比分母,Service,93,,Val,UNS32,RW,1,4294967295,1,-,gear_ratio_load_rev,Y,Disabled,立即,N,1,0x6091,0x02,Val,UNS32,-,-,-,-,,,,61531,2,疑问,读取的字典值一直是0，写入几读出来也是0，是否对用户开放,
+Motion Polarity,运动极性,Service,94,,Val,UNS8,RW,0,255,0,-,motion_polarity,Y,Enabled|Disabled,立即,Y,1,0x607E,0x00,Val,UNS8,0,255,0,-,位置极性+且速度极性+时为0x00；位置极性-且速度极性+时为0x80；位置极性+且速度极性-时为0x40；位置极性-且速度极性-时为0xC0,https://hs9e67ygio.feishu.cn/wiki/wikcnWP5mXBUSwJ9vqF1CZmQREb?from=from_copylink,,61499,1,,,单位设置参数
+Position Factor Numerator,位置单位转换系数分子,Service,95,,Val,UNS32,RW,1,4294967295,1,-,position_factor_num,Y,Enabled|Disabled,立即,Y,1,0x6093,0x01,Struct,UNS32,1,4294967295,1,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnEjsBQuz6RI0ZMoq0lmQR3c?from=from_copylink,,61537,2,,,单位设置参数
+Position Factor Denominator,位置单位转换系数分母,Service,96,,Val,UNS32,RW,1,4294967295,1,-,position_factor_den,Y,Enabled|Disabled,立即,Y,1,0x6093,0x02,Struct,UNS32,1,4294967295,1,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnEjsBQuz6RI0ZMoq0lmQR3c?from=from_copylink,,61539,2,,,单位设置参数
+Velocity Factor Numerator,速度单位转换系数分子,Service,97,,Val,UNS32,RW,1,4294967295,1,-,velocity_factor_num,Y,Enabled|Disabled,立即,Y,1,0x6095,0x01,Struct,UNS32,1,4294967295,1,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnEjsBQuz6RI0ZMoq0lmQR3c?from=from_copylink,,61541,2,,,单位设置参数
+Velocity Factor Denominator,速度单位转换系数分母,Service,98,,Val,UNS32,RW,1,4294967295,1,-,velocity_factor_den,Y,Enabled|Disabled,立即,Y,1,0x6095,0x02,Struct,UNS32,1,4294967295,1,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnEjsBQuz6RI0ZMoq0lmQR3c?from=from_copylink,,61543,2,,,单位设置参数
+Acceleration Factor Numerator,加速度单位转换系数分子,Service,99,,Val,UNS32,RW,1,4294967295,1,-,acc_factor_num,Y,Enabled|Disabled,立即,Y,1,0x6097,0x01,Struct,UNS32,1,4294967295,1,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnEjsBQuz6RI0ZMoq0lmQR3c?from=from_copylink,,61549,2,,,单位设置参数
+Acceleration Factor Denominator,加速度单位转换系数分母,Service,100,,Val,UNS32,RW,1,4294967295,1,-,acc_factor_den,Y,Enabled|Disabled,立即,Y,1,0x6097,0x02,Struct,UNS32,1,4294967295,1,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnEjsBQuz6RI0ZMoq0lmQR3c?from=from_copylink,,61551,2,,,单位设置参数
+Zero Pulse Electrical Angle Calibration Flag,Z 相电角度校准标志位,Service,101,,Val,UNS8,RW,0,255,0,,zero_pulse_elec_angle_calib_flag,Y,Disabled,立即,N,,x,,,,-,-,-,-,,,,,,,,
+User Position Lower Limit,用户位置下限,Service,102,,Val,INTEGER32,RW,-2147483648,2147483647,-2147483647,p3,user_position_lower_limit,Y,Enabled|Disabled,立即,Y,1,0x607D,0x01,Struct,INTEGER32,-2147483648,2147483647,-2147483647,,即软件位置限制最小值。用于软件位置超程警告功能（回零后生效）：设置软件位置超程下限值，超出此值后报负向软件限位警告。,https://hs9e67ygio.feishu.cn/wiki/wikcnw650eIW0aZEClDbUKRyrPf?from=from_copylink,,61496,2,,,位置保护参数
+User Position Upper Limit,用户位置上限,Service,103,,Val,INTEGER32,RW,-2147483648,2147483647,2147483647,p,user_position_upper_limit,Y,Enabled|Disabled,立即,Y,1,0x607D,0x02,Struct,INTEGER32,-2147483648,2147483647,2147483647,,即软件位置限制最大值。用于软件位置超程警告功能（回零后生效）：设置软件位置超程上限值，超出此值后报正向软件限位警告。,https://hs9e67ygio.feishu.cn/wiki/wikcnw650eIW0aZEClDbUKRyrPf?from=from_copylink,,61498,2,,,位置保护参数
+Zero Pulse Clear Error Enable,Z 相清除累计误差开关,Service,104,,Val,UNS8,RW,0,255,1,,zero_pulse_clear_error_enable,Y,Enabled|Disabled,立即,Y,1,0x3569,0x00,Val,,#N/A,#N/A,1,,0：关闭，1：开启。默认开启。,https://hs9e67ygio.feishu.cn/wiki/wikcnAZqWyjZQPBsEo4Xlklpaeh?from=from_copylink,,416,1,疑问,402DataType?,编码器参数
+Regeneration Voltage Upper Threshold,再生电压上限阈值,Service,105,,Val,REAL32,RW,drive_param_.drive_bus_voltage_lower_limit,3.40282347e+38,400,,regeneration_voltage_upper_threshold,Y,Enabled|Disabled,立即,Y,1,0x35FF,0x00,Val,UNS32,#VALUE!,4294967295,400,,,,,999,2,疑问,无法计算402Lowlimit,再生功能参数
+Regeneration Voltage LowerThreshold,再生电压下限阈值,Service,106,,Val,REAL32,RW,drive_param_.drive_bus_voltage_lower_limit,service_param_.regeneration_voltage_upper_threshold,380,,regeneration_voltage_lower_threshold,Y,Enabled|Disabled,立即,Y,1,0x3600,0x00,Val,UNS32,#VALUE!,#VALUE!,380,,,,,1001,2,疑问,无法计算402Upplimit和402Lowlimit,再生功能参数
+Regeneration Function Enable,再生功能开关,Service,107,,Val,UNS8,RW,0,1,0,,regeneration_function_enable,Y,Enabled|Disabled,立即,Y,1,0x3601,0x00,Val,UNS8,0,1,0,,,,,1002,1,,,再生功能参数
+Regeneration Resistor Overload Protection Enable,再生电阻过载保护开关,Service,108,,Val,UNS8,RW,0,1,0,,regeneration_resistor_overload_protection_enable,Y,Enabled|Disabled,立即,Y,1,0x3602,0x00,Val,UNS8,0,1,0,,,,,1003,1,,,再生功能参数
+Digital IO Input Active Level,数字IO输入有效电平,Service,109,,Val,UNS32,RW,0,4294967295,,,digital_io_input_active_level,Y,Enabled|Disabled,立即,Y,1,0x357F,0x02,Struct,UNS32,0,4294967295,0,,bit16-bit23分别代表input1-input8。0：低电平有效，1：高电平有效,https://hs9e67ygio.feishu.cn/wiki/wikcnKA1WlXyOhcr1CY74mVsamf#doxcnckKUWWMO6AkkUV2CUUIZXc,,471,2,,,GPI输入参数
+Motor Stuck Current Threshold Relative,电机堵转电流阈值相对值,Service,110,,Val,UNS8,RW,0,100,0,%,motor_stuck_current_threshold_relative,Y,Enabled|Disabled,立即,Y,1,0x360B,0x00,Val,UNS8,0,100,0,%,电机堵转电流相对于电机额定电流的百分比。,https://hs9e67ygio.feishu.cn/wiki/wikcnCm9DqsB3och8pfJbglAsae#doxcnM6GwYmMOU6UK6Dyc2NHAie,,1017,1,,,设备保护参数
+Motor Stuck Velocity Threshold,电机堵转速度阈值,Service,111,,Val,REAL32,RW,0,service_param_.app_speed_limit,0,p/s,motor_stuck_velocity_threshold,Y,Enabled|Disabled,立即,Y,1,0x360C,0x00,Val,UNS32,0,#VALUE!,0,,0：电机堵转保护不生效，其他非0值：电机当前速度超过电机堵转速度阈值，当前电流超过电机堵转电流阈值且持续电机堵转检测时间时，报电机堵转故障。,http://电机堵转速度阈值,,1019,2,疑问,无法计算402Upplimit,设备保护参数
+Force Target Reached Detect Enable,力控到达检测开关,Service,112,,Val,UNS8,RW,0,1,1,,force_target_reached_detect_enable,Y,Enabled|Disabled,立即,Y,1,0x360E,0x00,Val,UNS8,0,1,1,,,,,1022,1,,,力控模式参数
+Force Target Reached Window,力控到达检测窗口,Service,113,,Val,UNS32,RW,0,4294967295,100,adc,force_target_reached_window,Y,Enabled|Disabled,立即,Y,1,0x360F,0x00,Val,UNS32,0,4294967295,100,,力到达的判断窗口，力的传感器数值稳定在窗口内则认为窗口到达。,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcnakqKUs6ayUiKLRphaOq9Hn,,1023,1,,,力控模式参数
+Force Target Reached Window Time,力控到达检测窗口时间,Service,114,,Val,UNS16,RW,0,65535,20,ms,force_target_reached_window_time,Y,Enabled|Disabled,立即,Y,1,0x3610,0x00,Val,UNS16,0,65535,20,,力控到达窗口后稳定持续的时间，稳定超过这个时间则认为有效到达。,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcnIWeEsuaM2MuC6OrE3pBhxg,,1025,2,,,力控模式参数
+Position Error Correction Enable,位置误差补偿功能开关,Service,115,,Val,UNS8,RW,0,1,0,-,position_error_correction_enable,Y,Enabled|Disabled,立即,Y,1,0x3625,0x00,,,#N/A,#N/A,0,,0：关闭，1：打开。,https://hs9e67ygio.feishu.cn/wiki/wikcnyqvC2K6N1577hj1CixZSLd?from=from_copylink,,1057,1,疑问,402DataType?,位置误差补偿参数
+Position Error Correction Start Position,位置误差补偿起始位置,Service,116,,Val,INTEGER32,RW,-2147483648,2147483647,0,-,position_error_correction_start_position,Y,Enabled|Disabled,立即,Y,1,0x3626,0x00,,,#N/A,#N/A,0,,"起始范围受软件位置限制标志和软件位置限制值保护。
+标志开启时受保护，标志未开启时，不受保护。不受保护时的范围是int32范围，超出此范围设置失败。",https://hs9e67ygio.feishu.cn/wiki/wikcnyqvC2K6N1577hj1CixZSLd?from=from_copylink,,1059,2,疑问,402DataType?,位置误差补偿参数
+Position Error Correction Interval,位置误差补偿插值点间隔,Service,117,,Val,INTEGER32,RW,-2147483648,2147483647,10,-,position_error_correction_interval,Y,Enabled|Disabled,立即,Y,1,0x3627,0x00,Val,INTEGER32,-2147483648,2147483647,10,,插值间隔必须大于补偿值，不然会出现当前位置一会往大走一会往小走的现象。,https://hs9e67ygio.feishu.cn/wiki/wikcnyqvC2K6N1577hj1CixZSLd?from=from_copylink,,1061,2,,,位置误差补偿参数
+Position Error Correction Start Index Offset,位置误差补偿起始索引偏移,Service,118,,Val,UNS32,RW,0,999,0,-,position_error_correction_start_index_offset,Y,Enabled|Disabled,立即,Y,1,0x3628,0x00,,,#N/A,#N/A,0,,有效点数+起始索引偏移不可超过1000。,https://hs9e67ygio.feishu.cn/wiki/wikcnyqvC2K6N1577hj1CixZSLd?from=from_copylink,,1063,2,疑问,402DataType?,位置误差补偿参数
+Position Error Correction Active Number,位置误差补偿有效点数,Service,119,,Val,UNS32,RW,0,1000,0,-,position_error_correction_active_number,Y,Enabled|Disabled,立即,Y,1,0x3629,0x00,,,#N/A,#N/A,0,,设置0无法开启位置误差补偿功能,https://hs9e67ygio.feishu.cn/wiki/wikcnyqvC2K6N1577hj1CixZSLd?from=from_copylink,,1065,2,疑问,402DataType?,位置误差补偿参数
+Force Factor Numerator,力单位转换系数分子,Service,120,,Val,UNS32,RW,1,4294967295,1,-,force_factor_num,Y,Enabled|Disabled,立即,Y,1,0x3635,0x00,,,#N/A,#N/A,1,,,https://hs9e67ygio.feishu.cn/wiki/wikcnEjsBQuz6RI0ZMoq0lmQR3c?from=from_copylink,,1085,2,疑问,402DataType?,单位设置参数
+Force Factor Denominator,力单位转换系数分母,Service,121,,Val,UNS32,RW,1,4294967295,1,-,force_factor_den,Y,Enabled|Disabled,立即,Y,1,0x3636,0x00,,,#N/A,#N/A,1,,,https://hs9e67ygio.feishu.cn/wiki/wikcnEjsBQuz6RI0ZMoq0lmQR3c?from=from_copylink,,1087,2,疑问,402DataType?,单位设置参数
+Warning Bitmask Segment1,警告位掩码段1,Service,122,,Val,UNS32,RW,0,4294967295,4294967295,-,warning_bitmask_segment1,Y,Enabled|Disabled,立即,Y,1,0x363D,0x00,Val,UNS32,0,4294967295,4294967295,,,,,1099,2,,,GPO输出参数
+Warning Bitmask Segment2,警告位掩码段2,Service,123,,Val,UNS32,RW,0,4294967295,4294967295,-,warning_bitmask_segment2,Y,Enabled|Disabled,立即,Y,1,0x363E,0x00,Val,UNS32,0,4294967295,4294967295,,,,,1101,2,,,GPO输出参数
+Overtravel Action Mode,超程动作模式,Service,124,,Val,INTEGER16,RW,-32768,32767,0,-,overtravel_action_mode,Y,Disabled,立即,Y,1,0x363F,0x00,Val,INTEGER16,-32768,32767,0,,,,,1102,1,,,
+Digital IO Input Auto Trigger Enable,数字IO输入自动触发开关,Service,125,,Val,UNS32,RW,0,4294967295,0,-,digital_io_input_auto_trigger_enable,Y,Disabled,立即,Y,1,0x364D,0x00,Val,UNS32,0,4294967295,0,,,,,1125,2,,,GPO输出参数
+Disable Operation Action Mode,失能动作模式,Service,126,,Val,INTEGER16,RW,0,1,0,-,disable_operation_action_mode,Y,Disabled,立即,Y,1,0x605C,0x00,Val,INTEGER16,0,1,0,,,,,61447,1,,,基本控制参数
+Halt Action Mode,暂停动作模式,Service,127,,Val,INTEGER16,RW,1,4,1,-,halt_action_mode,Y,Disabled,立即,Y,1,0x605D,0x00,Val,INTEGER16,1,4,1,,,,,61448,1,,,基本控制参数
+Position Display Unit,位置显示单位,Service,128,,Val,UNS8,RW,0,255,0,-,position_display_unit,Y,Enabled|Disabled,立即,Y,1,0x365B,0x01,Struct,UNS8,0,255,0,,"0：P
+1：deg
+2：脉冲当量
+3：mm",https://hs9e67ygio.feishu.cn/wiki/wikcngKv2hiKhwkezAYhtxAtYxc#doxcnE6SMQamqcawyqkofuC9BCc,,1148,1,,,单位设置参数
+" Velocity Display Unit",速度显示单位,Service,129,,Val,UNS8,RW,0,255,0,-,velocity_display_unit,Y,Enabled|Disabled,立即,Y,1,0x365B,0x02,Struct,UNS8,0,255,0,,"0：RPM
+1：P/s
+2：deg/s
+3：脉冲当量
+4：mm/s",https://hs9e67ygio.feishu.cn/wiki/wikcngKv2hiKhwkezAYhtxAtYxc#doxcnY04yAYyYYSq6CYyvRZi7mg,,1149,1,,,单位设置参数
+" Acceleration Display Unit",加速度显示单位,Service,130,,Val,UNS8,RW,0,255,0,-,acc_display_unit,Y,Enabled|Disabled,立即,Y,1,0x365B,0x03,Struct,UNS8,0,255,0,,"0：RPM/s
+1：P/s^2
+2：deg/s^2
+3：脉冲当量/s
+4：mm/s^2",https://hs9e67ygio.feishu.cn/wiki/wikcngKv2hiKhwkezAYhtxAtYxc#doxcnCIgEeK4sYaCc8QCrFdlnMb,,1150,1,,,单位设置参数
+Force Display Unit,力显示单位,Service,131,,Val,UNS8,RW,0,255,0,-,force_display_unit,Y,Enabled|Disabled,立即,Y,1,0x365B,0x04,Struct,UNS8,0,255,0,,"0：uint
+1：g",https://hs9e67ygio.feishu.cn/wiki/wikcngKv2hiKhwkezAYhtxAtYxc#doxcnOUAGUYYYUoQuA5oZ2x1Khe,,1151,1,,,单位设置参数
+Zero Pulse Output Duration,Z 相输出持续时间,Service,132,,Val,UNS32,RW,0,4294967295,2,ms,zero_pulse_output_duration,Y,Enabled|Disabled,立即,Y,1,0x365C,0x00,Val,UNS32,0,4294967295,2,,,,,1153,2,,,GPO输出参数
+Positive Torque Limit Relative,正向力矩限制相对值,Service,133,PTLIMR,Val,REAL32,RW,0,service_param_.system_max_current / motor_param_.motor_cont_current,0,-,positive_torque_limit_relative,Y,Disabled,立即,Y,1000,0x60E0,0x00,Val,UNS16,0,#VALUE!,0,,"0:关闭力矩限制功能
+其他值：电机额定电流的百分比",https://hs9e67ygio.feishu.cn/wiki/wikcnSJYnwOL6eBeeDmAEHqbAYc?from=from_copylink,,61606,1,错误,前后数据类型不一致，无法计算402Upplimit,驱动器限制类参数
+Positive Torque Limit,正向力矩限制,Service,134,PTLIM,Val,REAL32,RW,0,service_param_.system_max_current,0,mN,positive_torque_limit,Y,Disabled,立即,N,1,,,,,-,-,-,,,,,,,,,
+Negative Torque Limit Relative,负向力矩限制相对值,Service,135,NTLIMR,Val,REAL32,RW,0,service_param_.system_max_current / motor_param_.motor_cont_current,0,-,negative_torque_limit_relative,Y,Disabled,立即,Y,1000,0x60E1,0x00,Val,UNS16,0,#VALUE!,0,,"0：关闭力矩限制功能
+其他值：电机额定电流的百分比",https://hs9e67ygio.feishu.cn/wiki/wikcnSJYnwOL6eBeeDmAEHqbAYc?from=from_copylink,,61607,1,错误,前后数据类型不一致，无法计算402Upplimit,驱动器限制类参数
+Negative Torque Limit,负向力矩限制,Service,136,NTLIM,Val,REAL32,RW,0,service_param_.system_max_current,0,mN,negative_torque_limit,Y,Disabled,立即,N,1,,,,,-,-,-,,,,,,,,,
+Control Signal Source,控制信号来源,App,1,,Val,UNS8,RW,0,255,0,-,control_source,Y,Disabled,立即,N,,,,,,-,-,-,,,,,,,,,
+Controlled Object,被控对象,App,2,,Val,UNS8,RW,0,255,0,-,controlled_object,Y,Disabled,立即,N,,,,,,-,-,-,,,,,,,,,
+Motion Profile Type,运动轮廓模式,App,3,,Val,INTEGER16,RW,0,3,0,-,motion_profile_type,Y,Disabled,立即,Y,1,0x6086,0x00,Val,INTEGER16,0,3,0,,"即平滑滤波类型。
+0：无滤波。
+1：TD滤波。
+2：滑动均值滤波",https://hs9e67ygio.feishu.cn/wiki/wikcnTY8QGVpOUfMnpRZW7UzBFh?from=from_copylink,,61514,1,疑问,写入时刻？,基本控制参数
+Profile Velocity,轮廓速度,App,4,,Val,REAL32,RW,-service_param_.app_speed_limit,service_param_.app_speed_limit,68266.6,p/s,profile_velocity,Y,Enabled|Disabled,立即,Y,,0x6081,0x00,Val,UNS32,#VALUE!,#VALUE!,0,UU,位置模式下的目标速度,http://轮廓速度,,61505,2,疑问,无法计算402Upplimit和402Lowlimit,速度模式参数
+Profile Velocity RPM,轮廓速度(RPM),App,5,,Val,UNS32,RW,0,4294967295,1000,rpm,profile_velocity_rpm,Y,Enabled|Disabled,立即,N,,,,,,-,-,-,,,,,,,,,
+Profile Acceleration,轮廓加速度,App,6,,Val,REAL32,RW,0,service_param_.app_acc_limit,409600,p/s^2,profile_acc,Y,Enabled|Disabled,立即,Y,,0x6083,0x00,Val,UNS32,0,#VALUE!,0,UU,当前速度上升到目标速度的加速度,https://hs9e67ygio.feishu.cn/wiki/wikcn1XCUpIfmH7JhsWYQwYWpTf#doxcnCcIGcyswiQ4oeyn7J617Eh,,61509,2,疑问,无法计算402Upplimit,位置模式参数
+Profile Acceleration RPM,轮廓加速度(RPM),App,7,,Val,UNS32,RW,0,4294967295,6000,rpm/s,profile_acc_rpm,Y,Enabled|Disabled,立即,N,,,,,,-,-,-,,,,,,,,,
+Profile Deceleration ,轮廓减速度,App,8,,Val,REAL32,RW,0,service_param_.app_dec_limit,4096000,p/s^2,profile_dec,Y,Enabled|Disabled,立即,Y,,0x6084,0x00,Val,UNS32,0,#VALUE!,0,UU,,,,61511,2,疑问,无法计算402Upplimit,基本控制参数
+Profile Deceleration RPM,轮廓减速度(RPM),App,9,,Val,UNS32,RW,0,4294967295,6000,rpm/s,profile_dec_rpm,Y,Enabled|Disabled,立即,N,,,,,,-,-,-,,当前速度下降到目标速度的减速度,https://hs9e67ygio.feishu.cn/wiki/wikcn1XCUpIfmH7JhsWYQwYWpTf#doxcnwCG6E2qSg0G6Mzi1RhruFc,,,,,,
+Interpolation Mode,插值方法,App,10,,Val,INTEGER16,RW,-32768,32767,0,rpm/s,ip_mode,Y,Enabled|Disabled,立即,Y,1,0x60C0,0x00,Val,INTEGER16,-32768,32767,0,-,,,,61470,2,疑问,写入时刻？,
+Interpolation Algorithm Coefficient 1,插值算法参数 1,App,11,,Val,INTEGER32,RW,-2147483648,2147483647,0,-,ip_algo_coef1,Y,Enabled|Disabled,立即,Y,1,0x60C1,0x01,Struct,INTEGER32,-2147483648,2147483647,0,-,,,,61581,2,疑问,写入时刻？,
+Interpolation Algorithm Coefficient 2,插值算法参数 2,App,12,,Val,INTEGER32,RW,-2147483648,2147483647,0,-,ip_algo_coef2,Y,Enabled|Disabled,立即,Y,1,0x60C1,0x02,Struct,INTEGER32,-2147483648,2147483647,0,-,,,,61583,2,疑问,写入时刻？,
+Interpolation Algorithm Coefficient 3,插值算法参数 3,App,13,,Val,INTEGER32,RW,-2147483648,2147483647,0,-,ip_algo_coef3,Y,,立即,N,1,0x60C1,0x03,Struct,INTEGER32,-,-,-,-,,,,,,,,
+Interpolation Algorithm Coefficient 4,插值算法参数 4,App,14,,Val,INTEGER32,RW,-2147483648,2147483647,0,-,ip_algo_coef4,Y,,立即,N,1,0x60C1,0x04,Struct,INTEGER32,-,-,-,-,,,,,,,,
+Interpolation Time Unit,插值模式时间单位,App,15,,Val,UNS8,RW,0,255,1,-,ip_time_unit,Y,Enabled|Disabled,立即,Y,1,0x60C2,0x01,Struct,UNS8,0,255,1,-,,,,61584,1,疑问,写入时刻？,
+Interpolation Time Index,插值模式时间指数,App,16,,Val,INTEGER8,RW,-128,127,-3,-,ip_time_index,Y,Enabled|Disabled,立即,Y,1,0x60C2,0x02,Struct,INTEGER8,-128,127,-3,-,,,,61585,1,疑问,写入时刻？,
+PWM Control Basic Frequency,PWM控制基础频率,App,17,,Val,UNS32,RW,-6,-3,16,-,pwm_control_basic_freq,Y,Disabled,立即,Y,1,0x35A6,0x00,Val,UNS32,0,-3,16,HZ,,,,749,2,,,PWM控速模式参数
+Analog Control Signal Source,模拟量控制信号源,App,18,,Val,UNS8,RW,0,255,1,Hz,analog_control_signal_source,Y,Enabled|Disabled,立即,Y,1,0x35A8,0x00,Val,UNS8,0,255,1,-,"1：ADC1
+2：ADC2",https://hs9e67ygio.feishu.cn/wiki/wikcn9ROIQLcfvG959e6AlYSVEb?from=from_copylink,,751,1,,,模拟量控制模式参数
+Torque Slope,力矩上升斜率,App,19,,Val,UNS32,RW,1,2,1000,-,torque_slope,Y,Enabled|Disabled,立即,N,1,0x6087,0x00,Val,UNS32,-,-,-,额定力矩/1000/s,力矩规划值从当前值上升到目标值的斜率,https://hs9e67ygio.feishu.cn/wiki/wikcnzGqWKPzG5N3KcwoHcL1iDc?from=from_copylink,,61516,2,,,
+Force Sensor Type,力传感器数据来源,App,20,,Val,UNS8,RW,0,3,0,v,force_sensor_type,Y,Disabled,立即,Y,1,0x358F,0x00,Val,UNS8,0,3,0,,"0：当前电流
+1：ADC1
+2：ADC2
+3：扩展通道",https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcnIWe60cYoOYWYquyQe2r9Ce,,540,1,,,力控模式参数
+Force Control Mode,力控模式,App,21,,Val,UNS8,RW,0,3,0,-,force_control_mode,Y,Disabled,立即,Y,1,0x3590,0x00,Val,UNS8,0,3,0,,"1：电流控制模式
+2：位置控制模式",https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcniCqGkaC4EQsg4iMYDDCsye,,541,1,,,力控模式参数
+Force Control Cycle,力控制周期,App,22,,Val,UNS32,RW,0,4294967295,1,-,force_control_cycle,Y,Disabled,立即,Y,1,0x3591,0x00,Val,UNS32,0,4294967295,1,,,,,543,2,,,力控模式参数
+Force Sensor Sampling Offset,力传感器采样偏移,App,23,,Val,INTEGER32,RW,-2147483648,2147483647,0,-,force_sensor_sampling_offset,Y,Enabled|Disabled,立即,Y,1,0x3594,0x00,Val,INTEGER32,-2147483648,2147483647,0,,力传感器当前值 = 上一次力传感器当前值 - 力传感器采样偏移,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcnikySKQkSUSSQMVSlDoT5Zf,,553,2,,,力控模式参数
+Force Sensor Direction,力传感器方向,App,24,,Val,INTEGER8,RW,-128,127,1,-,force_sensor_direction,Y,Disabled,立即,Y,1,0x3595,0x00,Val,INTEGER8,-128,127,1,,正方向：0x01；负方向：0xFF,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcny6ugq82aWS0MgfKNet8BEb,,554,1,,,力控模式参数
+Force Parameter Unit,力控参数单位,App,25,,Val,UNS32,RW,0,4294967295,1,-,force_param_unit,Y,Disabled,立即,Y,1,0x3596,0x00,Val,UNS32,0,4294967295,1,,,,,556,2,,,力控模式参数
+Homing Method,回零方法,App,26,,Val,INTEGER8,RW,-127,35,0,-,homing_method,Y,Enabled|Disabled,立即,Y,1,0x6098,0x00,Val,INTEGER8,-127,35,0,-,目前支持35种回零方法。支持回零方法-1，-2，1~30，33~35，共35种回零方法。详见2.1.3 回零方法。其中回零方式-1，回零方式-2，回零方式15和回零方式16为堵转回零。,http://回零方法,,61552,1,,,回零模式参数
+Homing Speed For Switch Search,回零搜索开关速度,App,27,,Val,REAL32,RW,0,service_param_.app_speed_limit,1,p/s,homing_speed_for_switch_search,Y,Enabled|Disabled,立即,Y,1,0x6099,0x01,Struct,UNS32,0,#VALUE!,1,UU,电机搜索正极限或者负极限开关信号时的运行速度。受应用速度限制值限制。,https://hs9e67ygio.feishu.cn/wiki/wikcniwKvYXfVDWxvTGmHZq6Fng#doxcn0aQO0wgEiiGa8TPzEbyhYe,,61554,2,疑问,无法计算402Upplimit,回零模式参数
+Homing Speed For Zero Search,回零搜索零点速度,App,28,,Val,REAL32,RW,0,service_param_.app_speed_limit,1,p/s,homing_speed_for_zero_search,Y,Enabled|Disabled,立即,Y,1,0x6099,0x02,Struct,UNS32,0,#VALUE!,1,UU,电机搜索回零开关时的运行速度。受应用速度限制值限制。,https://hs9e67ygio.feishu.cn/wiki/wikcniwKvYXfVDWxvTGmHZq6Fng#doxcnCAESkkI2ISO8WMztTJR5Fd,,61556,2,疑问,无法计算402Upplimit,回零模式参数
+Homing Acceleration,回零加速度,App,29,,Val,REAL32,RW,0,service_param_.app_acc_limit,1,p/s^2,homing_acc,Y,Enabled|Disabled,立即,Y,1,0x609A,0x00,Val,UNS32,0,#VALUE!,1,UU,电机速度从0上升到回零搜索开关速度或者回零搜索零点速度的加速度。受应用加速度限制值限制。,https://hs9e67ygio.feishu.cn/wiki/wikcniwKvYXfVDWxvTGmHZq6Fng#doxcnKaEOOOWMOCQoiqeUQcalMb,,61558,2,疑问,无法计算402Upplimit,回零模式参数
+Homing Stall Time,回零检测堵转时间,App,30,,Val,UNS32,RW,1,4294967295,200,ms,homing_stall_time,Y,Enabled|Disabled,立即,Y,1,0x3565,0x00,Val,UNS32,1,4294967295,200,ms,"1、达到堵转检测电流时开始计时，直到持续时间满足回零堵转检测时间时堵转完成。
+2、此参数适用于堵转回零：回零方式-1、回零方式-2、回零方式15、回零方式16。其他回零方式下此参数默认200ms，不可修改。",https://hs9e67ygio.feishu.cn/wiki/wikcniwKvYXfVDWxvTGmHZq6Fng#doxcnOAeO2GQkg8aMAfUnHCJ9le,,409,2,,,回零模式参数
+Home Offset,回零偏移,App,31,,Val,INTEGER32,RW,-2147483648,2147483647,0,p,home_offset,Y,Enabled|Disabled,立即,Y,1,0x607C,0x00,Val,INTEGER32,-2147483648,2147483647,0,UU,"1、回零完成后当前位置的偏移量，可通过上位机的波形展示界面观察位置当前值。
+2、回零偏移为负值时，位置正向偏移；回零偏移为正数时，位置负向偏移。",https://hs9e67ygio.feishu.cn/wiki/wikcniwKvYXfVDWxvTGmHZq6Fng#doxcn6MMGCqIYEUEqwXn2bOaH40,,61494,2,,,回零模式参数
+Target Position Buff,目标位置缓存,App,32,,Array,INTEGER64,RW,-9223372036854775808,9223372036854775807,0,-,target_position_buff[129],Y,Enabled|Disabled,立即,Y,1,0x3547,,Array,INTEGER32,-2147483648,2147483647,0,-,往复运动的目标位置,https://hs9e67ygio.feishu.cn/wiki/wikcnmPmGnHAYnFuhkI37VSBAUd?from=from_copylink,,104,2,疑问,前后数据类型不一致,位置模式参数
+Target Position Buff Size,目标位置缓存个数,App,33,,Val,UNS32,RW,1,129,1,-,target_position_buff_size,Y,Enabled|Disabled,立即,Y,1,0x3548,0x00,Val,UNS32,1,129,1,-,往复运动的目标位置个数,https://hs9e67ygio.feishu.cn/wiki/wikcnmPmGnHAYnFuhkI37VSBAUd?from=from_copylink,,364,2,,,位置模式参数
+Identification Mode,辨识模式,App,34,,Val,INTEGER8,RW,0,127,0,Hz,ident_mode,Y,Disabled,立即,N,,,,,,-,-,-,-,,,,,,,,
+Identification Current Frequency,辨识电流频率,App,35,,Val,UNS32,RW,1,4294967295,300,Hz,ident_current_freq,Y,Disabled,立即,Y,1,0x3502,0x00,Val,UNS32,1,4294967295,300,HZ,,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,9,2,,,辨识功能参数
+Identification Current Amplitude Relative ,辨识电流幅度相对值,App,36,,Val,UNS32,RW,1,200,100,%,ident_current_amp_relative,Y,Disabled,立即,Y,1,0x3503,0x00,Val,UNS32,1,200,100,%,,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,11,2,,,辨识功能参数
+Mechanical Identification Current Current Relative,机械辨识电流幅度相对值,App,37,,Val,UNS32,RW,1,200,100,%,mech_ident_current_amp_relative,Y,Disabled,立即,Y,1,0x3506,0x00,Val,UNS32,1,200,100,%,,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,17,2,,,辨识功能参数
+Mechanical Identification Motor Frequency,机械辨识电机频率,App,38,,Val,UNS32,RW,0,4294967295,0,Hz,mech_ident_motor_freq,Y,Enabled|Disabled,立即,Y,1,0x3504,0x00,Val,UNS32,0,4294967295,0,HZ,,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,13,2,,,辨识功能参数
+Mechanical Identification Motor Speed Relative,机械辨识电机速度相对值,App,39,,Val,UNS32,RW,1,100,10,%,mech_ident_motor_speed_relative,Y,Disabled,立即,Y,1,0x3505,0x00,Val,UNS32,1,100,10,RPM,机械辨识速度占应用速度限制值的百分比。,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,15,2,,,辨识功能参数
+Mechanical Identification Position Lower Limit,机械辨识位置限制最小值,App,40,,Val,INTEGER64,RW,service_param_.app_position_lower_limit,9223372036854775807,-2147483647,p,mech_ident_position_lower_limit,Y,Disabled,立即,Y,1,0x3508,0x00,Val,INTEGER32,#VALUE!,2147483647,-2147483647,UU,,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,21,2,疑问,无法计算402Lowlimit,辨识功能参数
+Mechanical Identification Position Upper Limit,机械辨识位置限制最大值,App,41,,Val,INTEGER64,RW,-9223372036854775808,service_param_.app_position_upper_limit,2147483647,p,mech_ident_position_upper_limit,Y,Disabled,立即,Y,1,0x3507,0x00,Val,INTEGER32,-2147483648,#VALUE!,2147483647,UU,,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,19,2,疑问,无法计算402Upplimit,辨识功能参数
+Pole Pairs Identification Electrical Cycles,极对数辨识运行电周期数,App,42,,Val,UNS32,RW,1,100,1,-,pole_pairs_ident_elec_cycles,Y,Disabled,立即,Y,1,0x355B,0x00,Val,UNS32,1,100,1,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,390,2,,,辨识功能参数
+Pole Pairs Identification Wait Time,极对数辨识等待稳定时间,App,43,,Val,UNS32,RW,1,100000,100,ms,pole_pairs_ident_wait_time,Y,Disabled,立即,Y,1,0x355C,0x00,Val,UNS32,1,100000,100,ms,,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,392,2,,,辨识功能参数
+Direction Identification Distance,方向辨识距离,App,44,,Val,UNS32,RW,1,100000,6,-,direction_ident_distance,Y,Disabled,立即,Y,1,0x355D,0x00,Val,UNS32,1,100000,6,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,394,2,,,辨识功能参数
+Electrical Angle Identification Target Electrical Angle,电角度辨识目标电角度,App,45,,Val,UNS8,RW,0,5,0,pi/3,elec_angle_ident_target_elec_angle,Y,Disabled,立即,Y,1,0x35E7,,,UNS8,0,5,0,,,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,956,1,,,辨识功能参数
+System Performance Verification Mode,系统性能评估模式,App,46,,Val,UNS8,RW,0,3,0,-,sys_perf_verf_mode,Y,Enabled|Disabled,立即,Y,1,0x35B1,0x06,Struct,UNS8,0,3,0,-,,,,790,1,,,
+Reference Signal Type,参考信号类型,App,47,,Val,UNS8,RW,1,2,1,-,ref_signal_type,Y,Disabled,立即,Y,1,0x357C,0x00,Val,UNS8,1,2,1,-,0：step；1：sin,https://hs9e67ygio.feishu.cn/wiki/wikcnULLfb0feP4dHry45S4WPWg#doxcnqgoiey6SKGSsY5EYIBul9c,,458,1,,,参考信号模式参数
+Reference Signal Control Object,参考信号控制对象,App,48,,Val,UNS8,RW,0,255,1,-,ref_signal_control_object,Y,Enabled|Disabled,立即,Y,1,0x35E8,0x00,Val,UNS8,0,255,1,,1：位置参考信号；2：速度参考信号；3：力矩参考信号；4：AB轴电压参考信号；5：D轴电流参考信号,https://hs9e67ygio.feishu.cn/wiki/wikcnULLfb0feP4dHry45S4WPWg#doxcnYGsqaQskOeyKqKZ2PJDYEc,,957,1,,,参考信号模式参数
+Reference Signal_Amplitude,参考信号幅值,App,49,,Val,INTEGER32,RW,-2147483648,2147483647,0,p,ref_signal_amp,Y,Enabled|Disabled,立即,Y,1,0x357E,0x01,Struct,INTEGER32,-2147483648,2147483647,0,p,信号的幅值,https://hs9e67ygio.feishu.cn/wiki/wikcnULLfb0feP4dHry45S4WPWg#doxcnKeAAoIw6GC0KEkE0NgUO0m,,461,2,,,参考信号模式参数
+Reference Signal Frequency,参考信号频率,App,50,,Val,UNS32,RW,0,4294967295,0,Hz,ref_signal_freq,Y,Enabled|Disabled,立即,Y,1000,0x357E,0x02,Struct,UNS32,0,4294967295,0,0.001Hz,信号的频率,https://hs9e67ygio.feishu.cn/wiki/wikcnULLfb0feP4dHry45S4WPWg#doxcnC8AaKcw0G26mANHsY1DX7g,,463,2,,,参考信号模式参数
+Reference Signal Offset,参考信号偏移,App,51,,Val,INTEGER32,RW,-2147483648,2147483647,0,p,ref_signal_offset,Y,Enabled|Disabled,立即,Y,1,0x357E,0x03,Struct,INTEGER32,-2147483648,2147483647,0,p,信号的幅值偏移,https://hs9e67ygio.feishu.cn/wiki/wikcnULLfb0feP4dHry45S4WPWg#doxcnou2AKsWGGiiOGWc7eHkeph,,465,2,,,参考信号模式参数
+Reference Signal Slope,参考信号斜率,App,52,,Val,INTEGER32,RW,-2147483648,2147483647,1,‰,ref_signal_slope,Y,Enabled|Disabled,立即,Y,1,0x357E,0x04,Struct,INTEGER32,-2147483648,2147483647,1,p/s,信号的最大上升斜率,https://hs9e67ygio.feishu.cn/wiki/wikcnULLfb0feP4dHry45S4WPWg#doxcn4AccEQK4iasy40b7tFlEtc,,467,2,,,参考信号模式参数
+Buff Repetitive Enable,缓存往复开关,App,53,,Val,UNS8,RW,0,1,0,-,buff_repetitive_enable,Y,Enabled|Disabled,立即,Y,1,0x3546,0x00,Val,UNS8,0,1,0,-,"0：关闭
+1：开启",https://hs9e67ygio.feishu.cn/wiki/wikcnmPmGnHAYnFuhkI37VSBAUd#doxcnIESekiGukWGyYHpFvcspfP,,102,1,,,位置模式参数
+Force Slope,力控目标值上升斜率,App,54,,Val,REAL32,RW,1,3.40282347e+38,1,adc/s,force_slope,Y,Enabled|Disabled,立即,Y,1,0x356B,0x00,Val,UNS32,1,4294967295,1,adc/s,到达目标力的规划速度,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcnqMMw6YYqCu2KiHxy5jsuXZ,,420,2,,,力控模式参数
+Power On Auto Enable,上电自动使能开关,App,55,,Val,UNS8,RW,0,1,0,-,power_on_auto_enable,Y,Enabled|Disabled,立即,Y,1,0x3603,0x00,Val,UNS8,0,1,0,,"0：关闭
+1：开启",https://hs9e67ygio.feishu.cn/wiki/wikcnyqVBOsHJpQVkxpDEazGGCh?from=from_copylink,,1004,1,,,基本控制参数
+Velocity Control Mode,速度控制模式,App,56,,Val,UNS8,RW,0,1,1,-,velocity_control_mode,Y,Enabled|Disabled,立即,Y,1,0x3611,0x00,Val,UNS8,0,1,1,,"0：位置指令控制
+1：速度指令控制",https://hs9e67ygio.feishu.cn/wiki/wikcnmVcV7v3ggnC06QqfGA7jXb#doxcn4aUMQiEcwcgK4UtvhTSxnd,,1026,1,,,速度模式参数
+Auto Elec Angle Align Enable,自动寻相开关,App,57,,Val,UNS8,RW,0,2,0,-,auto_elec_angle_align_enable,Y,Enabled|Disabled,立即,Y,1,0x3622,0x00,Val,UNS8,0,2,0,,"0：关闭
+1：开启",https://hs9e67ygio.feishu.cn/wiki/wikcn6AYMSh4gHvwCM8XXdoXoKc?from=from_copylink,,1053,1,,,基本控制参数
+Point Program Dwell Time,点位编程停留时间,App,58,,Val,UNS32,RW,0,4294967295,0,ms,point_program_dwell_time,Y,Enabled|Disabled,立即,Y,1,0x3623,0x00,Val,UNS32,0,4294967295,0,,设置到达目标位置1或2时，切换到开始执行运动到下一个目标位置的停留时间。,https://hs9e67ygio.feishu.cn/wiki/wikcnmPmGnHAYnFuhkI37VSBAUd#doxcn2yEIuyicumUWBHkny2CsuB,,1055,2,,,位置模式参数
+Pulse Input Resolution,脉冲输入分辨率,App,59,,Val,UNS32,RW,10,10000000,4096,-,pulse_input_resolution,Y,Disabled,立即,Y,1,0x362A,0x00,,,#N/A,#N/A,4096,,输入达到设置的分辨率则对应的电机会旋转一圈，直线电机则为移动一个极距距离。,https://hs9e67ygio.feishu.cn/wiki/wikcnadoYsAoShVPxSiRoK4HFzd#doxcniYGM4i6GoSEcITeh8sbbOe,,1067,2,疑问,402DataType?,脉冲控位置模式参数
+Pulse Input Ratio Numerator,脉冲输入倍率分子,App,60,,Val,INTEGER32,RW,-2147483648,2147483647,1,-,pulse_input_ratio_num,Y,Disabled,立即,Y,1,0x362B,0x00,,,#N/A,#N/A,1,,脉冲输入齿轮比=脉冲输入齿轮比分子/脉冲输入齿轮比分母，一个脉冲输入分辨 = 1/脉冲输入齿轮比 (圈)。,https://hs9e67ygio.feishu.cn/wiki/wikcnadoYsAoShVPxSiRoK4HFzd?from=from_copylink,,1069,2,疑问,402DataType?,脉冲控位置模式参数
+Pulse Input Ratio Denominator,脉冲输入倍率分母,App,61,,Val,INTEGER32,RW,-2147483648,2147483647,1,-,pulse_input_ratio_den,Y,Disabled,立即,Y,1,0x362C,0x00,,,#N/A,#N/A,1,,脉冲输入齿轮比=脉冲输入齿轮比分子/脉冲输入齿轮比分母，一个脉冲输入分辨 = 1/脉冲输入齿轮比 (圈)。,https://hs9e67ygio.feishu.cn/wiki/wikcnadoYsAoShVPxSiRoK4HFzd?from=from_copylink,,1071,2,疑问,402DataType?,脉冲控位置模式参数
+Target Position After Homing,回零后目标位置,App,62,,Val,INTEGER32,RW,-2147483648,2147483647,0,p,target_position_after_homing,Y,Enabled|Disabled,立即,Y,1,0x3634,0x00,Val,INTEGER32,-2147483648,2147483647,0,,"1、回零完成后以轮廓加速度（0x6083）和轮廓减速度（0x6084-0x00）运行到目标轮廓速度（0x6081-0x00）并以此速度运行到回零完成后的位置偏移。
+2、回零完成后的位置偏移为正数时，回零完成后正向运行；回零完成后的位置偏移为负数时，回零完成后负向运行。",https://hs9e67ygio.feishu.cn/wiki/wikcniwKvYXfVDWxvTGmHZq6Fng#doxcniMMMUwcASyGouGDCkr0SAd,,1083,2,,,回零模式参数
+Homing Stall Current Relative,回零堵转电流相对值,App,63,,Val,UNS8,RW,0,150,100,%,homing_stall_current_relative,Y,Enabled|Disabled,立即,Y,1,0x3637,0x00,Val,UNS8,0,150,100,,"1、回零堵转电流占电机额定电流的百分比。
+2、此参数适用于堵转回零：回零方式-1、回零方式-2、回零方式15、回零方式16。",https://hs9e67ygio.feishu.cn/wiki/wikcniwKvYXfVDWxvTGmHZq6Fng#doxcnMaUycM0mie0QUlJgwzfLGb,,1088,1,,,回零模式参数
+Electrical Angle Identification Mode,电角度辨识模式,App,64,,Val,UNS8,RW,0,1,0,-,elec_angle_ident_mode,Y,Disabled,立即,Y,1,0x3638,0x00,Val,UNS8,0,1,0,,"0：强拉寻相
+3：短距离寻相",https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,1089,1,,,辨识功能参数
+Electrical Angle Identification Timeout Time,电角度辨识超时时间,App,65,,Val,UNS32,RW,0,100000,50000,ms,elec_angle_ident_timeout_time,Y,Disabled,立即,Y,1,0x3639,0x00,Val,UNS32,0,100000,50000,,,https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3?from=from_copylink,,1091,2,,,辨识功能参数
+Positioning Option Code,位置模式选项码,App,66,,Val,UNS16,RW,0,65535,2,-,positioning_option_code,Y,Enabled|Disabled,立即,Y,1,0x60F2,0x00,Val,UNS16,0,65535,2,,"0：相对位置目标值
+1：相对位置规划置
+2：相对位置当前值
+默认为相对位置当前值。",https://hs9e67ygio.feishu.cn/wiki/wikcn1XCUpIfmH7JhsWYQwYWpTf#doxcnekEKmCGueMaKuoYMGKrlff,,61645,1,,,位置模式参数
+Homing Timeout Time,回零超时时间,App,67,,Val,UNS32,RW,0,4294967295,0,ms,homing_timeout_time,Y,Enabled|Disabled,立即,Y,1,0x3643,0x00,Val,UNS32,0,4294967295,0,,"1、在此时间内如果没有回零完成就会报回零错误。
+2、设置为0时，表示关闭回零超时判断功能。",https://hs9e67ygio.feishu.cn/wiki/wikcniwKvYXfVDWxvTGmHZq6Fng#doxcnK0IMakS6ISWEAzGpQH7TKd,,1109,2,,,回零模式参数
+Communication Function Option Code 1,通信功能选项码1,App,68,,Val,UNS32,RW,0,4294967295,0,-,comm_func_option_code_1,Y,Enabled|Disabled,立即,Y,1,0x3649,0x00,,,#N/A,#N/A,0,,,,,1118,2,疑问,402DataType?,
+Communication Function Option Code 2,通信功能选项码2,App,69,,Val,UNS32,RW,0,4294967295,0,-,comm_func_option_code_2,Y,Enabled|Disabled,立即,Y,1,0x364A,0x00,,,#N/A,#N/A,0,,,,,1120,2,疑问,402DataType?,
+Electrical Angle Align Auto Return Enable,寻相后自动返回开关,App,70,,Val,UNS8,RW,0,1,0,-,elec_angle_align_auto_return_enable,Y,Enabled|Disabled,立即,Y,1,0x3657,0x00,Val,UNS8,0,1,0,,"0：关闭
+1：打开。
+开启此开关后，寻相完成后会运行到开始寻相前的位置。",https://hs9e67ygio.feishu.cn/wiki/wikcnkkmrno0TAYASop2eVWAaag?from=from_copylink,,1142,1,,,基本控制参数
+Force Control Search Speed,力控搜索速度,App,71,,Val,REAL32,RW,0,service_param_.app_speed_limit,0,p/s,force_control_search_speed,Y,Enabled|Disabled,立即,Y,1,0x3658,0x00,Val,UNS32,0,#VALUE!,0,,,,,1144,2,,,力控模式参数
+Force Comp Identification Point Number,力控补偿辨识点数,App,72,,Val,UNS8,RW,2,98,10,-,force_comp_ident_point_number,Y,Disabled,立即,N,,,,,,-,-,-,,,,,,,,,
+Force Comp Identification Start Position,力控补偿辨识起始位置,App,73,,Val,INTEGER64,RW,-9223372036854775808,9223372036854775807,0,p,force_comp_ident_start_position,Y,Disabled,立即,N,,,,,,-,-,-,,,,,,,,,
+Force Comp Identification End Position,力控补偿辨识终止位置,App,74,,Val,INTEGER64,RW,-9223372036854775808,9223372036854775807,0,p,force_comp_ident_end_position,Y,Disabled,立即,N,,,,,,-,-,-,,,,,,,,,
+Phase Current Auto Calibration Enable,相电流自动校准开关,App,75,,Val,UNS8,RW,0,1,1,-,phase_current_auto_calib_enable,Y,Disabled,立即,Y,1,0x3666,0x00,Val,UNS8,0,1,1,,,,,,,疑问,modbus地址表中还没有这个,相电流校准参数
+Position Demand Value,位置指令值,Output,1,,Val,INTEGER64,RO,-9223372036854775808,9223372036854775807,0,p,position_demand_value,N,Enabled|Disabled,只读,Y,1,0x6062,0x00,Val,INTEGER32,-2147483648,2147483647,0,UU,,,,61453,2,错误,前后数据类型不一致,位置模式参数
+Velocity Target Value,速度目标值,Output,2,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,p/s,velocity_target_value,N,Enabled|Disabled,立即,Y,1,0x60FF,0x00,Val,INTEGER32,-2147483648,2147483647,0,UU,用户设置电机运行速度,https://hs9e67ygio.feishu.cn/wiki/wikcnmVcV7v3ggnC06QqfGA7jXb?from=from_copylink,,61659,2,,,速度模式参数
+Velocity Demand Value,速度指令值,Output,3,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,p/s,velocity_demand_value,N,Enabled|Disabled,只读,Y,1,0x606B,0x00,Val,INTEGER32,-2147483648,2147483647,0,UU,,,,61468,2,,,速度模式参数
+Force Target Value,力目标值,Output,4,,Val,INTEGER32,RW,-2147483648,2147483647,0,N,force_target_value,N,Enabled|Disabled,立即,Y,1,0x358D,0x00,Val,INTEGER32,-2147483648,2147483647,0,adc,,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF?from=from_copylink,,537,2,,,力控模式参数
+Force Demand Value,力指令值,Output,5,,Val,INTEGER32,RO,-2147483648,2147483647,0,N,force_demand_value,N,Enabled|Disabled,只读,Y,1,0x35E9,0x00,Val,INTEGER32,-2147483648,2147483647,0,,,,,959,2,,,力控模式参数
+Torque Target Value,力矩目标值,Output,6,,Val,REAL32,RW,-service_param_.app_torque_limit,service_param_.app_torque_limit,0,mN·m,torque_target_value,N,Enabled|Disabled,立即,Y,,0x6071,0x00,Val,INTEGER16,#VALUE!,#VALUE!,0,‰,,https://hs9e67ygio.feishu.cn/wiki/wikcnzGqWKPzG5N3KcwoHcL1iDc?from=from_copylink,,61475,1,错误,前后数据类型不一致，单位转换原因无法计算范围,力矩模式参数
+Torque Demand Value,力矩指令值,Output,7,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,mN·m,torque_demand_value,N,Enabled|Disabled,只读,Y,,0x6074,0x00,Val,INTEGER16,0,0,0,‰,,https://hs9e67ygio.feishu.cn/wiki/wikcnzGqWKPzG5N3KcwoHcL1iDc?from=from_copylink,,61478,1,错误,前后数据类型不一致，单位转换原因无法计算范围,力矩模式参数
+Current Target Value,电流目标值,Output,8,,Val,REAL32,RW,-service_param_.app_current_limit,service_param_.app_current_limit,0,A,current_target_value,N,Enabled|Disabled,立即,N,,,,,,-,-,-,,,,,,,,,力矩模式参数
+Current Demand Value,电流指令值,Output,9,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,A,current_demand_value,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,力矩模式参数
+Digital Output Status,数字IO输出值,Output,10,,Val,UNS32,RW,0,4294967295,0,-,digital_output_status,N,Enabled|Disabled,立即,Y,1,0x60FE,0x01,Struct,UNS32,0,4294967295,0,-,"0：无效
+1：有效",https://hs9e67ygio.feishu.cn/wiki/wikcnbl80zy6stpRKaJyVXRXVSe#doxcnGa2CM2gsiSK2gPdwf9YGQf,,61655,2,,,GPO输出参数
+Operation State Command,运行指令,Output,11,,Val,UNS16,RW,0,65535,0,-,op_state_cmd,N,Enabled|Disabled,立即,N,1,,,,,-,-,-,-,,,,,,,,基本控制参数
+Operation Mode Command,运行模式指令,Output,12,,Val,INTEGER8,RW,-128,127,0,-,op_mode_cmd,N,Enabled|Disabled,立即,Y,1,0x6060,0x00,Val,INTEGER8,-128,127,0,-,"0x01：位置模式
+0x03：速度模式
+0x04：力矩模式
+0x06：回零模式
+0x0B：力控模式
+0x3C：往复运动模式
+0x16：模拟量控速度模式
+0x17：模拟量控力矩模式
+0x1F：脉冲控位置模式
+0x3D：参考信号模式
+0x2A：PWM控速模式
+0x3E：多段运行模式
+0xFF：电气辨识
+0xFE：方向辨识
+0xFC：极对数辨识
+0xFB：Z相辨识
+0xFD：霍尔辨识
+0xFA：电角度辨识
+0xF7：机械特性辨识
+0xF8：转矩脉动辨识",https://hs9e67ygio.feishu.cn/wiki/wikcn1XCUpIfmH7JhsWYQwYWpTf#doxcn2QogmYEuAWq4sNxCkqCKpd,,61450,1,,,基本控制参数
+System Control Command,系统控制指令,Output,13,,Val,UNS8,RW,0,255,0,-,system_control_cmd,N,Enabled|Disabled,立即,Y,1,0x4500,0x00,Val,UNS8,0,255,0,-,"0：驱动器复位
+1：参数保存
+2：测试设备灯闪
+255：恢复出厂设置",https://hs9e67ygio.feishu.cn/wiki/wikcnQOJ62Vh5r41g0BJ95rY46g?from=from_copylink,,24577,1,,,基本控制参数
+DS402 Controlword,402控制字,Output,14,,Val,UNS16,RW,0,65535,0,-,ds402_controlword,N,Enabled|Disabled,立即,Y,1,0x6040,0x00,Val,UNS16,0,65535,0,-,,https://hs9e67ygio.feishu.cn/wiki/wikcnmNqATLpxMmBpPiPqy8orfe?from=from_copylink,,61443,1,,,基本控制参数
+Axis D Current Target Value,D轴电流目标值,Output,15,,Val,REAL32,RW,N,N,0,A,axis_d_current_target_value,N,Enabled|Disabled,立即,Y,1,0x35F2,0x00,Val,INTEGER32,#VALUE!,#VALUE!,0,mA,,,,975,2,,,监控参数
+Axis D Current Demand Value,D轴电流指令值,Output,16,,Val,REAL32,RO,N,N,0,A,axis_d_current_demand_value,N,Enabled|Disabled,只读,Y,1,0x35F3,0x00,Val,INTEGER32,#VALUE!,#VALUE!,0,mA,,,,977,2,,,监控参数
+Axis Alpha Voltage Target Value,Alpha轴电压目标值,Output,17,,Val,REAL32,RW,N,N,0,V,axis_alpha_voltage_target_value,N,Enabled|Disabled,立即,Y,1,0x35F4,0x00,Val,INTEGER32,#VALUE!,#VALUE!,0,mV,,,,979,2,,,监控参数
+Axis Beta Voltage Target Value,Beta轴电压目标值,Output,18,,Val,REAL32,RW,N,N,0,V,axis_beta_voltage_target_value,N,Enabled|Disabled,立即,Y,1,0x35F5,0x00,Val,INTEGER32,#VALUE!,#VALUE!,0,mV,,,,981,2,,,监控参数
+Axis Alpha Voltage Demand Value,Alpha轴电压指令值,Output,19,,Val,REAL32,RO,N,N,0,V,axis_alpha_voltage_demand_value,N,Enabled|Disabled,只读,Y,1,0x35F9,0x00,Val,INTEGER32,#VALUE!,#VALUE!,0,mV,,,,989,2,,,监控参数
+Axis Beta Voltage Demand Value,Beta轴电压指令值,Output,20,,Val,REAL32,RO,N,N,0,V,axis_beta_voltage_demand_value,N,Enabled|Disabled,只读,Y,1,0x35FA,0x00,Val,INTEGER32,#VALUE!,#VALUE!,0,mV,,,,991,2,,,监控参数
+Multi Segment Selection Command,多段运行模式段选指令,Output,21,,Val,UNS8,RW,N,multi_segment_param_.head.number_of_segment,0,-,multi_segment_selection_cmd,N,Enabled|Disabled,立即,Y,1,0x3609,0x00,,,#N/A,#N/A,0,,多段运行模式的目标运行段,https://hs9e67ygio.feishu.cn/wiki/wikcn6H8xCLIP11aMXtmUganGph?from=from_copylink,,1015,1,疑问,402DataType?,多段运行参数
+Multi Segment Trigger Command,多段运行模式触发指令,Output,22,,Val,UNS8,RW,N,N,0,-,multi_segment_trigger_cmd,N,Enabled|Disabled,立即,Y,1,0x360A,0x00,,,#N/A,#N/A,0,,触发运行,https://hs9e67ygio.feishu.cn/wiki/wikcn6H8xCLIP11aMXtmUganGph?from=from_copylink,,1016,1,疑问,402DataType?,多段运行参数
+Multi Segment Set Segment Index,多段运行模式设置段索引,Output,23,,Val,UNS8,RW,N,16,0,-,multi_segment_set_segment_index,N,Enabled|Disabled,立即,Y,1,0x362D,0x00,,,#N/A,#N/A,0,,运行段索引,https://hs9e67ygio.feishu.cn/wiki/wikcn6H8xCLIP11aMXtmUganGph?from=from_copylink,,1072,1,疑问,402DataType?,多段运行参数
+Multi Segment Set Param Index,多段运行模式设置参数索引,Output,24,,Val,UNS8,RW,N,7,0,-,multi_segment_set_param_index,N,Enabled|Disabled,立即,Y,1,0x362E,0x00,,,#N/A,#N/A,0,,设置运行段中的运行参数。,https://hs9e67ygio.feishu.cn/wiki/wikcn6H8xCLIP11aMXtmUganGph?from=from_copylink,,1073,1,疑问,402DataType?,多段运行参数
+Multi Segment Set Value,多段运行模式设置值,Output,25,,Val,UNS32,RW,N,N,0,-,multi_segment_set_value,N,Enabled|Disabled,立即,Y,1,0x362F,0x00,,,#N/A,#N/A,0,,设置参数值,https://hs9e67ygio.feishu.cn/wiki/wikcn6H8xCLIP11aMXtmUganGph?from=from_copylink,,1075,2,疑问,402DataType?,多段运行参数
+Position Error Correction Set Index,位置误差补偿表设置索引,Output,26,,Val,UNS32,RW,N,N,0,-,position_error_correction_set_index,N,Disabled,立即,Y,1,0x3630,0x00,,,#N/A,#N/A,0,,,https://hs9e67ygio.feishu.cn/wiki/wikcnyqvC2K6N1577hj1CixZSLd?from=from_copylink,,1077,2,疑问,402DataType?,位置误差补偿参数
+Position Error Correction Set Value,位置误差补偿表设置值,Output,27,,Val,INTEGER32,RW,N,N,0,-,position_error_correction_set_value,N,Disabled,立即,Y,1,0x3631,0x00,,,#N/A,#N/A,0,,,https://hs9e67ygio.feishu.cn/wiki/wikcnyqvC2K6N1577hj1CixZSLd?from=from_copylink,,1079,2,疑问,402DataType?,位置误差补偿参数
+Position Error Correction Parameters Reset Command,位置误差补偿参数复位指令,Output,28,,Val,UNS8,RW,N,N,0,-,position_error_correction_param_reset_cmd,N,Disabled,立即,Y,1,0x3632,0x00,,,#N/A,#N/A,0,,,https://hs9e67ygio.feishu.cn/wiki/wikcnyqvC2K6N1577hj1CixZSLd?from=from_copylink,,1080,1,疑问,402DataType?,位置误差补偿参数
+Position Active Target Value,位置有效目标值,Output,29,,Val,INTEGER64,RO,N,N,0,p,position_active_target_value,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Touch Probe Function Controlword,探针功能控制字,Output,30,,Val,UNS16,RW,N,N,0,-,touch_probe_function_controlword,N,Enabled|Disabled,立即,Y,1,0x60B8,0x00,Val,UNS16,#VALUE!,#VALUE!,0,-,,,,61569,1,,,GPI输入参数
+Position User Target Value,位置用户目标值,Output,31,,Val,INTEGER32,RW,N,N,0,UU,position_user_target_value,N,Enabled|Disabled,立即,Y,1,0x607A,0x00,Val,INTEGER32,#VALUE!,#VALUE!,0,UU,受软件位置限制值限制。,https://hs9e67ygio.feishu.cn/wiki/wikcn1XCUpIfmH7JhsWYQwYWpTf#doxcnCGqyYCqGOMyekvL2YH5Icc,,61488,2,,,位置模式参数
+Phase Current Calibration Command,相电流校准指令,Output,32,,Val,UNS8,RW,N,1,0,-,phase_current_calib_cmd,N,Enabled|Disabled,立即,Y,1,0x3667,0x00,Val,UNS8,#VALUE!,1,0,,,,,,,疑问,没有modbus地址,相电流校准参数
+Torque Max Record Command,力矩最大值记录指令,Output,33,,Val,UNS8,RW,N,2,0,-,torque_max_record_cmd,N,Enabled|Disabled,立即,Y,1,,,,,#N/A,#N/A,0,,,,,,,疑问,无字典值,力矩模式参数
+Load Position Actual Value,负载端位置当前值,Feedback,1,,Val,INTEGER64,RO,-9223372036854775808,9223372036854775807,0,p,load_position_actual_value,N,Enabled|Disabled,只读,Y,1,0x6064,0x00,Val,INTEGER32,-2147483648,2147483647,0,,,https://hs9e67ygio.feishu.cn/wiki/wikcn1XCUpIfmH7JhsWYQwYWpTf#doxcn2c88kmsY2iqKUUOklGu5Z9,,61457,2,错误,前后数据类型不一致,位置模式参数
+Motor Velocity Actual Value,电机端速度当前值,Feedback,2,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,p/s,motor_velocity_actual_value,N,Enabled|Disabled,只读,Y,1,0x3574,0x00,Val,INTEGER32,-2147483648,2147483647,0,,,,,437,2,,,监控参数
+Load Velocity Actual Value,负载端速度当前值,Feedback,3,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,p/s,load_velocity_actual_value,N,Enabled|Disabled,只读,Y,1,0x606C,0x00,Val,INTEGER32,-2147483648,2147483647,0,,,,,61470,2,,,监控参数
+Torque Actual Value,力矩当前值,Feedback,4,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,mN·m,torque_actual_value,N,Enabled|Disabled,只读,Y,1,0x6077,0x00,Val,INTEGER16,-32768,32767,0,‰,,,,61483,1,,,监控参数
+Current Actual Value,电流当前值,Feedback,5,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,A,current_actual_value,N,Enabled|Disabled,只读,Y,1,0x6078,0x00,Val,INTEGER16,-32768,32767,0,‰,,https://hs9e67ygio.feishu.cn/wiki/wikcnzGqWKPzG5N3KcwoHcL1iDc?from=from_copylink,,61484,1,,,监控参数
+Load Torque Feedback Actual Value,负载力矩反馈当前值,Feedback,6,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,mN·m,load_torque_fb_actual_value,N,Enabled|Disabled,只读,Y,1,0x358E,0x00,Val,INTEGER32,-2147483648,2147483647,0,mA,,,,539,2,,,监控参数
+Drive Temperature,驱动器温度,Feedback,7,,Val,INTEGER32,RO,-2147483648,2147483647,0,℃,drive_temp,N,Enabled|Disabled,只读,Y,1,0x3521,0x00,Val,INTEGER32,-2147483648,2147483647,0,mV,,https://hs9e67ygio.feishu.cn/wiki/wikcndCGpI1T3gCIMtkYOefVTGd?from=from_copylink,,54,2,,,监控参数
+Motor Temperature,电机温度,Feedback,8,,Val,INTEGER32,RO,-2147483648,2147483647,0,℃,motor_temp,N,Enabled|Disabled,只读,Y,1,0x3529,0x00,Val,INTEGER32,-2147483648,2147483647,0,,,,,66,2,,,监控参数
+Encoder1 Temperature,编码器1温度,Feedback,9,,Val,UNS8,RO,0,255,0,℃,enc1_temp,N,Enabled|Disabled,只读,Y,1,0x35B9,0x08,Struct,UNS8,0,255,0,,,,,838,1,,,
+Encoder2 Temperature,编码器2温度,Feedback,10,,Val,UNS8,RO,0,255,0,℃,enc2_temp,N,Enabled|Disabled,只读,Y,1,0x35BA,0x08,Struct,UNS8,0,255,0,,,,,854,1,,,
+Bus Voltage  Actual Value,母线电压当前值,Feedback,11,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,V,bus_voltage_actual_value,N,Enabled|Disabled,只读,Y,1000,0x6079,0x00,Val,UNS32,0,4294967295,0,mA,,,,61486,2,,,监控参数
+Phase U Voltage Actual Value,U相电压当前值,Feedback,12,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,V,phase_u_voltage_actual_value,N,Enabled|Disabled,只读,Y,1,0x357B,0x01,Struct,INTEGER32,-2147483648,2147483647,0,mA,,,,453,2,,,监控参数
+Phase V Voltage Actual Value,V相电压当前值,Feedback,13,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,V,phase_v_voltage_actual_value,N,Enabled|Disabled,只读,Y,1,0x357B,0x02,Struct,INTEGER32,-2147483648,2147483647,0,mA,,,,455,2,,,监控参数
+Phase W Voltage Actual Value,W相电压当前值,Feedback,14,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,V,phase_w_voltage_actual_value,N,Enabled|Disabled,只读,Y,1,0x357B,0x03,Struct,INTEGER32,-2147483648,2147483647,0,-,,,,457,2,,,监控参数
+Phase U Current Actual Value,U相电流当前值,Feedback,15,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,A,phase_u_current_actual_value,N,Enabled|Disabled,只读,Y,1,0x357A,0x01,Struct,INTEGER32,-2147483648,2147483647,0,-,,,,447,2,,,监控参数
+Phase V Current Actual Value,V相电流当前值,Feedback,16,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,A,phase_v_current_actual_value,N,Enabled|Disabled,只读,Y,1,0x357A,0x02,Struct,INTEGER32,-2147483648,2147483647,0,-,,,,449,2,,,监控参数
+Phase W Current Actual Value,W相电流当前值,Feedback,17,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,A,phase_w_current_actual_value,N,Enabled|Disabled,只读,Y,1,0x357A,0x03,Struct,INTEGER32,-2147483648,2147483647,0,p,,,,451,2,,,监控参数
+ADC1 Raw Data Actual Value,ADC1原始数据当前值,Feedback,18,,Val,INTEGER32,RO,-2147483648,2147483647,0,-,adc1_raw_data_actual_value,N,Enabled|Disabled,只读,Y,1,0x358B,0x00,Val,INTEGER32,-2147483648,2147483647,0,mA,,,,533,2,,,模拟量控制模式参数
+ADC2 Raw Data Actual Value,ADC2原始数据当前值,Feedback,19,,Val,INTEGER32,RO,-2147483648,2147483647,0,-,adc2_raw_data_actual_value,N,Enabled|Disabled,只读,Y,1,0x358C,0x00,Val,INTEGER32,-2147483648,2147483647,0,mV,,,,535,2,,,模拟量控制模式参数
+Digital Input Status,数字IO输入值,Feedback,20,,Val,UNS32,RO,0,4294967295,0,-,digital_input_status,N,Enabled|Disabled,只读,Y,1,0x60FD,0x00,Val,UNS32,0,4294967295,0,mV,"0：无效
+1：有效",https://hs9e67ygio.feishu.cn/wiki/wikcnKA1WlXyOhcr1CY74mVsamf#doxcnqisccuE2s0yWo9h0DgRSrh,,61653,2,,,GPI输入参数
+Pulse Capture Signal Counts,脉冲捕获计数值,Feedback,21,,Val,UNS32,RO,0,4294967295,0,P,pulse_capture_signal_counts,N,Enabled|Disabled,只读,Y,1,0x35F0,0x00,Val,INTEGER32,0,2147483647,0,UU,,https://hs9e67ygio.feishu.cn/wiki/wikcnadoYsAoShVPxSiRoK4HFzd?from=from_copylink,,971,2,,,位置模式参数
+Axis D Current Actual Value,D轴电流当前值,Feedback,22,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,A,axis_d_current_actual_value,N,Enabled|Disabled,只读,Y,1,0x35F6,0x00,Val,INTEGER32,-2147483648,2147483647,0,UU,,,,983,2,,,监控参数
+Axis Alpha Voltage Actual Value,Alpha轴电压当前值,Feedback,23,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,V,axis_alpha_voltage_actual_value,N,Enabled|Disabled,只读,Y,1,0x35F7,0x00,Val,INTEGER32,-2147483648,2147483647,0,,,,,985,2,,,监控参数
+Axis Beta Voltage Actual Value,Beta轴电压当前值,Feedback,24,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,V,axis_beta_voltage_actual_value,N,Enabled|Disabled,只读,Y,1,0x35F8,0x00,Val,INTEGER32,-2147483648,2147483647,0,cnt,,,,987,2,,,监控参数
+Motor Speed Observer Actual Value,电机端速度观测器当前值,Feedback,25,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,p/s,motor_speed_observer_actual_value,N,Enabled|Disabled,只读,Y,1,0x3604,,,INTEGER32,-2147483648,2147483647,0,mA,,,,1006,2,,,监控参数
+Load Speed Observer Actual Value,负载端速度观测器当前值,Feedback,26,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,p/s,load_speed_observer_actual_value,N,Enabled|Disabled,只读,Y,1,0x3605,,,INTEGER32,-2147483648,2147483647,0,mA,,,,1008,2,,,监控参数
+Force Sensor Actual Value,力传感器当前值,Feedback,27,,Val,INTEGER32,RO,-2147483648,2147483647,0,adc,force_sensor_actual_value,N,Enabled|Disabled,只读,Y,1,0x360D,,,INTEGER32,-2147483648,2147483647,0,,,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF?from=from_copylink,,1021,2,,,力控模式参数
+Load Position Actual Raw Value,负载端位置当前原始值,Feedback,28,,Val,INTEGER64,RO,-9223372036854775808,9223372036854775807,0,p,load_position_actual_raw_value,N,Enabled|Disabled,只读,Y,1,0x363B,0x00,Val,INTEGER32,-2147483648,2147483647,0,,位置误差补偿前的负载端位置当前值,https://hs9e67ygio.feishu.cn/wiki/wikcnyqvC2K6N1577hj1CixZSLd#doxcniGuOGQS4W4SSO27VUQwgYg,,1095,2,,,监控参数
+Axis  Alpha Current  Actual Value,Alpha轴电流当前值,Feedback,29,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,A,axis_alpha_current_actual_value,N,Enabled|Disabled,只读,Y,1000,0x3647,0x00,Val,INTEGER32,-2147483648,2147483647,0,,,,,1114,2,,,监控参数
+Axis  Beta Current  Actual Value,Beta轴电流当前值,Feedback,30,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,A,axis_beta_current_actual_value,N,Enabled|Disabled,只读,Y,1000,0x3648,0x00,Val,INTEGER32,-2147483648,2147483647,0,,,,,1116,2,,,监控参数
+Load Zero Pulse Error Value,负载端 Z 相检测误差,Calc,1,,Val,INTEGER32,RO,-2147483648,2147483647,0,p,load_zero_pulse_error_value,N,Enabled|Disabled,只读,Y,1,0x35EA,0x00,Val,INTEGER32,-2147483648,2147483647,0,-,,,,961,2,,,监控参数
+Motor Position Error Value,电机端位置误差值,Calc,2,,Val,INTEGER64,RO,-9223372036854775808,9223372036854775807,0,p,motor_position_error_value,N,Enabled|Disabled,只读,Y,1,0x3573,,Val,INTEGER32,-2147483648,2147483647,0,,,https://hs9e67ygio.feishu.cn/wiki/wikcn1XCUpIfmH7JhsWYQwYWpTf#doxcnuEMWGyAc8uuEYXSCFRC4Sb,,435,2,错误,前后数据类型不一致,监控参数
+Load Position Error Value,负载端位置误差值,Calc,3,,Val,INTEGER64,RO,-9223372036854775808,9223372036854775807,0,p,load_position_error_value,N,Enabled|Disabled,只读,Y,1,0x60F4,0x00,Val,INTEGER32,-2147483648,2147483647,0,UU,,https://hs9e67ygio.feishu.cn/wiki/wikcn1XCUpIfmH7JhsWYQwYWpTf#doxcneqqoIO8a82AoorBpcpA4gh,,61647,2,错误,前后数据类型不一致,监控参数
+Motor Velocity Error Value,电机端速度误差值,Calc,4,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,p/s,motor_velocity_error_value,N,Enabled|Disabled,只读,Y,1,0x3575,0x00,Val,INTEGER32,-2147483648,2147483647,0,UU,,https://hs9e67ygio.feishu.cn/wiki/wikcnmVcV7v3ggnC06QqfGA7jXb#doxcn284kQ8OU6eCG4wDwYhgMMe,,439,2,,,监控参数
+Load Velocity Error Value,负载端速度误差值,Calc,5,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,p/s,load_velocity_error_value,N,Enabled|Disabled,只读,Y,1,0x351E,0x00,Val,INTEGER32,-2147483648,2147483647,0,UU,,https://hs9e67ygio.feishu.cn/wiki/wikcnmVcV7v3ggnC06QqfGA7jXb#doxcnOEo2e4QquCcoQvWpg0Wpse,,50,2,,,监控参数
+Torque Error Value,力矩误差值,Calc,6,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,mN·m,torque_error_value,N,Enabled|Disabled,只读,N,,0,,,,-,-,-,,,,,,,,,
+Current Error Value,电流误差值,Calc,7,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,A,current_error_value,N,Enabled|Disabled,只读,Y,1,0x351F,0x00,Val,INTEGER32,-2147483648,2147483647,0,mA,,https://hs9e67ygio.feishu.cn/wiki/wikcnzGqWKPzG5N3KcwoHcL1iDc?from=from_copylink,,52,2,,,监控参数
+Current Controller Bandwidth Designed Value,电流环带宽设计值,Calc,8,,Val,UNS32,RO,0,4294967295,0,Hz,current_controller_bw_designed_value,N,Enabled|Disabled,只读,Y,1,0x3597,0x00,Val,UNS32,0,4294967295,0,-,,,,558,2,,,
+Current Controller Bandwidth Verified Value,电流环带宽验证值,Calc,9,,Val,UNS32,RO,0,4294967295,0,Hz,current_controller_bw_verified_value,N,Enabled|Disabled,只读,Y,1,0x35EB,,,UNS32,0,4294967295,0,,,,,963,2,,,
+Position Controller Bandwidth Designed Value,位置环带宽设计值,Calc,10,,Val,UNS32,RO,0,4294967295,0,Hz,position_controller_bw_designed_value,N,Enabled|Disabled,只读,Y,1,0x3509,0x00,Val,UNS32,0,4294967295,0,,,,,23,2,,,
+Position Controller Bandwidth Verified Value,位置环带宽验证值,Calc,11,,Val,UNS32,RO,0,4294967295,0,Hz,position_controller_bw_verified_value,N,Enabled|Disabled,只读,Y,1,0x35EC,,,UNS32,0,4294967295,0,,,,,965,2,,,
+Drive Accumulated Heat,驱动器热量累计值,Calc,12,,Val,UNS32,RO,0,4294967295,0,-,drive_accumulated_heat,N,Enabled|Disabled,只读,Y,1,0x35ED,,,UNS32,0,4294967295,0,,驱动器累计热量最大值 Qmax =  驱动器额定电流^2 * 驱动器过载电流持续时间，驱动器累计热量达到最大值时，报驱动器过载保护,https://hs9e67ygio.feishu.cn/wiki/wikcnZ2JYA2xB8EBAXHphXM7Ejg?from=from_copylink,,967,2,,,监控参数
+Motor Accumulated Heat,电机热量累计值,Calc,13,,Val,UNS32,RO,0,4294967295,0,-,motor_accumulated_heat,N,Enabled|Disabled,只读,Y,1,0x35A5,0x00,Val,UNS32,0,4294967295,0,,电机热量累计最大值 Qmax =  电机额定电流^2 * 电机过载电流持续时间，电机累计热量达到最大值时，报电机过载保护,https://hs9e67ygio.feishu.cn/wiki/wikcnZ2JYA2xB8EBAXHphXM7Ejg?from=from_copylink,,747,2,,,监控参数
+Gear Ratio,电机端和负载端齿轮比,Calc,14,,Val,UNS32,RO,0,4294967295,0,-,gear_ratio,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Force Error Value,力控误差值,Calc,15,,Val,INTEGER32,RO,-2147483648,2147483647,0,ADC,force_error_value,N,Enabled|Disabled,只读,Y,1,0x3612,0x00,Val,INTEGER32,-2147483648,2147483647,0,,,https://hs9e67ygio.feishu.cn/wiki/wikcnedTsEoaZvQ8fgMFnzI2ICF#doxcnaa0c6uaUuQs4q6Q9QVKtjb,,1028,2,,,监控参数
+Touch Probe 1 Positive Edge Position,探针1上升沿位置,Calc,16,,Val,INTEGER64,RO,-9223372036854775808,9223372036854775807,0,p,touch_probe_1_positive_edge_position,N,Enabled|Disabled,只读,Y,1,0x60BA,0x00,Val,INTEGER32,-2147483648,2147483647,0,p,,,,61572,2,错误,前后数据类型不一致,探针功能参数
+Touch Probe 1 Negative Edge Position,探针1下降沿位置,Calc,17,,Val,INTEGER64,RO,-9223372036854775808,9223372036854775807,0,p,touch_probe_1_negative_edge_position,N,Enabled|Disabled,只读,Y,1,0x60BB,0x00,Val,INTEGER32,-2147483648,2147483647,0,p,,,,61574,2,错误,前后数据类型不一致,探针功能参数
+Touch Probe 2 Positive Edge Position,探针2上升沿位置,Calc,18,,Val,INTEGER64,RO,-9223372036854775808,9223372036854775807,0,p,touch_probe_2_positive_edge_position,N,Enabled|Disabled,只读,Y,1,0x60BC,0x00,Val,INTEGER32,-2147483648,2147483647,0,p,,,,61576,2,错误,前后数据类型不一致,探针功能参数
+Touch Probe 2 Negative Edge Position,探针2下降沿位置,Calc,19,,Val,INTEGER64,RO,-9223372036854775808,9223372036854775807,0,p,touch_probe_2_negative_edge_position,N,Enabled|Disabled,只读,Y,1,0x60BD,0x00,Val,INTEGER32,-2147483648,2147483647,0,p,,,,61578,2,错误,前后数据类型不一致,探针功能参数
+Touch Probe 1 Positive Edge Counter,探针1上升沿计数值,Calc,20,,Val,UNS16,RO,0,65535,0,-,touch_probe_1_positive_edge_counter,N,Enabled|Disabled,只读,Y,1,0x60D5,0x00,Val,UNS16,0,65535,0,-,,,,61602,1,,,探针功能参数
+Touch Probe 1 Negative Edge Counter,探针1下降沿计数值,Calc,21,,Val,UNS16,RO,0,65535,0,-,touch_probe_1_negative_edge_counter,N,Enabled|Disabled,只读,Y,1,0x60D6,0x00,Val,UNS16,0,65535,0,-,,,,61603,1,,,探针功能参数
+Touch Probe 2 Positive Edge Counter,探针2上升沿计数值,Calc,22,,Val,UNS16,RO,0,65535,0,-,touch_probe_2_positive_edge_counter,N,Enabled|Disabled,只读,Y,1,0x60D7,0x00,Val,UNS16,0,65535,0,-,,,,61604,1,,,探针功能参数
+Touch Probe 2 Negative Edge Counter,探针2下降沿计数值,Calc,23,,Val,UNS16,RO,0,65535,0,-,touch_probe_2_negative_edge_counter,N,Enabled|Disabled,只读,Y,1,0x60D8,0x00,Val,UNS16,0,65535,0,-,,,,61605,1,,,探针功能参数
+Torque Max Record Value,力矩最大记录值,Calc,24,,Val,REAL32,RW,-3.40282347e+38,3.40282347e+38,0,mN·m,torque_max_record_value,N,Enabled|Disabled,使能,Y,,0x3660,0x00,Val,INTEGER32,0,0,0,‰,,http://只有速动的改为只读了，主线的目前还是可读可写,,1199,2,疑问,"目前是只读,单位换算？",力矩模式参数
+Drive Temperature Status,驱动器温度状态,Status,1,,Val,INTEGER8,RO,-128,127,0,,drive_temp_status,N,Enabled|Disabled,只读,N,,x,,,,-,-,-,,,,,,,,,
+Motor Temperature Status,电机温度状态,Status,2,,Val,INTEGER8,RO,-128,127,0,,motor_temp_status,N,Enabled|Disabled,只读,N,,x,,,,-,-,-,,,,,,,,,
+Motor Operation Status,电机运行状态,Status,3,,Val,INTEGER8,RO,-128,127,0,,motor_op_status,N,Enabled|Disabled,只读,Y,1,0x3005,0x00,Val,UNS8,0,127,0,,,,,4,1,错误,前后数据类型不一致,监控参数
+Position Feedback Status,位置反馈状态,Status,4,,Val,INTEGER8,RO,-128,127,0,,position_fb_status,N,Enabled|Disabled,只读,N,,x,,,,-,-,-,,,,,,,,,
+Encoder1 Status,编码器1状态,Status,5,,Val,UNS8,RO,0,255,0,,enc1_status,N,Enabled|Disabled,只读,Y,1,0x3006,0x00,Val,UNS8,0,255,0,,"0：正常
+1：错误
+2：编码器未连接
+3：编码器未准备好",https://hs9e67ygio.feishu.cn/wiki/wikcntwPicGV0vq98vYf5GGmu5f?from=from_copylink,,5,1,,,编码器参数
+Encoder2 Status,编码器2状态,Status,6,,Val,UNS8,RO,0,255,0,,enc2_status,N,Enabled|Disabled,只读,Y,1,0x358A,0x00,Val,UNS8,0,255,0,,"0：正常
+1：错误
+2：编码器未连接
+3：编码器未准备好",https://hs9e67ygio.feishu.cn/wiki/wikcntwPicGV0vq98vYf5GGmu5f?from=from_copylink,,531,1,,,编码器参数
+Hall Status,霍尔状态,Status,7,,Val,INTEGER8,RO,-128,127,0,,hall_status,N,Enabled|Disabled,只读,Y,1,0x3007,0x00,Val,UNS8,0,127,0,,,,,6,1,错误,前后数据类型不一致,霍尔参数
+App Now,当前应用,Status,8,,Val,INTEGER8,RO,-128,127,0,,app_now,N,Enabled|Disabled,只读,N,,x,,,,-,-,-,,,,,,,,,
+App Running Step,应用运行步骤,Status,9,,Val,INTEGER8,RO,-128,127,0,,app_running_step,N,Enabled|Disabled,只读,N,,x,,,,-,-,-,,,,,,,,,
+App Running State,应用运行状态,Status,10,,Val,INTEGER8,RO,-128,127,0,,app_running_state,N,Enabled|Disabled,只读,N,,x,,,,-,-,-,,,,,,,,,
+Identification State,辨识状态,Status,11,,Val,INTEGER8,RO,-128,127,0,,ident_state,N,Enabled|Disabled,只读,Y,1,0x3008,0x00,Val,UNS8,0,127,0,,"0：启动开始空闲状态
+1：辨识成功
+2：电气辨识中
+3：方向辨识中
+4：机械辨识中
+5：转矩脉动辨识中
+255：错误状态",https://hs9e67ygio.feishu.cn/wiki/wikcnfZ8eL1qFq9oTIk7Z7Jvfj3#doxcnMgQy80y0CUEyasM7RQQRmb,,7,1,错误,前后数据类型不一致,辨识功能参数
+Error Code,错误码,Status,12,,Val,UNS16,RO,0,65535,0,,error_code,N,Enabled|Disabled,只读,Y,1,0x603F,0x00,Val,UNS16,0,65535,0,,,,,61442,1,,,监控参数
+DS402 Statusword,402状态字,Status,13,,Val,UNS16,RO,0,65535,0,,ds402_statusword,N,Enabled|Disabled,只读,Y,1,0x6041,0x00,Val,UNS16,0,65535,0,,,https://hs9e67ygio.feishu.cn/wiki/wikcnQQnJMPc4hVJOPgQOpTn5Jc?from=from_copylink,,61444,1,,,控制指令参数
+Operation Mode Actual,当前运行模式,Status,14,,Val,INTEGER8,RO,-128,127,0,,op_mode_actual,N,Enabled|Disabled,只读,Y,1,0x6061,,,INTEGER8,-128,127,0,,"0x01：位置模式
+0x03：速度模式
+0x04：力矩模式
+0x06：回零模式
+0x0B：力控模式
+0x3C：往复运动模式
+0x16：模拟量控速度模式
+0x17：模拟量控力矩模式
+0x1F：脉冲控位置模式
+0x3D：参考信号模式
+0x2A：PWM控速模式
+0x3E：多段运行模式",,,61451,1,,,监控参数
+Operation State Actual,当前运行状态,Status,15,,Val,UNS8,RO,0,255,0,,op_state_actual,N,Enabled|Disabled,只读,N,,x,,,,-,-,-,,,,,,,,,
+Remote State,远程状态,Status,16,,Val,UNS8,RO,0,255,0,,remote_state,N,Enabled|Disabled,只读,N,,x,,,,-,-,-,,,,,,,,,
+Bus Voltage State,母线电压状态,Status,17,,Val,UNS8,RO,0,255,0,,bus_voltage_state,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Warning State,警告状态,Status,18,,Val,UNS8,RO,0,255,0,,warning_state,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Limit Active State,极限激活状态,Status,19,,Val,UNS8,RO,0,255,0,,limit_active_state,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Target Reached State,目标到达状态,Status,20,,Val,UNS8,RO,0,255,0,,target_reached_state,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Setpoint acknowledge,设定值确认状态,Status,21,,Val,UNS8,RO,0,255,0,,setpoint_ack_state,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Position Following Error State,位置跟随误差状态,Status,22,,Val,UNS8,RO,0,255,0,,position_following_error_state,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Velocity Zero State,零速度状态,Status,23,,Val,UNS8,RO,0,255,0,,velocity_zero_state,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Velocity Error State,速度误差状态,Status,24,,Val,UNS8,RO,0,255,0,,velocity_error_state,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Homing Attained State,回零到达状态,Status,25,,Val,UNS8,RO,0,255,0,,homing_attained_state,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Homing Fault State,回零错误状态,Status,26,,Val,UNS8,RO,0,255,0,,homing_fault_state,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+IP Mode Active State,插值模式激活状态,Status,27,,Val,UNS8,RO,0,255,0,,ip_mode_active_state,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Limit detailed State,极限触发具体状态,Status,28,,Val,UNS8,RO,0,255,0,,limit_detailed_state,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Motor Startup Status,电机启动状态,Status,29,,Val,UNS8,RO,0,255,0,,motor_startup_status,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Multi Segment Running Segment,多段运行模式运行段,Status,30,,Val,UNS8,RO,0,255,0,,multi_segment_running_segment,N,Enabled|Disabled,只读,Y,1,0x3613,0x00,Val,UNS8,0,255,0,,读取当前的运行段数,https://hs9e67ygio.feishu.cn/wiki/wikcn6H8xCLIP11aMXtmUganGph?from=from_copylink,,1029,1,,,多段运行参数
+Multi Segment  Running State,多段运行模式运行状态,Status,31,,Val,UNS8,RO,0,255,0,,multi_segment_running_state,N,Enabled|Disabled,只读,Y,1,0x3614,0x00,Val,UNS8,0,255,0,,"0：停止
+1：目标未到达
+2：目标到达
+3：完成等待
+4：等待超时
+5：准备开始",https://hs9e67ygio.feishu.cn/wiki/wikcn6H8xCLIP11aMXtmUganGph?from=from_copylink,,1030,1,,,多段运行参数
+Positive Limit Switch State,正极限开关状态,Status,32,,Val,UNS8,RO,0,255,0,,positive_limit_switch_state,N,Enabled|Disabled,只读,N,,x,,,,-,-,-,,,,,,,,,
+Negative Limit Switch State,负极限开关状态,Status,33,,Val,UNS8,RO,0,255,0,,negative_limit_switch_state,N,Enabled|Disabled,只读,N,,x,,,,-,-,-,,,,,,,,,
+Home Switch State,回零开关状态,Status,34,,Val,UNS8,RO,0,255,0,,home_switch_state,N,Enabled|Disabled,只读,N,,x,,,,-,-,-,,,,,,,,,
+Position Error Correction Status,位置误差补偿状态,Status,35,,Val,INTEGER8,RO,-128,127,0,,position_error_correction_status,N,Enabled|Disabled,只读,Y,1,0x3633,0x00,,,#N/A,#N/A,0,,,,,1081,1,疑问,402DataType?,位置误差补偿参数
+Database Read Write Error Code,数据库读写错误码,Status,36,,Val,UNS32,RO,0,4294967295,0,,database_rw_error_code,N,Enabled|Disabled,只读,Y,1,0x363A,0x00,,,#N/A,#N/A,0,,,,,1093,2,疑问,402DataType?,监控参数
+Script Running Status,脚本运行状态,Status,37,,Val,INTEGER8,RO,-128,127,0,,script_running_status,N,Enabled|Disabled,只读,Y,1,0x3640,0x00,,INTEGER8,-128,127,0,,,,,1103,1,,,
+Warning Code Segment1,警告码段1,Status,38,,Val,UNS32,RO,0,4294967295,0,,warning_code_segment1,N,Enabled|Disabled,只读,Y,1,0x3641,0x00,,UNS32,0,4294967295,0,,,,,1105,2,,,监控参数
+Warning Code Segment2,警告码段2,Status,39,,Val,UNS32,RO,0,4294967295,0,,warning_code_segment2,N,Enabled|Disabled,只读,Y,1,0x3642,0x00,,UNS32,0,4294967295,0,,,,,1107,2,,,监控参数
+Communication Status,通信状态,Status,40,,Val,UNS8,RO,0,255,0,,communication_status,N,Enabled|Disabled,只读,N,,x,,,,-,-,-,,,,,,,,,
+Touch Probe Digital Input Status,探针数字输入状态,Status,41,,Val,UNS16,RO,0,65535,0,,touch_probe_digital_input_status,N,Enabled|Disabled,只读,N,,x,,,,-,-,-,,,,,,,,,
+Touch Probe Status,探针状态,Status,42,,Val,UNS16,RO,0,655345,0,,touch_probe_status,N,Enabled|Disabled,只读,Y,1,0x60B9,0x00,Val,UNS16,0,65535,0,,,,,61570,1,,,监控参数
+Zero Pulse Status,Z 相状态,Status,43,,Val,UNS32,RO,0,4294967295,0,,zero_pulse_status,N,Enabled|Disabled,只读,N,,,,,,-,-,-,,,,,,,,,
+Debug Data,调试数据,Debug,0,,Val,UNS32,RW,0,4294967295,0,,debug_data_[10],Y,Disabled,立即,,1,0x35B5,,,UNS32,0,4294967295,0,,,,,,,疑问,是否对用户开放,
+Debug Parameter 1,调试参数1,Debug,1,,Val,UNS32,RW,0,4294967295,0,,debug_param1,Y,Disabled,立即,,1,0x35B5,0x01,,UNS32,0,4294967295,0,,,,,799,2,疑问,是否对用户开放,
+Debug Parameter 2,调试参数2,Debug,2,,Val,UNS32,RW,0,4294967295,0,,debug_param2,Y,Disabled,立即,,1,0x35B5,0x02,,UNS32,0,4294967295,0,,,,,801,2,疑问,是否对用户开放,
+Debug Parameter 3,调试参数3,Debug,3,,Val,UNS32,RW,0,4294967295,0,,debug_param3,Y,Disabled,立即,,1,0x35B5,0x03,,UNS32,0,4294967295,0,,,,,803,2,疑问,是否对用户开放,
+Debug Parameter 4,调试参数4,Debug,4,,Val,UNS32,RW,0,4294967295,0,,debug_param4,Y,Disabled,立即,,1,0x35B5,0x04,,UNS32,0,4294967295,0,,,,,805,2,疑问,是否对用户开放,
+Debug Parameter 5,调试参数5,Debug,5,,Val,UNS32,RW,0,4294967295,0,,debug_param5,Y,Disabled,立即,,1,0x35B5,0x05,,UNS32,0,4294967295,0,,,,,806,1,疑问,是否对用户开放,
+Debug Parameter 6,调试参数6,Debug,6,,Val,UNS32,RW,0,4294967295,0,,debug_param6,Y,Disabled,立即,,1,0x35B5,0x06,,UNS32,0,4294967295,0,,,,,807,1,疑问,是否对用户开放,
+Debug Parameter 7,调试参数7,Debug,7,,Val,UNS32,RW,0,4294967295,0,,debug_param7,Y,Disabled,立即,,1,0x35B5,0x07,,UNS32,0,4294967295,0,,,,,809,2,疑问,是否对用户开放,
+Debug Parameter 8,调试参数8,Debug,8,,Val,UNS32,RW,0,4294967295,0,,debug_param8,Y,Disabled,立即,,1,,,,,#N/A,#N/A,0,,,,,,,疑问,是否对用户开放,
+Debug Parameter 9,调试参数9,Debug,9,,Val,UNS32,RW,0,4294967295,0,,debug_param9,Y,Disabled,立即,,1,,,,,#N/A,#N/A,0,,,,,,,疑问,是否对用户开放,
+Debug Parameter 10,调试参数10,Debug,10,,Val,UNS32,RW,0,4294967295,0,,debug_param10,Y,Disabled,立即,,1,,,,,#N/A,#N/A,0,,,,,,,疑问,是否对用户开放,
+,,,,,,,,,,,,,,,,,,,,,,#N/A,#N/A,0,,,,,,,,,速度模式参数
+,,,,,,,,,,,,,,,,,,,,,,#N/A,#N/A,0,,,,,,,,,GPO输出参数
+,,,,,,,,,,,,,,,,,,,,,,#N/A,#N/A,0,,,,,,,,,速度模式参数
+Dynamic Braking Enable,动态制动开关,Service,137,,Val,UNS8,RW,N,1,1,-,dynamic_braking_enable,Y,Disabled,立即,Y,1,0x366E,0x00,Val,UNS8,#VALUE!,1,1,,"0：关闭
+1：开启",,,1265,1,,,
+Analog Input 1 Deadzone,模拟输入信号1死区,Service,138,,Val,UNS32,RW,N,65535,0,ADC,analog_input1_deadzone,Y,Enabled|Disabled,立即,Y,1,0x366F,0x00,Val,UNS32,#VALUE!,65535,0,,,,,1267,2,,,
+Analog Input 2 Deadzone,模拟输入信号2死区,Service,139,,Val,UNS32,RW,N,65535,0,ADC,analog_input2_deadzone,Y,Enabled|Disabled,立即,Y,1,0x3670,0x00,Val,UNS32,#VALUE!,65535,0,,,,,1269,2,,,
+Motor Brake Voltage Adjustable Enable,电机抱闸调压使能,Service,140,,Val,UNS8,RW,N,1,0,-,motor_brake_voltage_adjustable_enable,Y,Disabled,,Y,1,0x3678,0x01,Struct,UNS8,#VALUE!,1,0,,,,,,,,,
+Motor Brake Power Supply Voltage,电机抱闸供电电压,Service,141,,Val,REAL32,RW,0,N,24,V,motor_brake_power_supply_voltage,Y,Disabled,,Y,1000,0x3678,0x02,Struct,UNS32,0,#VALUE!,24000,mV,,,,,,,,
+Motor Brake Disengage Pull Voltage,电机松闸强拉电压,Service,142,,Val,REAL32,RW,0,48,24,ms,motor_brake_disengage_pull_voltage,Y,Disabled,,Y,1000,0x3678,0x03,Struct,UNS32,0,48000,24000,mV,,,,,,,,
+Motor Brake Disengage Pull Time,电机松闸强拉持续时间,Service,143,,Val,UNS32,RW,N,N,100,V,motor_brake_disengage_pull_time,Y,Disabled,,Y,1,0x3678,0x04,Struct,UNS32,#VALUE!,#VALUE!,100,ms,,,,,,,,
+Motor Brake Disengage Hold Voltage,电机松闸保持电压,Service,144,,Val,REAL32,RW,0,48,24,V,motor_brake_disengage_hold_voltage,Y,Disabled,,Y,1000,0x3678,0x05,Struct,UNS32,0,48000,24000,mV,,,,,,,,
+Encoder Single Turn Data Reset Command,编码器单圈值清除指令,Output,34,,Val,UNS8,RW,0,127,0,-,encoder_single_turn_data_reset_cmd,N,Disabled,立即,Y,1,0x366D,0x01,Array,UNS8,0,127,0,,1:编码器1 2:编码器2,,,1262,1,疑问,数据类型是val还是array？,
+Encoder Multi Turn Data Reset Command,编码器多圈值清除指令,Output,35,,Val,UNS8,RW,0,127,0,-,encoder_multi_turn_data_reset_cmd,N,Disabled,立即,Y,1,0x366D,0x02,Array,UNS8,0,127,0,,1:编码器1 2:编码器2,,,1263,1,疑问,数据类型是val还是array？,
+Encoder Errors Reset Command,编码器错误清除指令,Output,36,,Val,UNS8,RW,0,127,0,-,encoder_errors_reset_cmd,N,Disabled,立即,Y,1,0x366D,0x03,Array,UNS8,0,127,0,,1:编码器1 2:编码器2,,,1264,1,疑问,数据类型是val还是array？,
+Encoder1 Frame Data,编码器1帧数据,Feedback,31,,Array,UNS32,RO,0,4294967295,0,-,enc1_frame_data[4],N,Enabled|Disabled,只读,N,1,0x3672,0x01,Array,UNS32,-,-,-,,编码器原始帧数据，用于研发调试使用,,,1291,2,,,
+Encoder2 Frame Data,编码器2帧数据,Feedback,32,,Array,UNS32,RO,0,4294967295,0,-,enc2_frame_data[4],N,Enabled|Disabled,只读,N,1,0x3673,0x01,Array,UNS32,-,-,-,,编码器原始帧数据，用于研发调试使用,,,1301,2,,,
+Encoder1 Single Turn Position,编码器1单圈位置值,Feedback,33,,Val,UNS32,RO,0,4294967295,0,P,enc1_single_turn_position,N,Enabled|Disabled,只读,Y,1,0x3676,0x01,Struct,UNS32,0,4294967295,0,,,,,1317,2,,,
+Encoder1 Multi Turn Position,编码器1多圈位置值,Feedback,34,,Val,UNS32,RO,0,4294967295,0,P,enc1_multi_turn_position,N,Enabled|Disabled,只读,Y,1,0x3676,0x02,Struct,UNS32,0,4294967295,0,,,,,1319,2,,,
+Encoder2 Single Turn Position,编码器2单圈位置值,Feedback,35,,Val,UNS32,RO,0,4294967295,0,P,enc2_single_turn_position,N,Enabled|Disabled,只读,Y,1,0x3676,0x03,Struct,UNS32,0,4294967295,0,,,,,1321,2,,,
+Encoder2 Multi Turn Position,编码器2多圈位置值,Feedback,36,,Val,UNS32,RO,0,4294967295,0,P,enc2_multi_turn_position,N,Enabled|Disabled,只读,Y,1,0x3676,0x04,Struct,UNS32,0,4294967295,0,,,,,1323,2,,,
+Hall Sensor Data,霍尔传感器数据,Feedback,37,,Val,UNS8,RO,0,127,0,-,hall_sensor_data,N,Enabled|Disabled,只读,Y,1,0x3677,0x00,Val,UNS8,0,127,0,,Hall原始数据，按bit显示,,,1324,1,,,
+IO Trigger Position Record Value,IO触发位置记录值,Calc,25,,Array,INTEGER64,RO,-9223372036854775808,9223372036854775807,0,-,io_trigger_position_record_value[8],N,Enabled|Disabled,只读,Y,1,0x3671,0x01,Array,INTEGER32,-2147483648,2147483647,0,-,,,,1273,2,疑问,数据类型前后不一致,
+Electrical Angle Actual Value,电角度当前值,Calc,26,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,rad,elec_angle_actual_value,N,Enabled|Disabled,只读,Y,1000,0x3674,,Val,UNS32,0,4294967295,0,mrad,,,,1309,2,,,
+Interpolation Period Actual Value,插值周期当前值,Calc,27,,Val,UNS32,RO,0,4294967295,0,mcu cycle,ip_period_actual_value,N,Enabled|Disabled,只读,Y,1,0x3675,0x01,Struct,UNS32,0,4294967295,0,cycle,,,,1311,2,,,
+Interpolation Period Estimated Value,插值周期估计值,Calc,28,,Val,UNS32,RO,0,4294967295,0,mcu cycle,ip_period_est_value,N,Enabled|Disabled,只读,Y,1,0x3675,0x02,Struct,UNS32,0,4294967295,0,cycle,,,,1313,2,,,
+Interpolation Time Phase,插值时间相位,Calc,29,,Val,REAL32,RO,-3.40282347e+38,3.40282347e+38,0,s,ip_time_phase,N,Enabled|Disabled,只读,Y,1000000,0x3675,0x03,Struct,UNS32,0,4294967295,0,us,,,,1315,2,,,
+Object Dictionary Index Remap Config,对象字典索引重映射配置,Commucation,,,Val,UNS32,RW,0,4294967295,0,-,"",Y,Any Status,立即,Y,1,0x4000,0x00,Val,UNS32,0,4294967295,0,-,,,,,,,,通讯参数
+CustomControlWord,自定义控制字,Commucation,,,Val,UNS16,RW,0,65535,0,-,"",Y,Any Status,立即,Y,1,0x4040,0x00,Val,UNS16,0,65535,0,-,,,,,,,,通讯参数
+CustomMode,自定义模式,Commucation,,,Val,UNS16,RW,0,65535,0,-,"",Y,Any Status,立即,Y,1,0x4060,0x00,Val,UNS16,0,65535,0,-,,,,,,,,通讯参数
+CustomStatusWord,自定义状态字,Commucation,,,Val,INTEGER8,RO,-1,127,0,-,"",Y,Any Status,只读,Y,1,0x4041,0x00,Val,INTEGER8,-1,127,0,-,,,,,,,,通讯参数
+CustomModeDisplay,自定义模式显示,Commucation,,,Val,INTEGER8,RO,-1,127,0,-,"",Y,Any Status,只读,Y,1,0x4061,0x00,Val,INTEGER8,-1,127,0,-,,,,,,,,通讯参数
+Encoder1 Single Turn Software Resolution,编码器1单圈软件分辨率,ExternalDevice,78,,Val,UNS32,RW,0,4294967295,-,P,enc1_single_turn_sw_res,Y,Disabled,重启,Y,1,0x36A0,0x00,Val,UNS32,0,4294967295,0,p,,,,2953,2,,,编码器参数
+Encoder2 Single Turn Software Resolution,编码器2单圈软件分辨率,ExternalDevice,79,,Val,UNS32,RW,0,4294967295,-,P,enc2_single_turn_sw_res,Y,Disabled,重启,Y,1,0x36A1,0x00,Val,UNS32,0,4294967295,0,p,,,,2955,2,,,编码器参数
+External Force Compensation Enable,外力补偿开关,Service,147,,Val,UNS8,RW,0,1,0,-,ext_force_comp_enable,Y,Disabled,立即,Y,1,0x3669,0x00,Val,UNS8,0,1,0,-,,,,1254,1,,,力控模式参数
+External Force Compensation Point Number,外力补偿点数,Service,148,,Val,UNS8,RW,0,255,0,-,ext_force_comp_point_number,Y,Disabled,立即,Y,1,0x366A,0x01,Struct,UNS8,0,255,0,-,,,,1255,1,,,力控模式参数
+External Force Compensation Start Position,外力补偿起始位置,Service,149,,Val,INTEGER64,RW,-9223372036854775808,9223372036854775807,0,P,ext_force_comp_start_position,Y,Disabled,立即,Y,1,0x366A,0x02,Struct,INTEGER32,-2147483648,2147483647,0,P,,,,1257,2,,,力控模式参数
+External Force Compensation Interpolation Interval,外力补偿插值间隔,Service,150,,Val,INTEGER32,RW,-2147483648,2147483647,100,P,ext_force_comp_interp_interval,Y,Disabled,立即,Y,1,0x366A,0x03,Struct,INTEGER32,-2147483648,2147483647,100,P,,,,1259,2,,,力控模式参数
+Force Constant Calibration Enable,力常数校准开关,Service,151,,Val,UNS8,RW,0,1,0,-,force_constant_calib_enable,Y,Disabled,立即,Y,1,0x3684,0x00,Val,UNS8,0,1,0,-,,,,1888,1,,,力控模式参数
+Force Constant Calibration Point Number,力常数校准点数,Service,152,,Val,UNS8,RW,0,255,0,-,force_constant_calib_point_number,Y,Disabled,立即,Y,1,0x3685,0x01,Struct,UNS8,0,255,0,-,,,,1889,1,,,力控模式参数
+Force Constant Calibration Start Position,力常数校准起始位置,Service,153,,Val,INTEGER64,RW,-9223372036854775808,9223372036854775807,0,P,force_constant_calib_start_position,Y,Disabled,立即,Y,1,0x3685,0x02,Struct,INTEGER32,-2147483648,2147483647,0,P,,,,1891,2,,,力控模式参数
+Force Constant Calibration Interpolation Interval,力常数校准插值间隔,Service,154,,Val,INTEGER32,RW,-2147483648,2147483647,100,P,force_constant_calib_interp_interval,Y,Disabled,立即,Y,1,0x3685,0x03,Struct,INTEGER32,-2147483648,2147483647,100,P,,,,1893,2,,,力控模式参数
+Application Force Limit,应用力限制,Service,155,,Val,INTEGER32,RW,-2147483648,2147483647,0,ADC,app_force_limit,Y,Any Status,立即,Y,1,0x3687,0x00,Val,INTEGER32,-2147483648,2147483647,0,ADC,,,,2405,2,,,力控模式参数
+Target Force Offset,目标力偏置,Service,156,,Val,INTEGER32,RW,-2147483648,2147483647,0,ADC,target_force_offset,Y,Any Status,立即,Y,1,0x36A6,0x00,Val,INTEGER32,-2147483648,2147483647,0,ADC,,,,2965,2,,,力控模式参数
+Vector Pulse Electrical Angle Align Pulse Amplitude,矢量脉冲寻相脉冲幅值,Service,157,,Val,REAL32,RW,3.40282347e+38,motor_param_.motor_cont_current * app_param_.ident_current_amp_relative * 0.01f ,1,A,vector_pulse_elec_angle_align_pulse_amp,Y,Disabled,只读,Y,1,,,,,#N/A,#N/A,1,A,,,,,,,,辨识功能参数
+Vector Pulse Electrical Angle Align Pulse Duration,矢量脉冲寻相脉冲持续时间,Service,158,,Val,REAL32,RW,3.40282347e+38,0.025,1,s,vector_pulse_elec_angle_align_pulse_duration,Y,Disabled,立即,Y,1,,,,,#N/A,#N/A,1,ms,,,,,,,,辨识功能参数
+Mover State,动子状态,FTStatus,159,,Val,UNS8,RO,N,N,0,-,mover_state,N,Disabled,立即,Y,1,0x5000,0x00,Val,UNS8,0,255,0,-,,,,,,,,柔性参数
+Mover Length,动子长度,FTParam,162,,Val,UNS32,RW,N,N,120000,P,mover_length,Y,Disabled,立即,Y,1,0x5001,0x01,Struct,UNS32,0,4294967295,120000,P,,,,,,,,柔性参数
+Coil Length,线圈长度,FTParam,163,,Val,UNS32,RW,N,N,80000,P,coil_length,Y,Disabled,立即,Y,1,0x5001,0x02,Struct,UNS32,0,4294967295,80000,P,,,,,,,,柔性参数
+Coil Gap Width,线圈间隙宽度,FTParam,164,,Val,UNS32,RW,N,N,1000,P,coil_gap_width,Y,Disabled,立即,Y,1,0x5001,0x03,Struct,UNS32,0,4294967295,1000,P,,,,,,,,柔性参数
+Coil Installation Position Error,线圈安装位置误差,FTParam,165,,Val,INTEGER32,RW,N,N,1000,P,coil_installation_position_error,Y,Disabled,立即,Y,1,0x5001,0x04,Struct,INTEGER32,-2147483648,2147483647,1000,P,,,,,,,,柔性参数
+Coil Encoder Center Position Error,线圈与编码器中心位置误差,FTParam,166,,Val,INTEGER32,RW,N,N,0,P,coil_encoder_center_position_error,Y,Disabled,立即,Y,1,0x5001,0x05,Struct,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Position Conversion Dead Zone,位置转换死区,FTParam,167,,Val,UNS32,RW,N,N,2000,P,position_conversion_dead_zone,Y,Disabled,立即,Y,1,0x5001,0x06,Struct,UNS32,0,4294967295,2000,P,,,,,,,,柔性参数
+Encoder Data Offset,编码器数据偏移值,FTParam,168,,Val,INTEGER32,RW,N,N,0,P,enc_data_offset,Y,Disabled,立即,Y,1,0x5001,0x07,Struct,UNS32,0,4294967295,0,P,,,,,,,,柔性参数
+Observer Initialization Distance,观测器初始化距离,FTParam,169,,Val,UNS32,RW,N,N,2000,P,observer_init_distance,Y,Disabled,立即,Y,1,0x5001,0x08,Struct,UNS32,0,4294967295,2000,P,,,,,,,,柔性参数
+Transition Current Limit Mode,过渡电流限制模式,FTParam,170,,Val,UNS8,RW,N,2,1,-,transition_current_limit_mode,Y,Disabled,立即,Y,1,0x5002,0x01,Struct,UNS8,0,255,1,-,,,,,,,,柔性参数
+Transition Current Limit Ratio,过渡电流限幅比例,FTParam,171,,Val,REAL32,RW,0,1,0.45,‰,transition_current_limit_ratio,Y,Disabled,立即,Y,1,0x5002,0x02,Struct,UNS16,0,65535,0.45,‰,,,,,,,,柔性参数
+Transition Current Limit Parameter 1,过渡电流限幅参数1,FTParam,172,,Val,REAL32,RW,0,1,0.5,‰,transition_current_limit_param_1,Y,Disabled,立即,Y,1,0x5002,0x03,Struct,UNS16,0,65535,0.5,‰,,,,,,,,柔性参数
+Transition Current Limit Parameter 2,过渡电流限幅参数2,FTParam,173,,Val,REAL32,RW,0,1,0.5,‰,transition_current_limit_param_2,Y,Disabled,立即,Y,1,0x5002,0x04,Struct,UNS16,0,65535,0.5,‰,,,,,,,,柔性参数
+Electrical Angle Calibration Enable,电角度校准开关,FTParam,174,,Val,UNS8,RW,N,1,0,-,elec_angle_calib_enable,Y,Disabled,立即,Y,1,0x5003,0x00,Val,UNS8,0,255,0,-,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table1,电角度校准位置表1,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[1],Y,Disabled,立即,Y,1,0x5004,0x01,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table2,电角度校准位置表2,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[2],Y,Disabled,立即,Y,1,0x5004,0x02,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table3,电角度校准位置表3,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[3],Y,Disabled,立即,Y,1,0x5004,0x03,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table4,电角度校准位置表4,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[4],Y,Disabled,立即,Y,1,0x5004,0x04,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table5,电角度校准位置表5,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[5],Y,Disabled,立即,Y,1,0x5004,0x05,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table6,电角度校准位置表6,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[6],Y,Disabled,立即,Y,1,0x5004,0x06,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table7,电角度校准位置表7,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[7],Y,Disabled,立即,Y,1,0x5004,0x07,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table8,电角度校准位置表8,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[8],Y,Disabled,立即,Y,1,0x5004,0x08,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table9,电角度校准位置表9,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[9],Y,Disabled,立即,Y,1,0x5004,0x09,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table10,电角度校准位置表10,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[10],Y,Disabled,立即,Y,1,0x5004,0x0A,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table11,电角度校准位置表11,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[11],Y,Disabled,立即,Y,1,0x5004,0x0B,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table12,电角度校准位置表12,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[12],Y,Disabled,立即,Y,1,0x5004,0x0C,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table13,电角度校准位置表13,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[13],Y,Disabled,立即,Y,1,0x5004,0x0D,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table14,电角度校准位置表14,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[14],Y,Disabled,立即,Y,1,0x5004,0x0E,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table15,电角度校准位置表15,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[15],Y,Disabled,立即,Y,1,0x5004,0x0F,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table16,电角度校准位置表16,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[16],Y,Disabled,立即,Y,1,0x5004,0x10,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table17,电角度校准位置表17,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[17],Y,Disabled,立即,Y,1,0x5004,0x11,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table18,电角度校准位置表18,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[18],Y,Disabled,立即,Y,1,0x5004,0x12,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table19,电角度校准位置表19,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[19],Y,Disabled,立即,Y,1,0x5004,0x13,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table20,电角度校准位置表20,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[20],Y,Disabled,立即,Y,1,0x5004,0x14,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table21,电角度校准位置表21,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[21],Y,Disabled,立即,Y,1,0x5004,0x15,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table22,电角度校准位置表22,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[22],Y,Disabled,立即,Y,1,0x5004,0x16,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table23,电角度校准位置表23,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[23],Y,Disabled,立即,Y,1,0x5004,0x17,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table24,电角度校准位置表24,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[24],Y,Disabled,立即,Y,1,0x5004,0x18,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table25,电角度校准位置表25,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[25],Y,Disabled,立即,Y,1,0x5004,0x19,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table26,电角度校准位置表26,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[26],Y,Disabled,立即,Y,1,0x5004,0x1A,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table27,电角度校准位置表27,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[27],Y,Disabled,立即,Y,1,0x5004,0x1B,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table28,电角度校准位置表28,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[28],Y,Disabled,立即,Y,1,0x5004,0x1C,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table29,电角度校准位置表29,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[29],Y,Disabled,立即,Y,1,0x5004,0x1D,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table30,电角度校准位置表30,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[30],Y,Disabled,立即,Y,1,0x5004,0x1E,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table31,电角度校准位置表31,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[31],Y,Disabled,立即,Y,1,0x5004,0x1F,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table32,电角度校准位置表32,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[32],Y,Disabled,立即,Y,1,0x5004,0x20,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table33,电角度校准位置表33,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[33],Y,Disabled,立即,Y,1,0x5004,0x21,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table34,电角度校准位置表34,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[34],Y,Disabled,立即,Y,1,0x5004,0x22,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table35,电角度校准位置表35,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[35],Y,Disabled,立即,Y,1,0x5004,0x23,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table36,电角度校准位置表36,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[36],Y,Disabled,立即,Y,1,0x5004,0x24,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table37,电角度校准位置表37,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[37],Y,Disabled,立即,Y,1,0x5004,0x25,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table38,电角度校准位置表38,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[38],Y,Disabled,立即,Y,1,0x5004,0x26,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table39,电角度校准位置表39,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[39],Y,Disabled,立即,Y,1,0x5004,0x27,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Position Table40,电角度校准位置表40,FTParam,175,,Array,INTEGER32,RW,N,N,0,P,elec_angle_calib_position_table[40],Y,Disabled,立即,Y,1,0x5004,0x28,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table1,电角度校准值表1,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[1],Y,Disabled,立即,Y,1,0x5005,0x01,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table2,电角度校准值表2,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[2],Y,Disabled,立即,Y,1,0x5005,0x02,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table3,电角度校准值表3,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[3],Y,Disabled,立即,Y,1,0x5005,0x03,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table4,电角度校准值表4,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[4],Y,Disabled,立即,Y,1,0x5005,0x04,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table5,电角度校准值表5,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[5],Y,Disabled,立即,Y,1,0x5005,0x05,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table6,电角度校准值表6,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[6],Y,Disabled,立即,Y,1,0x5005,0x06,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table7,电角度校准值表7,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[7],Y,Disabled,立即,Y,1,0x5005,0x07,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table8,电角度校准值表8,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[8],Y,Disabled,立即,Y,1,0x5005,0x08,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table9,电角度校准值表9,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[9],Y,Disabled,立即,Y,1,0x5005,0x09,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table10,电角度校准值表10,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[10],Y,Disabled,立即,Y,1,0x5005,0x0A,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table11,电角度校准值表11,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[11],Y,Disabled,立即,Y,1,0x5005,0x0B,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table12,电角度校准值表12,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[12],Y,Disabled,立即,Y,1,0x5005,0x0C,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table13,电角度校准值表13,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[13],Y,Disabled,立即,Y,1,0x5005,0x0D,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table14,电角度校准值表14,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[14],Y,Disabled,立即,Y,1,0x5005,0x0E,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table15,电角度校准值表15,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[15],Y,Disabled,立即,Y,1,0x5005,0x0F,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table16,电角度校准值表16,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[16],Y,Disabled,立即,Y,1,0x5005,0x10,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table17,电角度校准值表17,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[17],Y,Disabled,立即,Y,1,0x5005,0x11,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table18,电角度校准值表18,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[18],Y,Disabled,立即,Y,1,0x5005,0x12,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table19,电角度校准值表19,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[19],Y,Disabled,立即,Y,1,0x5005,0x13,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table20,电角度校准值表20,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[20],Y,Disabled,立即,Y,1,0x5005,0x14,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table21,电角度校准值表21,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[21],Y,Disabled,立即,Y,1,0x5005,0x15,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table22,电角度校准值表22,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[22],Y,Disabled,立即,Y,1,0x5005,0x16,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table23,电角度校准值表23,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[23],Y,Disabled,立即,Y,1,0x5005,0x17,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table24,电角度校准值表24,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[24],Y,Disabled,立即,Y,1,0x5005,0x18,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table25,电角度校准值表25,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[25],Y,Disabled,立即,Y,1,0x5005,0x19,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table26,电角度校准值表26,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[26],Y,Disabled,立即,Y,1,0x5005,0x1A,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table27,电角度校准值表27,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[27],Y,Disabled,立即,Y,1,0x5005,0x1B,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table28,电角度校准值表28,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[28],Y,Disabled,立即,Y,1,0x5005,0x1C,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table29,电角度校准值表29,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[29],Y,Disabled,立即,Y,1,0x5005,0x1D,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table30,电角度校准值表30,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[30],Y,Disabled,立即,Y,1,0x5005,0x1E,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table31,电角度校准值表31,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[31],Y,Disabled,立即,Y,1,0x5005,0x1F,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table32,电角度校准值表32,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[32],Y,Disabled,立即,Y,1,0x5005,0x20,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table33,电角度校准值表33,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[33],Y,Disabled,立即,Y,1,0x5005,0x21,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table34,电角度校准值表34,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[34],Y,Disabled,立即,Y,1,0x5005,0x22,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table35,电角度校准值表35,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[35],Y,Disabled,立即,Y,1,0x5005,0x23,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table36,电角度校准值表36,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[36],Y,Disabled,立即,Y,1,0x5005,0x24,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table37,电角度校准值表37,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[37],Y,Disabled,立即,Y,1,0x5005,0x25,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table38,电角度校准值表38,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[38],Y,Disabled,立即,Y,1,0x5005,0x26,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table39,电角度校准值表39,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[39],Y,Disabled,立即,Y,1,0x5005,0x27,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Electrical Angle Calibration Value Table40,电角度校准值表40,FTParam,176,,Array,REAL32,RW,0,N,0,mrad,elec_angle_calib_value_table[40],Y,Disabled,立即,Y,1,0x5005,0x28,Array,INTEGER32,-2147483648,2147483647,0,mrad,,,,,,,,柔性参数
+Ferry Alignment Position1,摆渡车对齐位置1,FTParam,177,,Array,INTEGER32,RW,N,N,0,P,ferry_alignment_position[1],Y,Disabled,立即,Y,1,0x5006,0x01,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Ferry Alignment Position2,摆渡车对齐位置2,FTParam,177,,Array,INTEGER32,RW,N,N,0,P,ferry_alignment_position[2],Y,Disabled,立即,Y,1,0x5006,0x02,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Ferry Alignment Position3,摆渡车对齐位置3,FTParam,177,,Array,INTEGER32,RW,N,N,0,P,ferry_alignment_position[3],Y,Disabled,立即,Y,1,0x5006,0x03,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+Ferry Alignment Position4,摆渡车对齐位置4,FTParam,177,,Array,INTEGER32,RW,N,N,0,P,ferry_alignment_position[4],Y,Disabled,立即,Y,1,0x5006,0x04,Array,INTEGER32,-2147483648,2147483647,0,P,,,,,,,,柔性参数
+FT Specific Char Data Set1,柔性传输线自定义字符数据组1,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[1],Y,Enable,立即,Y,1,0x5007,0x01,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set2,柔性传输线自定义字符数据组2,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[2],Y,Enable,立即,Y,1,0x5007,0x02,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set3,柔性传输线自定义字符数据组3,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[3],Y,Enable,立即,Y,1,0x5007,0x03,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set4,柔性传输线自定义字符数据组4,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[4],Y,Enable,立即,Y,1,0x5007,0x04,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set5,柔性传输线自定义字符数据组5,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[5],Y,Enable,立即,Y,1,0x5007,0x05,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set6,柔性传输线自定义字符数据组6,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[6],Y,Enable,立即,Y,1,0x5007,0x06,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set7,柔性传输线自定义字符数据组7,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[7],Y,Enable,立即,Y,1,0x5007,0x07,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set8,柔性传输线自定义字符数据组8,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[8],Y,Enable,立即,Y,1,0x5007,0x08,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set9,柔性传输线自定义字符数据组9,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[9],Y,Enable,立即,Y,1,0x5007,0x09,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set10,柔性传输线自定义字符数据组10,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[10],Y,Enable,立即,Y,1,0x5007,0x0A,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set11,柔性传输线自定义字符数据组11,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[11],Y,Enable,立即,Y,1,0x5007,0x0B,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set12,柔性传输线自定义字符数据组12,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[12],Y,Enable,立即,Y,1,0x5007,0x0C,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set13,柔性传输线自定义字符数据组13,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[13],Y,Enable,立即,Y,1,0x5007,0x0D,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set14,柔性传输线自定义字符数据组14,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[14],Y,Enable,立即,Y,1,0x5007,0x0E,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set15,柔性传输线自定义字符数据组15,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[15],Y,Enable,立即,Y,1,0x5007,0x0F,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Char Data Set16,柔性传输线自定义字符数据组16,FTParam,178,,Val,UNS8,RW,N,N,0,-,ft_specific_char_data_set[16],Y,Enable,立即,Y,1,0x5007,0x10,Array,UNS8,0,255,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set1,柔性传输线自定义短数据组1,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[1],Y,Enable,立即,Y,1,0x5008,0x01,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set2,柔性传输线自定义短数据组2,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[2],Y,Enable,立即,Y,1,0x5008,0x02,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set3,柔性传输线自定义短数据组3,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[3],Y,Enable,立即,Y,1,0x5008,0x03,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set4,柔性传输线自定义短数据组4,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[4],Y,Enable,立即,Y,1,0x5008,0x04,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set5,柔性传输线自定义短数据组5,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[5],Y,Enable,立即,Y,1,0x5008,0x05,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set6,柔性传输线自定义短数据组6,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[6],Y,Enable,立即,Y,1,0x5008,0x06,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set7,柔性传输线自定义短数据组7,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[7],Y,Enable,立即,Y,1,0x5008,0x07,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set8,柔性传输线自定义短数据组8,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[8],Y,Enable,立即,Y,1,0x5008,0x08,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set9,柔性传输线自定义短数据组9,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[9],Y,Enable,立即,Y,1,0x5008,0x09,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set10,柔性传输线自定义短数据组10,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[10],Y,Enable,立即,Y,1,0x5008,0x0A,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set11,柔性传输线自定义短数据组11,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[11],Y,Enable,立即,Y,1,0x5008,0x0B,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set12,柔性传输线自定义短数据组12,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[12],Y,Enable,立即,Y,1,0x5008,0x0C,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set13,柔性传输线自定义短数据组13,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[13],Y,Enable,立即,Y,1,0x5008,0x0D,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set14,柔性传输线自定义短数据组14,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[14],Y,Enable,立即,Y,1,0x5008,0x0E,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set15,柔性传输线自定义短数据组15,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[15],Y,Enable,立即,Y,1,0x5008,0x0F,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Short Data Set16,柔性传输线自定义短数据组16,FTParam,179,,Val,UNS16,RW,N,N,0,-,ft_specific_short_data_set[16],Y,Enable,立即,Y,1,0x5008,0x10,Array,UNS16,0,65535,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set1,柔性传输线自定义长数据组1,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[1],Y,Enable,立即,Y,1,0x5009,0x01,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set2,柔性传输线自定义长数据组2,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[2],Y,Enable,立即,Y,1,0x5009,0x02,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set3,柔性传输线自定义长数据组3,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[3],Y,Enable,立即,Y,1,0x5009,0x03,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set4,柔性传输线自定义长数据组4,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[4],Y,Enable,立即,Y,1,0x5009,0x04,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set5,柔性传输线自定义长数据组5,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[5],Y,Enable,立即,Y,1,0x5009,0x05,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set6,柔性传输线自定义长数据组6,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[6],Y,Enable,立即,Y,1,0x5009,0x06,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set7,柔性传输线自定义长数据组7,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[7],Y,Enable,立即,Y,1,0x5009,0x07,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set8,柔性传输线自定义长数据组8,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[8],Y,Enable,立即,Y,1,0x5009,0x08,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set9,柔性传输线自定义长数据组9,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[9],Y,Enable,立即,Y,1,0x5009,0x09,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set10,柔性传输线自定义长数据组10,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[10],Y,Enable,立即,Y,1,0x5009,0x0A,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set11,柔性传输线自定义长数据组11,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[11],Y,Enable,立即,Y,1,0x5009,0x0B,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set12,柔性传输线自定义长数据组12,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[12],Y,Enable,立即,Y,1,0x5009,0x0C,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set13,柔性传输线自定义长数据组13,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[13],Y,Enable,立即,Y,1,0x5009,0x0D,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set14,柔性传输线自定义长数据组14,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[14],Y,Enable,立即,Y,1,0x5009,0x0E,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set15,柔性传输线自定义长数据组15,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[15],Y,Enable,立即,Y,1,0x5009,0x0F,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+FT Specific Long Data Set16,柔性传输线自定义长数据组16,FTParam,180,,Val,UNS32,RW,N,N,0,-,ft_specific_long_data_set[16],Y,Enable,立即,Y,1,0x5009,0x10,Array,UNS32,0,4294967295,0,-,,,,,,,,柔性参数
+Torque Offset,力矩前馈,FTParam,180,,Val,INTEGER16,RW,N,N,0,-,Torque Offset,Y,Enable,立即,Y,1,0x60B2,0x00,Val,INTEGER16,-32768,32767,0,-,,,,,,,,柔性参数
