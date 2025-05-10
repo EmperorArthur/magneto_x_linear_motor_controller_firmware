@@ -6,87 +6,99 @@
  */
 
 #include "LinearMotor.hpp"
-#include "LinearMotorCommands.hpp"
 
-LinearMotor::LinearMotor(HardwareSerial& serial, uint8_t id):
+LinearMotor::LinearMotor(HardwareSerial& serial, const uint8_t id):
     id{id},
+    serial{serial},
     rtuComm(serial),
-    serial{serial}
+    driver(serial)
 {
 }
 
-void LinearMotor::begin(uint32_t baud, uint32_t config, int8_t rxPin, int8_t txPin)
+void LinearMotor::begin(const uint32_t baud, const uint32_t config, const int8_t rxPin, const int8_t txPin)
 {
     serial.setRxBufferSize(sizeof(ModbusADU));
     serial.setTxBufferSize(sizeof(ModbusADU));
     serial.begin(baud, config, rxPin, txPin);
     rtuComm.begin(baud, config);
+    driver.begin(baud, config);
 }
 
-void LinearMotor::disable()
+ModbusRTUMasterError LinearMotor::disable()
 {
-    sendAdu(disable_motor_cmd);
+    //"Controlword" register  (UNS16) Read Write
+    return driver.writeSingleHoldingRegister(id, 0xF002, 0x06);
 }
 
 void LinearMotor::enable()
 {
-    sendAdu(disable_motor_cmd);
-    delay(100);
-    sendAdu(clean_error_cmd);
-    delay(100);
-    sendAdu(disable_motor_cmd);  // Needs to be sent here if an error was cleared.
-    delay(100);
-    sendAdu(enable_motor_cmd);
-}
-
-void LinearMotor::setInertia(uint16_t value)
-{
-    auto command = set_motor_intertia_code_cmd;
-    command.rtu[5] = lowByte(value);
-    command.rtu[4] = highByte(value);
-    command.updateCrc();
-
     disable();
     delay(100);
-    rtuComm.writeAdu(command);
+    clearError();
     delay(100);
-    saveParam();
+    disable();  // Needs to be sent here if an error was cleared.
+    delay(100);
+    sendEnableCommand();
+}
+
+void LinearMotor::setInertia(const uint32_t value)
+{
+    disable();
+    delay(100);
+    // "Inertia" register (UNS32) Read Write
+    driver.writeSingleHoldingRegister(id, 0x0028, value);
+    delay(100);
+    persistToFlash();
     delay(100);
     enable();
 }
 
-void LinearMotor::setCurentGain(uint8_t value)
+void LinearMotor::setCurrentGain(const uint32_t value)
 {
-    auto command = set_motor_current_gain_code_cmd;
-    command.rtu[5] = value;
-
     disable();
     delay(100);
-    rtuComm.writeAdu(command);
+    // "CurrentBandwidth" register (UNS32) Read Write
+    driver.writeSingleHoldingRegister(id, 0x0018, value);
     delay(100);
-    saveParam();
+    persistToFlash();
     delay(100);
     enable();
 }
 
-void LinearMotor::setAutoGainOff()
+void LinearMotor::setAutoGain(const bool enabled)
 {
     disable();
     delay(100);
-    sendAdu(set_auto_gain_cmd);
+    // "AutoGainTuningEnable" register (UNS8) Read Write
+    driver.writeSingleHoldingRegister(id, 0x0455, enabled);
     delay(100);
-    saveParam();
+    persistToFlash();
     delay(100);
     enable();
+}
+
+std::variant<bool, ModbusRTUMasterError> LinearMotor::getAutoGain()
+{
+    uint16_t value = -1;
+    //"AutoGainTuningEnable" register (UNS8) Read Write
+    const auto result = driver.readHoldingRegisters(
+        1, 0x0455, &value, 1
+        );
+    if (result)
+    {
+        return result;
+    }
+    return value;
 }
 
 void LinearMotor::setFilter1Off()
 {
     disable();
     delay(100);
-    sendAdu(set_filter1_cmd);
+    // "CurrentTargetFilter1Type" register (UNS8) Read Write
+    driver.writeSingleHoldingRegister(id, 0x0406, 0x00);
     delay(100);
-    saveParam();
+    persistToFlash();
     delay(100);
     enable();
 }
@@ -95,60 +107,110 @@ void LinearMotor::setFilter2Off()
 {
     disable();
     delay(100);
-    sendAdu(set_filter2_cmd);
+    // "CurrentTargetFilter2Type" register (UNS8) Read Write
+    driver.writeSingleHoldingRegister(id, 0x040B, 0x00);
     delay(100);
-    saveParam();
+    persistToFlash();
     delay(100);
     enable();
 }
 
-void LinearMotor::saveParam()
+void LinearMotor::persistToFlash()
 {
-    sendAdu(save_param_code_cmd);
+    // "ControlCmd" register (UNS8)
+    driver.writeSingleHoldingRegister(id, 0x6000, 0x01);
     delay(100);
-    sendAdu(check_save_param_code_cmd);
+
+    // Check if save worked.
+    uint16_t value = -1;
+    // "FlashStorageStatus" register (UNS8) Read Only
+    const auto result = driver.readHoldingRegisters(
+        1, 0x018A, &value, 1
+        );
+
+    if (result || value)
+    {
+        // Not sure what success is for "value"
+        // Do something
+    }
 }
 
-std::optional<uint16_t> LinearMotor::getInertia()
+std::variant<int8_t, ModbusRTUMasterError> LinearMotor::getModeOfOperation()
 {
-    sendAdu(get_motor_intertia_code_cmd);
-    auto adu = ModbusADU();
-    delay(100);
-    const auto readStatus = rtuComm.readAdu(adu);
-    if (readStatus)
+    uint16_t value;
+    // "Modes_of_operation_display" register (INTEGER8) Read Only
+    const auto result = driver.readHoldingRegisters(
+        1, 0xF00A, &value, 1
+        );
+    if (result)
     {
-        return {};
+        return result;
     }
-    return aduToUint16(adu);
+    return value & 0xFF;
 }
 
-std::optional<uint16_t> LinearMotor::getCurrentGain()
+std::variant<int32_t, ModbusRTUMasterError> LinearMotor::getPositionActual()
 {
-    sendAdu(get_motor_current_gain_code_cmd);
-    auto adu = ModbusADU();
-    delay(100);
-    const auto readStatus = rtuComm.readAdu(adu);
-    if (readStatus)
+    int32_t value;
+    // "Position_actual_value" register (INTEGER32) Read Only
+    const auto result = driver.readHoldingRegisters(
+        1, 0xF010, reinterpret_cast<uint16_t*>(&value), 2
+        );
+    if (result)
     {
-        return {};
+        return result;
     }
-    return aduToUint16(adu);
+    return value;
+}
+
+std::variant<uint32_t,ModbusRTUMasterError> LinearMotor::getInertia()
+{
+    uint32_t value;
+    // "Inertia" register (UNS32) Read Write
+    const auto result = driver.readHoldingRegisters(
+        1, 0x0028, reinterpret_cast<uint16_t*>(&value), 2
+        );
+    if (result)
+    {
+        return result;
+    }
+    return value;
+}
+
+std::variant<uint32_t,ModbusRTUMasterError> LinearMotor::getCurrentGain()
+{
+    uint32_t value;
+    // "CurrentBandwidth" register (UNS32) Read Write
+    const auto result = driver.readHoldingRegisters(
+        1, 0x0018, reinterpret_cast<uint16_t*>(&value), 2
+        );
+    if (result)
+    {
+        return result;
+    }
+    return value;
 }
 
 //test1: 01 03 f0 0a 00 01 97 08
 //test2: 01 06 f0 0a 00 03 da c9
 LinearMotorStatus LinearMotor::getStatus()
 {
-    sendAdu(get_motor_error_code_cmd);
-    delay(100);
+    uint16_t value = -1;
+    // "Error_code" register (UNS16) Read Only
+    const auto result = driver.readHoldingRegisters(
+        1, 0xF001, &value, 1
+        );
+    return {value, result};
+}
 
-    auto adu = ModbusADU();
-    const auto readStatus = rtuComm.readAdu(adu);
+ModbusRTUMasterError LinearMotor::clearError()
+{
+    //"Controlword" register (UNS16) Read Write
+    return driver.writeSingleHoldingRegister(id, 0xF002, 0x80);
+}
 
-    if (readStatus)
-    {
-        return {0, readStatus};
-    }
-
-    return {aduToUint16(adu), readStatus};
+ModbusRTUMasterError LinearMotor::sendEnableCommand()
+{
+    //"Controlword" register (UNS16) Read Write
+    return driver.writeSingleHoldingRegister(id, 0xF002, 0x0F);
 }

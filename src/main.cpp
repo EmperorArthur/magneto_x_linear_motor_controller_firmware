@@ -4,7 +4,6 @@
 #include <cstring>
 #include <Arduino.h>
 #include <filesystem>
-#include <ModbusRTUComm.h>
 #include <ModbusADU.h>
 
 #include "Button.hpp"
@@ -97,7 +96,7 @@ void printUint16(const uint16_t value)
 bool checkForError(LinearMotor &motor, const String &axisName)
 {
     const auto status = motor.getStatus();
-    if (status.commError)
+    if (status.modbusError)
     {
         Serial.println(axisName + " axis error: Communication Error");
         return true;
@@ -145,10 +144,10 @@ void pureCMD(const String &cmds, LinearMotor &motor, const String &axisName)
       adu.rtu[index] = buffer_tx.substring(startPos).toInt();
   }
     printHexArray(adu.rtu, 6);
-    motor.rtuComm.writeAdu(adu);
+    motor.writeAdu(adu);
 
     auto incomingAdu = ModbusADU();
-    motor.rtuComm.readAdu(incomingAdu);
+    motor.readAdu(incomingAdu);
 
     Serial.print(axisName + " axis value:");
     printHex(incomingAdu.rtu[5]);
@@ -181,9 +180,9 @@ void sendCmdByPort(const String &cmd)
     }
     else if(cmd.startsWith("AUTO_GAIN_OFF"))
     {
-        XMotor->setAutoGainOff();
+        XMotor->setAutoGain(false);
         delay(100);
-        YMotor->setAutoGainOff();
+        YMotor->setAutoGain(false);
     }
     else if(cmd.startsWith("FILTER_OFF"))
     {
@@ -198,12 +197,12 @@ void sendCmdByPort(const String &cmd)
     else if(cmd.startsWith("CURRENT_X:"))
     {
         const auto value = static_cast<uint8_t>(cmd.substring(10).toInt());
-        XMotor->setCurentGain(value);
+        XMotor->setCurrentGain(value);
     }
     else if(cmd.startsWith("CURRENT_Y:"))
     {
         const auto value = static_cast<uint8_t>(cmd.substring(10).toInt());
-        YMotor->setCurentGain(value);
+        YMotor->setCurrentGain(value);
     }
     else if(cmd.startsWith("INERDIA_X:"))
     {
@@ -218,46 +217,46 @@ void sendCmdByPort(const String &cmd)
     else if(cmd.startsWith("GET_CURRENT_X"))
     {
         const auto response = XMotor->getCurrentGain();
-        if(response.has_value())
-        {
-            printUint16(response.value());
-        } else
+        if(std::holds_alternative<ModbusRTUMasterError>(response))
         {
             Serial.println("Communication Error");
+        } else
+        {
+            printUint16(std::get<uint32_t>(response));
         }
     }
     else if(cmd.startsWith("GET_CURRENT_Y"))
     {
         const auto response = YMotor->getCurrentGain();
-        if(response.has_value())
-        {
-            printUint16(response.value());
-        } else
+        if(std::holds_alternative<ModbusRTUMasterError>(response))
         {
             Serial.println("Communication Error");
+        } else
+        {
+            printUint16(std::get<uint32_t>(response));
         }
     }
     else if(cmd.startsWith("GET_INERDIA_X"))
     {
-       const auto response = XMotor->getInertia();
-       if(response.has_value())
-       {
-           printUint16(response.value());
-       } else
-       {
-           Serial.println("Communication Error");
-       }
+        const auto response = XMotor->getInertia();
+        if(std::holds_alternative<ModbusRTUMasterError>(response))
+        {
+            Serial.println("Communication Error");
+        } else
+        {
+            printUint16(std::get<uint32_t>(response));
+        }
     }
     else if(cmd.startsWith("GET_INERDIA_Y"))
     {
-       auto response = YMotor->getInertia();
-       if(response.has_value())
-       {
-           printUint16(response.value());
-       } else
-       {
-           Serial.println("Communication Error");
-       }
+        auto response = YMotor->getInertia();
+        if(std::holds_alternative<ModbusRTUMasterError>(response))
+        {
+            Serial.println("Communication Error");
+        } else
+        {
+            printUint16(std::get<uint32_t>(response));
+        }
    }
     clearIncomingData(XMotorSerial);
     clearIncomingData(YMotorSerial);
