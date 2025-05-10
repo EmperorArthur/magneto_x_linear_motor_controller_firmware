@@ -41,25 +41,29 @@ void LinearMotor::enable()
     sendEnableCommand();
 }
 
-void LinearMotor::setInertia(const uint32_t value)
+void LinearMotor::setInertia(uint32_t value)
 {
+    std::array<uint16_t, 2> raw =
+        {static_cast<uint16_t>(value >> 16),static_cast<uint16_t>(value & 0xFFFF)};
+
     disable();
     delay(100);
     // "Inertia" register (UNS32) Read Write
-    driver.writeSingleHoldingRegister(id, 0x0028, value);
-    delay(100);
+    driver.writeMultipleHoldingRegisters(id, 0x0028, raw.data(), raw.size());
     persistToFlash();
     delay(100);
     enable();
 }
 
-void LinearMotor::setCurrentGain(const uint32_t value)
+void LinearMotor::setCurrentGain(uint32_t value)
 {
+    std::array<uint16_t, 2> raw =
+        {static_cast<uint16_t>(value >> 16),static_cast<uint16_t>(value & 0xFFFF)};
+
     disable();
     delay(100);
     // "CurrentBandwidth" register (UNS32) Read Write
-    driver.writeSingleHoldingRegister(id, 0x0018, value);
-    delay(100);
+    driver.writeMultipleHoldingRegisters(id, 0x0018, raw.data(), raw.size());
     persistToFlash();
     delay(100);
     enable();
@@ -81,9 +85,8 @@ std::variant<bool, ModbusRTUMasterError> LinearMotor::getAutoGain()
 {
     uint16_t value = -1;
     //"AutoGainTuningEnable" register (UNS8) Read Write
-    const auto result = driver.readHoldingRegisters(
-        1, 0x0455, &value, 1
-        );
+    const auto result =
+        driver.readHoldingRegisters(id, 0x0455, &value, 1);
     if (result)
     {
         return result;
@@ -122,11 +125,10 @@ void LinearMotor::persistToFlash()
     delay(100);
 
     // Check if save worked.
-    uint16_t value = -1;
+    uint16_t value = 0;
     // "FlashStorageStatus" register (UNS8) Read Only
-    const auto result = driver.readHoldingRegisters(
-        1, 0x018A, &value, 1
-        );
+    const auto result =
+        driver.readHoldingRegisters(id, 0x018A, &value, 1);
 
     if (result || value)
     {
@@ -139,9 +141,8 @@ std::variant<int8_t, ModbusRTUMasterError> LinearMotor::getModeOfOperation()
 {
     uint16_t value;
     // "Modes_of_operation_display" register (INTEGER8) Read Only
-    const auto result = driver.readHoldingRegisters(
-        1, 0xF00A, &value, 1
-        );
+    const auto result =
+        driver.readHoldingRegisters(id, 0xF00A, &value, 1);
     if (result)
     {
         return result;
@@ -151,44 +152,41 @@ std::variant<int8_t, ModbusRTUMasterError> LinearMotor::getModeOfOperation()
 
 std::variant<int32_t, ModbusRTUMasterError> LinearMotor::getPositionActual()
 {
-    int32_t value;
+    std::array<uint16_t, 2> value = {};
     // "Position_actual_value" register (INTEGER32) Read Only
-    const auto result = driver.readHoldingRegisters(
-        1, 0xF010, reinterpret_cast<uint16_t*>(&value), 2
-        );
+    const auto result =
+        driver.readHoldingRegisters(id, 0xF010, value.data(), value.size());
     if (result)
     {
         return result;
     }
-    return value;
+    return value[0] << 16 | value[1];
 }
 
 std::variant<uint32_t,ModbusRTUMasterError> LinearMotor::getInertia()
 {
-    uint32_t value;
+    std::array<uint16_t, 2> value = {};
     // "Inertia" register (UNS32) Read Write
-    const auto result = driver.readHoldingRegisters(
-        1, 0x0028, reinterpret_cast<uint16_t*>(&value), 2
-        );
+    const auto result =
+        driver.readHoldingRegisters(id, 0x0028, value.data(), value.size());
     if (result)
     {
         return result;
     }
-    return value;
+    return value[0] << 16 | value[1];
 }
 
 std::variant<uint32_t,ModbusRTUMasterError> LinearMotor::getCurrentGain()
 {
-    uint32_t value;
+    std::array<uint16_t, 2> value = {};
     // "CurrentBandwidth" register (UNS32) Read Write
-    const auto result = driver.readHoldingRegisters(
-        1, 0x0018, reinterpret_cast<uint16_t*>(&value), 2
-        );
+    const auto result =
+        driver.readHoldingRegisters(id, 0x0018, value.data(), value.size());
     if (result)
     {
         return result;
     }
-    return value;
+    return value[0] << 16 | value[1];
 }
 
 //test1: 01 03 f0 0a 00 01 97 08
@@ -197,9 +195,8 @@ LinearMotorStatus LinearMotor::getStatus()
 {
     uint16_t value = -1;
     // "Error_code" register (UNS16) Read Only
-    const auto result = driver.readHoldingRegisters(
-        1, 0xF001, &value, 1
-        );
+    const auto result =
+        driver.readHoldingRegisters(id, 0xF001, &value, 1);
     return {value, result};
 }
 

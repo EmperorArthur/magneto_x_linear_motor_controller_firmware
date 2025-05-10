@@ -3,7 +3,6 @@
  */
 #include <cstring>
 #include <Arduino.h>
-#include <filesystem>
 #include <ModbusADU.h>
 
 #include "Button.hpp"
@@ -37,18 +36,10 @@ String inData="";
 #define MODBUS_BAUD 115200
 #define EMERGE_STOP_PIN 14 //stop klipper when error occur
 
-unsigned char getStringIndexChar(String cmd, int index)
-{
-  unsigned char ret = 0x00;
-  if(cmd.length()>index)
-  {
-     char tmp = cmd.indexOf(index);
-      ret = (unsigned char)tmp;
-   }
-   return ret;
-}
-
-void printHex(unsigned char value) 
+/**
+ * @brief Print a value in the format 0xFF
+ */
+void printHex(const uint8_t value)
 {
     Serial.print("0x");
     if (value < 16) 
@@ -58,17 +49,43 @@ void printHex(unsigned char value)
     Serial.print(value, HEX);
 }
 
+/**
+ * @brief Print data in the format "0xFF, 0xFF,"
+ * @param hex_data Data to print
+ * @param len Length of the data
+ */
+void printHexArray(const uint8_t hex_data[], const size_t len)
+{
+    for(size_t i=0; i<len; i++)
+    {
+        printHex(hex_data[i]);
+        Serial.print(",");
+    }
+    Serial.print("\n");
+}
+
+/**
+ * @brief print anything as raw hex data.
+ * @tparam T type of the value to print
+ * @param value value to print
+ */
+template <typename T>
+void printHex(T value)
+{
+    printHexArray(reinterpret_cast<const uint8_t*>(&value), sizeof(value));
+}
+
 void readCmd()
 {
   //读取所有的数据
   while (Serial.available() > 0 && recvl_ok == false)
   {
-    char recieved = Serial.read();
+    const char recieved = Serial.read();
     if (recieved == '\n')
     {
       recvl_ok = true;
     }
-    inData += recieved; 
+    inData += recieved;
   }
   if(recvl_ok)
   {
@@ -77,15 +94,6 @@ void readCmd()
       inData = "";
   }
 }
-
-void printUint16(const uint16_t value)
-{
-    printHex(value >> 8 & 0xFF);
-    Serial.print(",");
-    printHex(value & 0xFF);
-    Serial.println(" ");
-}
-
 
 /**
  * @brief Query the motor driver for errors.
@@ -105,55 +113,53 @@ bool checkForError(LinearMotor &motor, const String &axisName)
     if (status.isError())
     {
         Serial.print(axisName + " axis error:");
-        printUint16(status.errorCode);
+        printHex(status.errorCode);
         return true;
     }
     return false;
 }
 
-void printHexArray(unsigned char* hex_data, int len)
-{
-  for(int i=0; i<len; i++)
-  {
-    printHex(hex_data[i]);
-    Serial.print(",");  
-  }
-  Serial.println(" ");
-}
-
+//To get
+/**
+ * @brief Send a raw Modbus command to a motor, and display the response.
+ * @details Commands are in the format "##1,3,240,16,0,2"
+ *          The above retrieves X axis position: "##1,3,240,16,0,2"
+ * @param cmds String of comma separated ints.  Preceded by two characters.
+ * @param motor Motor to send the command to
+ * @param axisName Used to make output more readable to the user.
+ */
 void pureCMD(const String &cmds, LinearMotor &motor, const String &axisName)
 {
     auto adu = ModbusADU();
-    adu.setLength(6);
 
-//  String cmds = "##1,2,3,4,5,6";
-  const auto buffer_tx = cmds.substring(2, cmds.length());
+    const auto buffer_tx = cmds.substring(2, cmds.length());
 
-  int index = 0;
-  int startPos = 0;
-  int commaPos = buffer_tx.indexOf(',', startPos);
-  while (commaPos != -1 && index < 6) 
-  {
-      adu.rtu[index++] = buffer_tx.substring(startPos, commaPos).toInt();
-      startPos = commaPos + 1;
-      commaPos = buffer_tx.indexOf(',', startPos);
-  }
-  // 处理最后一个数字（如果有）
-  if (startPos < buffer_tx.length() && index < 6) 
-  {
-      adu.rtu[index] = buffer_tx.substring(startPos).toInt();
-  }
-    printHexArray(adu.rtu, 6);
+    int index = 0;
+    int startPos = 0;
+    int commaPos = buffer_tx.indexOf(',', startPos);
+    while (commaPos != -1)
+    {
+        adu.rtu[index++] = buffer_tx.substring(startPos, commaPos).toInt();
+        startPos = commaPos + 1;
+        commaPos = buffer_tx.indexOf(',', startPos);
+    }
+    // 处理最后一个数字（如果有）
+    //Last digit may not have a comma after it
+    if (startPos < buffer_tx.length())
+    {
+        adu.rtu[index++] = buffer_tx.substring(startPos).toInt();
+    }
+    adu.setLength(index);
+    adu.updateCrc();
+
+    printHexArray(adu.rtu, adu.getRtuLen());
     motor.writeAdu(adu);
+    delay(50);
 
     auto incomingAdu = ModbusADU();
     motor.readAdu(incomingAdu);
-
-    Serial.print(axisName + " axis value:");
-    printHex(incomingAdu.rtu[5]);
-    Serial.print(",");
-    printHex(incomingAdu.rtu[6]);
-    Serial.println(" ");
+    Serial.print(axisName + " axis value: ");
+    printHexArray(incomingAdu.data, incomingAdu.getDataLen());
 }
 
 void sendCmdByPort(const String &cmd)
@@ -222,7 +228,7 @@ void sendCmdByPort(const String &cmd)
             Serial.println("Communication Error");
         } else
         {
-            printUint16(std::get<uint32_t>(response));
+            Serial.println(std::get<uint32_t>(response));
         }
     }
     else if(cmd.startsWith("GET_CURRENT_Y"))
@@ -233,7 +239,7 @@ void sendCmdByPort(const String &cmd)
             Serial.println("Communication Error");
         } else
         {
-            printUint16(std::get<uint32_t>(response));
+            Serial.println(std::get<uint32_t>(response));
         }
     }
     else if(cmd.startsWith("GET_INERDIA_X"))
@@ -244,18 +250,18 @@ void sendCmdByPort(const String &cmd)
             Serial.println("Communication Error");
         } else
         {
-            printUint16(std::get<uint32_t>(response));
+            Serial.println(std::get<uint32_t>(response));
         }
     }
     else if(cmd.startsWith("GET_INERDIA_Y"))
     {
-        auto response = YMotor->getInertia();
+        const auto response = YMotor->getInertia();
         if(std::holds_alternative<ModbusRTUMasterError>(response))
         {
             Serial.println("Communication Error");
         } else
         {
-            printUint16(std::get<uint32_t>(response));
+            Serial.println(std::get<uint32_t>(response));
         }
    }
     clearIncomingData(XMotorSerial);
