@@ -65,7 +65,8 @@ The device operates using a CH340 USB to Serial adapter.
 * `python -m serial -e /dev/ttyUSB0 115200`
 
 # Modes
-The controller operates in one of two modes. Normal mode and RTU gateway mode.
+The controller operates in one of three modes.
+Normal mode, RTU gateway mode, and RTU mixed mode.
 
 # ASCII Mode
 This automatically polls motor status, updating LEDs and the error pin as appropriate.
@@ -103,11 +104,15 @@ Enter this mode by sending 'RTU\n' when in normal mode.
 
 **Holding Registers**
 
-| Address | Name | Values | Description                       |
-|:-------:|:----:|--------|-----------------------------------|
-| 1       | mode | 0-1    | 0: ASCII Mode 1: RTU GATEWAY Mode |
-| 2       | XLed | 0-2    | 0: OFF 1: RED 2: GREEN            |
-| 3       | YLed | 0-2    | 0: OFF 1: RED 2: GREEN            |
+| Address | Name | Values | Description                                          |
+|:-------:|:----:|--------|------------------------------------------------------|
+| 1       | mode | 0-2    | 0: ASCII Mode, 1: RTU Gateway Mode 2: RTU MIXED Mode |
+| 2       | XLed | 0-2    | 0: OFF 1: RED 2: GREEN                               |
+| 3       | YLed | 0-2    | 0: OFF 1: RED 2: GREEN                               |
+
+## RTU Mixed Mode
+Serial communication works as in RTU Gateway mode.
+Buttons, LEDs, and error detection works as in ASCII mode.
 
 ### Example
 ```shell

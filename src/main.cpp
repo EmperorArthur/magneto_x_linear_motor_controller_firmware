@@ -23,7 +23,9 @@ enum OperatingMode : uint16_t
      * @brief Pure RTU Gateway mode.
      * @details Buttons and LEDS must be handled by Modbus master.
      */
-    RTU_GATEWAY = 1
+    RTU_GATEWAY = 1,
+
+    RTU_MIXED = 2
 };
 
 ///@brief For when in RTU Mode
@@ -45,7 +47,6 @@ auto YLed = RGLed(5, 18);
 auto EnableButton = Button(15, 1000);
 auto DisableButton = Button(4, 1000);
 
-void clearIncomingData(Stream & stream);
 void disableBothMotors();
 void enableBothMotors();
 
@@ -122,27 +123,23 @@ void readCmd()
 }
 
 /**
- * @brief Query the motor driver for errors.
- * @param motor The motor to query.
- * @param axisName Used for reporting errors
- * @return true if there is an error.  Otherwise, false.
+ * @brief If an error exists, report it in somewhat human-readable form.
+ * @param status The motor's status.
+ * @param prefix Prefix error messages with this.
  */
-bool checkForError(LinearMotor &motor, const String &axisName)
+void reportError(const LinearMotorStatus &status, const String &prefix)
 {
-    const auto status = motor.getStatus();
+    if (not status.isError())
+    {
+        return;
+    }
     if (status.modbusError)
     {
-        Serial.println(axisName + " axis error: Communication Error");
-        return true;
+        Serial.println(prefix + "error: Communication Error");
+        return;
     }
-
-    if (status.isError())
-    {
-        Serial.print(axisName + " axis error:");
-        printHex(status.errorCode);
-        return true;
-    }
-    return false;
+    Serial.print(prefix + "error:");
+    printHex(status.errorCode);
 }
 
 /**
@@ -293,17 +290,13 @@ void sendCmdByPort(const String &cmd)
         XLed.setColor(OFF);
         YLed.setColor(OFF);
     }
+    else if(cmd.startsWith("RTU_MIXED"))
+    {
+        mode = RTU_MIXED;
+    }
     else
     {
         Serial.println("Unknown Command");
-    }
-}
-
-void clearIncomingData(Stream & stream)
-{
-    while(stream.available())
-    {
-        stream.read();
     }
 }
 
@@ -311,18 +304,12 @@ void disableBothMotors()
 {
     XMotor->disable();
     YMotor->disable();
-
-    clearIncomingData(XMotorSerial);
-    clearIncomingData(YMotorSerial);
 }
 
 void enableBothMotors()
 {
     XMotor->enable();
     YMotor->enable();
-
-    clearIncomingData(XMotorSerial);
-    clearIncomingData(YMotorSerial);
 }
 
 inline void setErrorState(const bool isError)
@@ -419,22 +406,29 @@ void setup()
 
 void loop()
 {
-    if (mode == ASCII)
+    auto xStatus = LinearMotorStatus();
+    auto yStatus = LinearMotorStatus();
+    if (mode == ASCII || mode == RTU_MIXED)
     {
-        const auto xError = checkForError(*XMotor, "X");
-        const auto yError = checkForError(*YMotor, "Y");
+        xStatus = XMotor->getStatus();
+        yStatus = YMotor->getStatus();
 
-        setErrorState(xError || yError);
-        XLed.setColor(xError ? RED : GREEN );
-        YLed.setColor(yError ? RED : GREEN );
+        setErrorState(xStatus.isError() || yStatus.isError());
+        XLed.setColor(xStatus.isError() ? RED : GREEN );
+        YLed.setColor(yStatus.isError() ? RED : GREEN );
 
         EnableButton.update();
         DisableButton.update();
+    }
 
+    if (mode == ASCII)
+    {
+        reportError(xStatus, "X axis ");
+        reportError(yStatus, "Y axis ");
         readCmd();
     }
 
-    if (mode == RTU_GATEWAY)
+    if (mode == RTU_GATEWAY || mode == RTU_MIXED)
     {
         executeRtuGatewayLogic();
     }

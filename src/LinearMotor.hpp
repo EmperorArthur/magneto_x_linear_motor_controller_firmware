@@ -13,8 +13,8 @@
 class LinearMotorStatus
 {
 public:
-    uint16_t errorCode;
-    ModbusRTUMasterError modbusError;
+    uint16_t errorCode = 0;
+    ModbusRTUMasterError modbusError = MODBUS_RTU_MASTER_SUCCESS;
     [[nodiscard]] bool isError() const
     {
         return modbusError || errorCode;
