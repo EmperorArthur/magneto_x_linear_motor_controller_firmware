@@ -35,11 +35,8 @@ ModbusRTUMasterError LinearMotor::disable()
 void LinearMotor::enable()
 {
     disable();
-    delay(100);
     clearError();
-    delay(100);
     disable();  // Needs to be sent here if an error was cleared.
-    delay(100);
     sendEnableCommand();
 }
 
@@ -49,11 +46,9 @@ void LinearMotor::setInertia(uint32_t value)
         {static_cast<uint16_t>(value >> 16),static_cast<uint16_t>(value & 0xFFFF)};
 
     disable();
-    delay(100);
     // "Inertia" register (UNS32) Read Write
     driver.writeMultipleHoldingRegisters(id, 0x0028, raw.data(), raw.size());
     persistToFlash();
-    delay(100);
     enable();
 }
 
@@ -63,23 +58,18 @@ void LinearMotor::setCurrentGain(uint32_t value)
         {static_cast<uint16_t>(value >> 16),static_cast<uint16_t>(value & 0xFFFF)};
 
     disable();
-    delay(100);
     // "CurrentBandwidth" register (UNS32) Read Write
     driver.writeMultipleHoldingRegisters(id, 0x0018, raw.data(), raw.size());
     persistToFlash();
-    delay(100);
     enable();
 }
 
 void LinearMotor::setAutoGain(const bool enabled)
 {
     disable();
-    delay(100);
     // "AutoGainTuningEnable" register (UNS8) Read Write
     driver.writeSingleHoldingRegister(id, 0x0455, enabled);
-    delay(100);
     persistToFlash();
-    delay(100);
     enable();
 }
 
@@ -99,24 +89,18 @@ std::variant<bool, ModbusRTUMasterError> LinearMotor::getAutoGain()
 void LinearMotor::setFilter1Off()
 {
     disable();
-    delay(100);
     // "CurrentTargetFilter1Type" register (UNS8) Read Write
     driver.writeSingleHoldingRegister(id, 0x0406, 0x00);
-    delay(100);
     persistToFlash();
-    delay(100);
     enable();
 }
 
 void LinearMotor::setFilter2Off()
 {
     disable();
-    delay(100);
     // "CurrentTargetFilter2Type" register (UNS8) Read Write
     driver.writeSingleHoldingRegister(id, 0x040B, 0x00);
-    delay(100);
     persistToFlash();
-    delay(100);
     enable();
 }
 
@@ -124,7 +108,6 @@ void LinearMotor::persistToFlash()
 {
     // "ControlCmd" register (UNS8)
     driver.writeSingleHoldingRegister(id, 0x6000, 0x01);
-    delay(100);
 
     // Check if save worked.
     uint16_t value = 0;

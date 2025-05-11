@@ -165,7 +165,6 @@ void pureCMD(const String &cmds, LinearMotor &motor, const String &axisName)
 
     printHexArray(adu.rtu, adu.getRtuLen());
     motor.writeAdu(adu);
-    delay(50);
 
     const auto readStatus = motor.readAdu(adu);
     if (readStatus)
@@ -201,37 +200,33 @@ void sendCmdByPort(const String &cmd)
     else if(cmd.startsWith("AUTO_GAIN_OFF"))
     {
         XMotor->setAutoGain(false);
-        delay(100);
         YMotor->setAutoGain(false);
     }
     else if(cmd.startsWith("FILTER_OFF"))
     {
         XMotor->setFilter1Off();
-        delay(100);
         XMotor->setFilter2Off();
-        delay(100);
         YMotor->setFilter1Off();
-        delay(100);
         YMotor->setFilter2Off();
     }
     else if(cmd.startsWith("CURRENT_X:"))
     {
-        const auto value = static_cast<uint8_t>(cmd.substring(10).toInt());
+        const auto value = cmd.substring(10).toInt();
         XMotor->setCurrentGain(value);
     }
     else if(cmd.startsWith("CURRENT_Y:"))
     {
-        const auto value = static_cast<uint8_t>(cmd.substring(10).toInt());
+        const auto value = cmd.substring(10).toInt();
         YMotor->setCurrentGain(value);
     }
     else if(cmd.startsWith("INERDIA_X:"))
     {
-        const auto value = static_cast<uint16_t>(cmd.substring(10).toInt());
+        const auto value = cmd.substring(10).toInt();
         XMotor->setInertia(value);
     }
     else if(cmd.startsWith("INERDIA_Y:"))
     {
-        const auto value = static_cast<uint16_t>(cmd.substring(10).toInt());
+        const auto value = cmd.substring(10).toInt();
         YMotor->setInertia(value);
     }
     else if(cmd.startsWith("GET_CURRENT_X"))
@@ -297,7 +292,6 @@ void clearIncomingData(Stream & stream)
 void disableBothMotors()
 {
     XMotor->disable();
-    delay(50);
     YMotor->disable();
 
     clearIncomingData(XMotorSerial);
@@ -307,7 +301,6 @@ void disableBothMotors()
 void enableBothMotors()
 {
     XMotor->enable();
-    delay(50);
     YMotor->enable();
 
     clearIncomingData(XMotorSerial);
@@ -412,15 +405,13 @@ void loop()
 {
     const bool xError = checkForError(*XMotor, "X");
     XLed.setColor(xError ? RED : GREEN );
-    delay(50);
 
     const bool yError = checkForError(*YMotor, "Y");
     YLed.setColor(yError ? RED : GREEN );
+
     setErrorState(xError || yError);
-    delay(50);
 
     readCmd();
-    delay(50);
     EnableButton.update();
     DisableButton.update();
 }
