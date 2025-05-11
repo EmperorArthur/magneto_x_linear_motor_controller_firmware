@@ -296,7 +296,7 @@ void enableBothMotors()
     clearIncomingData(YMotorSerial);
 }
 
-inline void setErrorPin(const bool isError)
+inline void setErrorState(const bool isError)
 {
     digitalWrite(EMERGE_STOP_PIN, !isError);
 }
@@ -317,23 +317,24 @@ void setup()
     XLed.begin();
     YLed.begin();
 
+    pinMode(EMERGE_STOP_PIN, OUTPUT);
+    setErrorState(false);
+
     Serial.print("System inited, Version: magx-eslm-");
     Serial.println(VERSION);
-
-    pinMode(EMERGE_STOP_PIN, OUTPUT);
-    setErrorPin(false);
 }
 
 void loop()
 {
     const bool xError = checkForError(*XMotor, "X");
     XLed.setColor(xError ? RED : GREEN );
-    setErrorPin(xError);
     delay(50);
+
     const bool yError = checkForError(*YMotor, "Y");
     YLed.setColor(yError ? RED : GREEN );
-    setErrorPin(yError);
+    setErrorState(xError || yError);
     delay(50);
+
     readCmd();
     delay(50);
     EnableButton.update();
