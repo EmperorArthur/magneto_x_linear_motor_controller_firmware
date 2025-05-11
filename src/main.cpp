@@ -11,6 +11,21 @@
 #include "LinearMotor.hpp"
 #include "RGLed.hpp"
 
+enum OperatingMode : uint16_t
+{
+    /**
+     * @brief ASCII Serial mode with UX features.
+     * @details Buttons and LEDs work automatically.
+     */
+    ASCII = 0,
+
+    /**
+     * @brief Pure RTU Gateway mode.
+     * @details Buttons and LEDS must be handled by Modbus master.
+     */
+    RTU_GATEWAY = 1
+};
+
 ///@brief For when in RTU Mode
 ModbusRTUComm* HostComm;
 auto RTUSlaveLogic = ModbusSlaveLogic();
@@ -35,14 +50,14 @@ void disableBothMotors();
 void enableBothMotors();
 
 void processPureData();
-void modbusMode();
+void executeRtuGatewayLogic();
 void sendCmdByPort(const String &cmd);
 
 #define VERSION "1.0.7-git"
 
 bool recvl_ok = false;
 String inData="";
-bool inModbusMode = false;
+OperatingMode mode = ASCII;
 
 #define MODBUS_BAUD 115200
 #define EMERGE_STOP_PIN 14 //stop klipper when error occur
@@ -130,13 +145,12 @@ bool checkForError(LinearMotor &motor, const String &axisName)
     return false;
 }
 
-//To get
 /**
  * @brief Send a raw Modbus command to a motor, and display the response.
- * @details Commands are in the format "##1,3,240,16,0,2"
- *          The above retrieves X axis position: "##1,3,240,16,0,2"
+ * @details Commands are in the format "##1,2,3,4,5,6".
+ *          The following retrieves X axis position: "##1,3,240,16,0,2"
  * @param cmds String of comma separated ints.  Preceded by two characters.
- * @param motor Motor to send the command to
+ * @param motor Motor to send the command to.
  * @param axisName Used to make output more readable to the user.
  */
 void pureCMD(const String &cmds, LinearMotor &motor, const String &axisName)
@@ -273,12 +287,16 @@ void sendCmdByPort(const String &cmd)
             Serial.println(std::get<uint32_t>(response));
         }
     }
-    else if(cmd.startsWith("RTU"))
+    else if(cmd.startsWith("RTU_GATEWAY"))
     {
-        modbusMode();
+        mode = RTU_GATEWAY;
+        XLed.setColor(OFF);
+        YLed.setColor(OFF);
     }
-    clearIncomingData(XMotorSerial);
-    clearIncomingData(YMotorSerial);
+    else
+    {
+        Serial.println("Unknown Command");
+    }
 }
 
 void clearIncomingData(Stream & stream)
@@ -315,17 +333,17 @@ inline void setErrorState(const bool isError)
 
 void setRTURegisters()
 {
-    holdingRegisters[0] = inModbusMode;
+    holdingRegisters[0] = mode;
     holdingRegisters[1] = XLed.getColor();
     holdingRegisters[2] = YLed.getColor();
-    discreteInputs[0] = EnableButton.getState();
-    discreteInputs[1] = DisableButton.getState();
+    discreteInputs[0] = DisableButton.getState();
+    discreteInputs[1] = EnableButton.getState();
     //motorError // Handled automatically
 }
 
 void updateFromRTURegisters()
 {
-    inModbusMode = holdingRegisters[0];
+    mode = static_cast<OperatingMode>(holdingRegisters[0]);
     XLed.setColor(static_cast<RGLedColor>(holdingRegisters[1]));
     YLed.setColor(static_cast<RGLedColor>(holdingRegisters[2]));
 }
@@ -337,41 +355,35 @@ void updateFromRTURegisters()
  *          Routes Modbus packets with an id of 2 to X motor.
  *          Routes Modbus packets with an id of 3 to Y motor.
  *          <br/>
- *          Writing anything but a 0 to id 1, holding register 0 exits this mode.
+ *          Writing a 0 to id 1, holding register 0 exits this mode.
  */
-void modbusMode()
+void executeRtuGatewayLogic()
 {
-    inModbusMode=true;
-    clearIncomingData(Serial);
-    Serial.flush();
-
-    // ReSharper disable once CppDFALoopConditionNotUpdated
-    while (inModbusMode)
+    auto adu = ModbusADU();
+    if (HostComm->readAdu(adu) != MODBUS_RTU_COMM_SUCCESS)
     {
-        auto adu = ModbusADU();
-        // Wait forever until a valid packet arrives
-        while (HostComm->readAdu(adu) != MODBUS_RTU_COMM_SUCCESS){}
-
-        switch (adu.getUnitId())
-        {
-        case 1:
-            setRTURegisters();
-            RTUSlaveLogic.processPdu(adu);
-            updateFromRTURegisters();
-            break;
-        case 2:
-            XMotor->forwardAdu(adu);
-            break;
-        case 3:
-            YMotor->forwardAdu(adu);
-            break;
-        default:
-            adu.prepareExceptionResponse(GATEWAY_PATH_UNAVAILABLE);
-            YLed.setColor(RED);
-            break;
-        }
-        HostComm->writeAdu(adu);
+        return;
     }
+
+    switch (adu.getUnitId())
+    {
+    case 1:
+        setRTURegisters();
+        RTUSlaveLogic.processPdu(adu);
+        updateFromRTURegisters();
+        break;
+    case 2:
+        XMotor->forwardAdu(adu);
+        break;
+    case 3:
+        YMotor->forwardAdu(adu);
+        break;
+    default:
+        adu.prepareExceptionResponse(GATEWAY_PATH_UNAVAILABLE);
+        YLed.setColor(RED);
+        break;
+    }
+    HostComm->writeAdu(adu);
 }
 
 void setup()
@@ -403,15 +415,23 @@ void setup()
 
 void loop()
 {
-    const bool xError = checkForError(*XMotor, "X");
-    XLed.setColor(xError ? RED : GREEN );
+    if (mode == ASCII)
+    {
+        const auto xError = checkForError(*XMotor, "X");
+        const auto yError = checkForError(*YMotor, "Y");
 
-    const bool yError = checkForError(*YMotor, "Y");
-    YLed.setColor(yError ? RED : GREEN );
+        setErrorState(xError || yError);
+        XLed.setColor(xError ? RED : GREEN );
+        YLed.setColor(yError ? RED : GREEN );
 
-    setErrorState(xError || yError);
+        EnableButton.update();
+        DisableButton.update();
 
-    readCmd();
-    EnableButton.update();
-    DisableButton.update();
+        readCmd();
+    }
+
+    if (mode == RTU_GATEWAY)
+    {
+        executeRtuGatewayLogic();
+    }
 }

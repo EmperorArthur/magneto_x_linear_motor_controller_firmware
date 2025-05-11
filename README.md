@@ -67,7 +67,7 @@ The device operates using a CH340 USB to Serial adapter.
 # Modes
 The controller operates in one of two modes. Normal mode and RTU gateway mode.
 
-# Normal Mode
+# ASCII Mode
 This automatically polls motor status, updating LEDs and the error pin as appropriate.
 The buttons enable and disable the motors.  Enabling the motors also clears any ongoing errors.
 
@@ -86,17 +86,34 @@ The controller can be reconfigured as a Modbus gateway.
 Enter this mode by sending 'RTU\n' when in normal mode.
 
 ### Details
+**Device Ids**
+
 | Id |   Device   |
 |:--:|:----------:|
 | 1  | Controller |
 | 2  | X Motor    |
 | 3  | Y Motor    |
 
+**Discrete Inputs**
+
+| Address |      Name      |
+|:-------:|:--------------:|
+| 1       | Disable Button |
+| 2       | Enable Button  |
+
+**Holding Registers**
+
+| Address | Name | Values | Description                       |
+|:-------:|:----:|--------|-----------------------------------|
+| 1       | mode | 0-1    | 0: ASCII Mode 1: RTU GATEWAY Mode |
+| 2       | XLed | 0-2    | 0: OFF 1: RED 2: GREEN            |
+| 3       | YLed | 0-2    | 0: OFF 1: RED 2: GREEN            |
+
 ### Example
 ```shell
-# Enter RTU Mode
+# Enter RTU Gateway Mode
 stty -F /dev/ttyUSB0 cs8 -parenb -cstopb 115200
-echo -e "RTU\n" > /dev/ttyUSB0
+echo -e "RTU_GATEWAY\n" > /dev/ttyUSB0
 cat /dev/ttyUSB0 > /dev/null
 # Read Button State
 mbpoll -a 1 -t1 -r 1 -c 2 /dev/ttyUSB0 -m rtu -b 115200 -P none -v -1
