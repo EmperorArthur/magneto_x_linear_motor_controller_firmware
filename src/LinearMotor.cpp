@@ -6,6 +6,7 @@
  */
 
 #include "LinearMotor.hpp"
+#include "ModbusDefinitions.hpp"
 
 LinearMotor::LinearMotor(HardwareSerial& serial, const uint8_t id):
     id{id},
@@ -21,6 +22,7 @@ void LinearMotor::begin(const uint32_t baud, const uint32_t config, const int8_t
     serial.setTxBufferSize(sizeof(ModbusADU));
     serial.begin(baud, config, rxPin, txPin);
     rtuComm.begin(baud, config);
+    rtuComm.setTimeout(500); // This is what ModbusRTUMaster does
     driver.begin(baud, config);
 }
 
@@ -198,6 +200,24 @@ LinearMotorStatus LinearMotor::getStatus()
     const auto result =
         driver.readHoldingRegisters(id, 0xF001, &value, 1);
     return {value, result};
+}
+
+bool LinearMotor::forwardAdu(ModbusADU& adu)
+{
+    const auto originalId = adu.getUnitId();
+
+    adu.setUnitId(id);
+    writeAdu(adu);
+    const auto readStatus = readAdu(adu);
+    if (readStatus)
+    {
+        adu.setUnitId(originalId);
+        //adu.prepareExceptionResponse(readStatus);
+        adu.prepareExceptionResponse(GATEWAY_TARGET_DEVICE_FAILED_TO_RESPOND);
+        return false;
+    }
+    adu.setUnitId(originalId);
+    return true;
 }
 
 ModbusRTUMasterError LinearMotor::clearError()

@@ -93,6 +93,15 @@ public:
         return rtuComm.readAdu(adu);
     }
 
+    /**
+     * @brief Forward an ADU to a motor, adjusting the id & CRC as needed.
+     * @details The caller is responsible for returning the response message to the sender.
+     *          Response message may be an error if sending or receiving fail.
+     * @param adu To forward.  Will be changed to the response message.
+     * @return true if forwarding succeeded, otherwise false.
+     */
+    bool forwardAdu(ModbusADU& adu);
+
 private:
     /**
      * @brief Modbus Unit Identifier

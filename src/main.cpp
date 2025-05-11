@@ -4,10 +4,19 @@
 #include <cstring>
 #include <Arduino.h>
 #include <ModbusADU.h>
+#include <ModbusSlaveLogic.h>
 
+#include "ModbusDefinitions.hpp"
 #include "Button.hpp"
 #include "LinearMotor.hpp"
 #include "RGLed.hpp"
+
+///@brief For when in RTU Mode
+ModbusRTUComm* HostComm;
+auto RTUSlaveLogic = ModbusSlaveLogic();
+std::array<uint16_t, 3> holdingRegisters = {};
+std::array<bool, 2> discreteInputs = {};
+bool motorError = false;
 
 LinearMotor* XMotor;
 LinearMotor* YMotor;
@@ -26,12 +35,14 @@ void disableBothMotors();
 void enableBothMotors();
 
 void processPureData();
+void modbusMode();
 void sendCmdByPort(const String &cmd);
 
 #define VERSION "1.0.7-git"
 
 bool recvl_ok = false;
 String inData="";
+bool inModbusMode = false;
 
 #define MODBUS_BAUD 115200
 #define EMERGE_STOP_PIN 14 //stop klipper when error occur
@@ -263,7 +274,11 @@ void sendCmdByPort(const String &cmd)
         {
             Serial.println(std::get<uint32_t>(response));
         }
-   }
+    }
+    else if(cmd.startsWith("RTU"))
+    {
+        modbusMode();
+    }
     clearIncomingData(XMotorSerial);
     clearIncomingData(YMotorSerial);
 }
@@ -298,12 +313,78 @@ void enableBothMotors()
 
 inline void setErrorState(const bool isError)
 {
+    motorError = isError;
     digitalWrite(EMERGE_STOP_PIN, !isError);
+}
+
+void setRTURegisters()
+{
+    holdingRegisters[0] = inModbusMode;
+    holdingRegisters[1] = XLed.getColor();
+    holdingRegisters[2] = YLed.getColor();
+    discreteInputs[0] = EnableButton.getState();
+    discreteInputs[1] = DisableButton.getState();
+    //motorError // Handled automatically
+}
+
+void updateFromRTURegisters()
+{
+    inModbusMode = holdingRegisters[0];
+    XLed.setColor(static_cast<RGLedColor>(holdingRegisters[1]));
+    YLed.setColor(static_cast<RGLedColor>(holdingRegisters[2]));
+}
+
+/**
+ * @brief Forwards packets, while acting as a Modbus slave.
+ * @warning This stops all automatic tasks, and relies on the host for all logic.
+ * @details Acts as a Modbus slave with an id of 1.
+ *          Routes Modbus packets with an id of 2 to X motor.
+ *          Routes Modbus packets with an id of 3 to Y motor.
+ *          <br/>
+ *          Writing anything but a 0 to id 1, holding register 0 exits this mode.
+ */
+void modbusMode()
+{
+    inModbusMode=true;
+    clearIncomingData(Serial);
+    Serial.flush();
+
+    // ReSharper disable once CppDFALoopConditionNotUpdated
+    while (inModbusMode)
+    {
+        auto adu = ModbusADU();
+        // Wait forever until a valid packet arrives
+        while (HostComm->readAdu(adu) != MODBUS_RTU_COMM_SUCCESS){}
+
+        switch (adu.getUnitId())
+        {
+        case 1:
+            setRTURegisters();
+            RTUSlaveLogic.processPdu(adu);
+            updateFromRTURegisters();
+            break;
+        case 2:
+            XMotor->forwardAdu(adu);
+            break;
+        case 3:
+            YMotor->forwardAdu(adu);
+            break;
+        default:
+            adu.prepareExceptionResponse(GATEWAY_PATH_UNAVAILABLE);
+            YLed.setColor(RED);
+            break;
+        }
+        HostComm->writeAdu(adu);
+    }
 }
 
 void setup()
 {
+    HostComm = new ModbusRTUComm(Serial);
     Serial.begin(MODBUS_BAUD);
+    HostComm->begin(MODBUS_BAUD, SERIAL_8N1);
+    RTUSlaveLogic.configureHoldingRegisters(holdingRegisters.data(), holdingRegisters.size());
+    RTUSlaveLogic.configureDiscreteInputs(discreteInputs.data(), discreteInputs.size());
 
     XMotor = new LinearMotor(XMotorSerial, 1);
     XMotor->begin(MODBUS_BAUD, SERIAL_8N1, 22, 23);
