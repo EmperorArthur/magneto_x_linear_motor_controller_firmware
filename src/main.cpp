@@ -314,8 +314,8 @@ void setup()
     EnableButton.Setup(enableBothMotors);
     DisableButton.Setup(disableBothMotors);
 
-    XLed.Setup();
-    YLed.Setup();
+    XLed.begin();
+    YLed.begin();
 
     Serial.print("System inited, Version: magx-eslm-");
     Serial.println(VERSION);
@@ -327,11 +327,11 @@ void setup()
 void loop()
 {
     const bool xError = checkForError(*XMotor, "X");
-    xError ? XLed.SetRed() : XLed.SetGreen();
+    XLed.setColor(xError ? RED : GREEN );
     setErrorPin(xError);
     delay(50);
     const bool yError = checkForError(*YMotor, "Y");
-    yError ? YLed.SetRed() : YLed.SetGreen();
+    YLed.setColor(yError ? RED : GREEN );
     setErrorPin(yError);
     delay(50);
     readCmd();

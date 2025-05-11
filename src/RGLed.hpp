@@ -8,6 +8,13 @@
 #pragma once
 #include <cstdint>
 
+enum RGLedColor: uint8_t
+{
+    OFF = 0,
+    RED = 1,
+    GREEN = 2
+};
+
 /**
  * @brief LED Which can be red or green.
  * @details Deliberately cannot be both red and green.
@@ -20,22 +27,21 @@ public:
      * @brief Set the appropriate pins as output.
      * @details Also defaults to turning the LED off.
      */
-    void Setup();
+    void begin();
 
-    void Off();
-    /**
-     * @brief Pure red.  Turns off green.
-     */
-    void SetRed();
+    void setColor(RGLedColor color);
 
     /**
-     * @brief Pure green.  Turns off red.
+     * @warning This assumes the class has exclusive control of the pins.
+     * @return The current color.
      */
-    void SetGreen();
+    [[nodiscard]] RGLedColor getColor() const
+    {
+        return color;
+    }
 
-    bool IsRed() const;
-    bool IsGreen() const;
 private:
     const uint8_t redPin;
     const uint8_t greenPin;
+    RGLedColor color = OFF;
 };

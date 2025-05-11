@@ -8,41 +8,33 @@
 #include "RGLed.hpp"
 #include <Arduino.h>
 
-RGLed::RGLed(uint8_t red_pin, uint8_t green_pin): redPin(red_pin), greenPin(green_pin)
+RGLed::RGLed(const uint8_t red_pin, const uint8_t green_pin): redPin(red_pin), greenPin(green_pin)
 {
 }
 
-void RGLed::Setup()
+void RGLed::begin()
 {
     pinMode(redPin, OUTPUT);
     pinMode(greenPin, OUTPUT);
-    Off();
+    setColor(OFF);
 }
 
-void RGLed::Off()
+// ReSharper disable once CppMemberFunctionMayBeConst
+void RGLed::setColor(const RGLedColor color) // NOLINT(*-make-member-function-const)
 {
-    digitalWrite(redPin, HIGH);
-    digitalWrite(greenPin, HIGH);
-}
-
-void RGLed::SetRed()
-{
-    digitalWrite(redPin, LOW);
-    digitalWrite(greenPin, HIGH);
-}
-
-void RGLed::SetGreen()
-{
-    digitalWrite(redPin, HIGH);
-    digitalWrite(greenPin, LOW);
-}
-
-bool RGLed::IsRed() const
-{
-    return digitalRead(redPin);
-}
-
-bool RGLed::IsGreen() const
-{
-    return digitalRead(greenPin);
+    this->color = color;
+    switch (color) {
+    case OFF:
+        digitalWrite(redPin, HIGH);
+        digitalWrite(greenPin, HIGH);
+        break;
+    case RED:
+        digitalWrite(redPin, LOW);
+        digitalWrite(greenPin, HIGH);
+        break;
+    case GREEN:
+        digitalWrite(redPin, HIGH);
+        digitalWrite(greenPin, LOW);
+        break;
+    }
 }
