@@ -167,10 +167,13 @@ void pureCMD(const String &cmds, LinearMotor &motor, const String &axisName)
     motor.writeAdu(adu);
     delay(50);
 
-    auto incomingAdu = ModbusADU();
-    motor.readAdu(incomingAdu);
+    const auto readStatus = motor.readAdu(adu);
+    if (readStatus)
+    {
+        adu.prepareExceptionResponse(GATEWAY_TARGET_DEVICE_FAILED_TO_RESPOND);
+    }
     Serial.print(axisName + " axis value: ");
-    printHexArray(incomingAdu.data, incomingAdu.getDataLen());
+    printHexArray(adu.data, adu.getDataLen());
 }
 
 void sendCmdByPort(const String &cmd)
