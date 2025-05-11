@@ -31,7 +31,7 @@ ModbusRTUComm* HostComm;
 auto RTUSlaveLogic = ModbusSlaveLogic();
 std::array<uint16_t, 3> holdingRegisters = {};
 std::array<bool, 2> discreteInputs = {};
-bool motorError = false;
+bool motorError = true;
 
 LinearMotor* XMotor;
 LinearMotor* YMotor;
@@ -327,6 +327,10 @@ void enableBothMotors()
 
 inline void setErrorState(const bool isError)
 {
+    if (motorError == isError)
+    {
+        return;
+    }
     motorError = isError;
     digitalWrite(EMERGE_STOP_PIN, !isError);
 }

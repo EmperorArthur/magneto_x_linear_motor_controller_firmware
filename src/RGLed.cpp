@@ -19,9 +19,12 @@ void RGLed::begin()
     setColor(OFF);
 }
 
-// ReSharper disable once CppMemberFunctionMayBeConst
-void RGLed::setColor(const RGLedColor color) // NOLINT(*-make-member-function-const)
+void RGLed::setColor(const RGLedColor color)
 {
+    if (color == this->color)
+    {
+        return;
+    }
     this->color = color;
     switch (color) {
     case OFF:
