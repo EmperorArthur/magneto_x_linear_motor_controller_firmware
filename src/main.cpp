@@ -311,8 +311,8 @@ void setup()
     YMotor = new LinearMotor(YMotorSerial, 1);
     YMotor->begin(MODBUS_BAUD, SERIAL_8N1, 16, 17);
 
-    EnableButton.Setup(enableBothMotors);
-    DisableButton.Setup(disableBothMotors);
+    EnableButton.begin(enableBothMotors);
+    DisableButton.begin(disableBothMotors);
 
     XLed.begin();
     YLed.begin();
@@ -336,6 +336,6 @@ void loop()
     delay(50);
     readCmd();
     delay(50);
-    EnableButton.Update();
-    DisableButton.Update();
+    EnableButton.update();
+    DisableButton.update();
 }

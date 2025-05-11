@@ -8,6 +8,12 @@
 #pragma once
 #include <functional>
 
+enum ButtonState: bool
+{
+    RELEASED = false,
+    PRESSED = true
+};
+
 /**
  * @brief Simple button handling code.
  * @details This deliberately does not use interrupts.
@@ -24,14 +30,19 @@ public:
      * @details Also enable the built-in pull-up resistor for the pin.
      * @param callback Function to execute when the button is pressed.
      */
-    void Setup(const std::function<void()>& callback);
+    void begin(const std::function<void()>& callback);
 
     /**
      * @brief Handle button events.
      * @details Check the button state, and if it is pressed for debounce time,
      *          run the callback function once.
      */
-    void Update();
+    void update();
+
+    /**
+     * @brief Check if button has been pressed for debounce time.
+     */
+    [[nodiscard]] ButtonState getState();
 
 private:
     const uint8_t pin;
@@ -40,6 +51,7 @@ private:
     volatile bool isPressed = false;
     volatile unsigned long pressedAt = -1;
     volatile bool callbackRan = false;
-    void OnPress();
-    void OnRelease();
+    void onStateChange();
+    void onPress();
+    void onRelease();
 };

@@ -13,23 +13,15 @@ Button::Button(uint8_t pin, unsigned long debounce): pin(pin),
 {
 }
 
-void Button::Setup(const std::function<void()>& callback)
+void Button::begin(const std::function<void()>& callback)
 {
     pinMode(pin, INPUT_PULLUP);
     this->callback = callback;
 }
 
-void Button::Update()
+void Button::update()
 {
-    if (digitalRead(pin) == LOW)
-    {
-        OnPress();
-    }
-    else
-    {
-        OnRelease();
-    }
-
+    onStateChange();
     if (callback != nullptr && !callbackRan && isPressed && (pressedAt - debounce) < millis())
     {
         callbackRan = true;
@@ -37,7 +29,25 @@ void Button::Update()
     }
 }
 
-void Button::OnPress()
+ButtonState Button::getState()
+{
+    onStateChange();
+    return static_cast<ButtonState>(isPressed && (pressedAt - debounce) < millis());
+}
+
+void Button::onStateChange()
+{
+    if (digitalRead(pin) == LOW)
+    {
+        onPress();
+    }
+    else
+    {
+        onRelease();
+    }
+}
+
+void Button::onPress()
 {
     if (isPressed)
     {
@@ -47,7 +57,7 @@ void Button::OnPress()
     pressedAt = millis();
 }
 
-void Button::OnRelease()
+void Button::onRelease()
 {
     isPressed = false;
     callbackRan = false;
