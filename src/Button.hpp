@@ -24,6 +24,9 @@ class Button
 {
 public:
     Button(uint8_t pin, unsigned long debounce);
+    ~Button();
+    Button(const Button&) = delete;
+    Button(const Button&&) = delete;
 
     /**
      * @brief Register the pin as an input, and a callback function
@@ -32,17 +35,11 @@ public:
      */
     void begin(const std::function<void()>& callback);
 
-    /**
-     * @brief Handle button events.
-     * @details Check the button state, and if it is pressed for debounce time,
-     *          run the callback function once.
-     */
+    ///@brief Run the callback once, if button has been pressed for debounce time.
     void update();
 
-    /**
-     * @brief Check if button has been pressed for debounce time.
-     */
-    [[nodiscard]] ButtonState getState();
+    ///@brief Check if button has been pressed for debounce time.
+    [[nodiscard]] ButtonState getState() const;
 
 private:
     const uint8_t pin;
@@ -51,7 +48,11 @@ private:
     volatile bool isPressed = false;
     volatile unsigned long pressedAt = -1;
     volatile bool callbackRan = false;
-    void onStateChange();
+    [[nodiscard]] inline bool _pressedForDebounceTimeInternal() const;
+
+    // ISR Routines. Each is idempotent.
+    ///@brief Read the pin and call either `onPress()` or `onRelease()`.
+    static void _isr(void *buttonPtr);
     void onPress();
     void onRelease();
 };

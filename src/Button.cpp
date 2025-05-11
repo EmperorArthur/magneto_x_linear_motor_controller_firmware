@@ -7,43 +7,59 @@
 
 #include "Button.hpp"
 #include <Arduino.h>
+#include <forward_list>
 
-Button::Button(uint8_t pin, unsigned long debounce): pin(pin),
-                                                     debounce(debounce)
+Button::Button(const uint8_t pin, const unsigned long debounce):
+    pin(pin),
+    debounce(debounce)
 {
+}
+
+Button::~Button()
+{
+    detachInterrupt(digitalPinToInterrupt(pin));
 }
 
 void Button::begin(const std::function<void()>& callback)
 {
     pinMode(pin, INPUT_PULLUP);
+    attachInterruptArg(digitalPinToInterrupt(pin), _isr, this, CHANGE);
     this->callback = callback;
 }
 
 void Button::update()
 {
-    onStateChange();
-    if (callback != nullptr && !callbackRan && isPressed && (pressedAt - debounce) < millis())
+    if (callback != nullptr && !callbackRan && _pressedForDebounceTimeInternal())
     {
         callbackRan = true;
         callback();
     }
 }
 
-ButtonState Button::getState()
+ButtonState Button::getState() const
 {
-    onStateChange();
-    return static_cast<ButtonState>(isPressed && (pressedAt - debounce) < millis());
+    return static_cast<ButtonState>( callbackRan || _pressedForDebounceTimeInternal());
 }
 
-void Button::onStateChange()
+bool Button::_pressedForDebounceTimeInternal() const
 {
-    if (digitalRead(pin) == LOW)
+    return isPressed && (pressedAt - debounce) < millis();
+}
+
+void Button::_isr(void* buttonPtr)
+{
+    if (buttonPtr == nullptr)
     {
-        onPress();
+        return;
+    }
+    const auto button = static_cast<Button*>(buttonPtr);
+    if (digitalRead(button->pin) == LOW)
+    {
+        button->onPress();
     }
     else
     {
-        onRelease();
+        button->onRelease();
     }
 }
 
