@@ -19,6 +19,15 @@ Y轴: 当有错误时，灯是红色，正常时，灯是绿色
 # Hardware Information
 System On Chip: ESP32-WROOM-32D
 
+## Physical Details
+|   Component  |                      Use                     |
+|:------------:|:--------------------------------------------:|
+| Left LED     | X Motor Status                               |
+| Right LED    | Y Motor Status                               |
+| Left Button  | Disable Motors (hold 1 second)               |
+| Right Button | Enable Motors / Clear Errors (hold 1 second) |
+
+
 ## Buttons and Interfaces
 * Disable Button
 * Enable Button
@@ -68,19 +77,24 @@ The device operates using a CH340 USB to Serial adapter.
 The controller operates in one of three modes.
 Normal mode, RTU gateway mode, and RTU mixed mode.
 
-# ASCII Mode
+## ASCII Mode
 This automatically polls motor status, updating LEDs and the error pin as appropriate.
 The buttons enable and disable the motors.  Enabling the motors also clears any ongoing errors.
 
 In addition, error messages are reported via serial, and certain ACSII commands are availabe.
 
-### Physical Details
-|   Component  |                      Use                     |
-|:------------:|:--------------------------------------------:|
-| Left LED     | X Motor Status                               |
-| Right LED    | Y Motor Status                               |
-| Left Button  | Disable Motors (hold 1 second)               |
-| Right Button | Enable Motors / Clear Errors (hold 1 second) |
+When no motor errors are occurring, accepts Modbus RTU data as in Mixed mode.
+
+## Commands
+Multiple legacy commands exist, but are deprecated!
+These are the only supported commands.
+
+|   Command   |              Function             |
+|:-----------:|:---------------------------------:|
+| DISABLE     | Disable Motors                    |
+| ENABLE      | Enable Motors / Clear Errors      |
+| RTU_GATEWAY | Switch to Modbus RTU Gateway Mode |
+| RTU_MIXED   | Switch to Modbus RTU Mixed Mode   |
 
 ## RTU Gateway Mode
 The controller can be reconfigured as a Modbus gateway.
@@ -106,20 +120,14 @@ Enter this mode by sending 'RTU\n' when in normal mode.
 
 | Address | Name | Values | Description                                          |
 |:-------:|:----:|--------|------------------------------------------------------|
-| 1       | mode | 0-2    | 0: ASCII Mode, 1: RTU Gateway Mode 2: RTU MIXED Mode |
+| 1       | mode | 0-2    | 0: ASCII Mode, 1: RTU Gateway Mode 2: RTU Mixed Mode |
 | 2       | XLed | 0-2    | 0: OFF 1: RED 2: GREEN                               |
 | 3       | YLed | 0-2    | 0: OFF 1: RED 2: GREEN                               |
 
-## RTU Mixed Mode
-Serial communication works as in RTU Gateway mode.
-Buttons, LEDs, and error detection works as in ASCII mode.
-
 ### Example
 ```shell
-# Enter RTU Gateway Mode
-stty -F /dev/ttyUSB0 cs8 -parenb -cstopb 115200
-echo -e "RTU_GATEWAY\n" > /dev/ttyUSB0
-cat /dev/ttyUSB0 > /dev/null
+# Enter RTU Mode
+mbpoll -a 1 -t4:hex -r 1 /dev/ttyUSB0 -m rtu -b 115200 -P none -v -- 1
 # Read Button State
 mbpoll -a 1 -t1 -r 1 -c 2 /dev/ttyUSB0 -m rtu -b 115200 -P none -v -1
 # Read LED State
@@ -129,4 +137,7 @@ mbpoll -a 1 -t4:hex -r 2 /dev/ttyUSB0 -m rtu -b 115200 -P none -v -- 2 2
 # Exit RTU Mode
 mbpoll -a 1 -t4:hex -r 1 /dev/ttyUSB0 -m rtu -b 115200 -P none -v -- 0
 ```
-j
+
+## RTU Mixed Mode
+Serial communication works as in RTU Gateway mode.
+Buttons, LEDs, and error detection works as in ASCII mode.
