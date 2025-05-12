@@ -11,6 +11,8 @@
 #include "LinearMotor.hpp"
 #include "RGLed.hpp"
 
+#define VERSION "2.0.0"
+
 enum OperatingMode : uint16_t
 {
     /**
@@ -53,8 +55,6 @@ void enableBothMotors();
 void processPureData();
 void executeRtuGatewayLogic();
 void sendCmdByPort(const String &cmd);
-
-#define VERSION "1.0.7-git"
 
 OperatingMode mode = ASCII;
 

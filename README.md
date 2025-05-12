@@ -95,6 +95,7 @@ These are the only supported commands.
 | ENABLE      | Enable Motors / Clear Errors      |
 | RTU_GATEWAY | Switch to Modbus RTU Gateway Mode |
 | RTU_MIXED   | Switch to Modbus RTU Mixed Mode   |
+| VERSION     | Get Firmware Version String       |
 
 ## RTU Gateway Mode
 The controller can be reconfigured as a Modbus gateway.
