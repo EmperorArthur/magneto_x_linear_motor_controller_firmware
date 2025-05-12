@@ -56,8 +56,6 @@ void sendCmdByPort(const String &cmd);
 
 #define VERSION "1.0.7-git"
 
-bool recvl_ok = false;
-String inData="";
 OperatingMode mode = ASCII;
 
 #define MODBUS_BAUD 115200
@@ -102,24 +100,43 @@ void printHex(T value)
     printHexArray(reinterpret_cast<const uint8_t*>(&value), sizeof(value));
 }
 
+/**
+ * @brief Read and execute ASCII commands.
+ * @details Non-printable characters (except crlf) reset the ASCII command buffer and trigger a Modbus RTU read attempt.
+ */
 void readCmd()
 {
-  //读取所有的数据
-  while (Serial.available() > 0 && recvl_ok == false)
-  {
-    const char recieved = Serial.read();
-    if (recieved == '\n')
+    static String inData = "";
+
+    // Non-printable characters trigger Modbus RTU logic.
+    // Backspace prevents erroneous ASCII commands from running.
+    if (Serial.available() > 0)
     {
-      recvl_ok = true;
+        const char c = Serial.peek();
+        if (not isprint(c) && c != '\r' && c != '\n')
+        {
+            inData = "";
+            executeRtuGatewayLogic();
+            return;
+        }
     }
-    inData += recieved;
-  }
-  if(recvl_ok)
-  {
-    sendCmdByPort(inData);  
-    recvl_ok= false;
-      inData = "";
-  }
+
+    //读取所有的数据
+    while (Serial.available() > 0)
+    {
+        const char recieved = Serial.read();
+        inData += recieved;
+        if (recieved == '\n')
+        {
+            inData.trim();
+            if (inData.length() > 0)
+            {
+                sendCmdByPort(inData);
+            }
+            inData = "";
+            break;
+        }
+    }
 }
 
 /**
