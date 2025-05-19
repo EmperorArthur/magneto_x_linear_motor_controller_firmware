@@ -1,5 +1,6 @@
 # Peopoly
-Peopoly code is licensed under ??? license.
+Peopoly code is licensed under GPL.
+Version not specified.
 
 # Images
 Images are copyright their respective owners, and used in a manner consistent with fair use.
